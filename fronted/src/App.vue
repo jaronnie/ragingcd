@@ -9,9 +9,7 @@
       :total="1000"
     />
 
-    <svg>
-      <use xlink:href="#icon-圣诞冰淇淋" fill="red"></use>
-    </svg>
+    <SvgIcon name="setting" width="200px" height="500px"></SvgIcon>
   </div>
 </template>
 
