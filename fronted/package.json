@@ -48,6 +48,7 @@
     "stylelint-scss": "^5.3.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue-tsc": "^1.8.22"
   }
 }

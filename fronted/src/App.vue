@@ -8,6 +8,10 @@
       layout="prev, pager, next"
       :total="1000"
     />
+
+    <svg>
+      <use xlink:href="#icon-圣诞冰淇淋" fill="red"></use>
+    </svg>
   </div>
 </template>
 

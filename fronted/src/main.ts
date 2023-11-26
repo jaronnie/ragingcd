@@ -9,4 +9,7 @@ app.use(ElementPlus);
 // 获取环境配置信息
 console.log(import.meta.env);
 
+// svg 配置
+import "virtual:svg-icons-register";
+
 app.mount("#app");
