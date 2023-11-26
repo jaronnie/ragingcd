@@ -11,7 +11,9 @@
     "fix": "eslint src --fix",
     "format": "prettier --write \"./**/*.{html,vue,ts,js,json.md}\"",
     "lint:eslint": "eslint src/**/*.{ts,vue} --cache --fix",
-    "lint:style": "stylelint src **/*.{css,scss,vue} --cache --fix"
+    "lint:style": "stylelint src **/*.{css,scss,vue} --cache --fix",
+    "build-test": "vue-tsc && vite build --mode test",
+    "build-prod": "vue-tsc && vite build --mode production"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
