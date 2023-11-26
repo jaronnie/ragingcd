@@ -1,13 +1,9 @@
 <template>
-    <div>
-<h1>我是 App</h1>
-    </div>
+  <div>
+    <h1>我是 App</h1>
+  </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>
