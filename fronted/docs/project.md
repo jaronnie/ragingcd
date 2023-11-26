@@ -29,3 +29,15 @@ cd fronted
 pnpm i
 pnpm run dev
 ```
+
+## 配置
+
+### eslint
+
+```shell
+pnpm i eslint -D
+# 生成 eslint 配置文件
+npx eslint --init
+
+pnpm install -D eslint-plugin-import eslint-plugin-vue eslint-plugin-node eslint-plugin-prettier eslint-config-prettier eslint-plugin-node @babel/eslint-parser
+```
