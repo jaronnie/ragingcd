@@ -17,6 +17,17 @@
 
 <script setup lang="ts">
 import { Plus } from "@element-plus/icons-vue";
+
+// 测试 mock 接口
+import axios from "axios";
+axios({
+  url: "/api/user/login",
+  method: "post",
+  data: {
+    username: "admin",
+    password: "123456",
+  },
+});
 </script>
 
 <style scoped lang="scss">

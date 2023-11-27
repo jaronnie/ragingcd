@@ -47,3 +47,10 @@ pnpm install -D eslint-plugin-import eslint-plugin-vue eslint-plugin-node eslint
 ```shell
 pnpm add sass sass-loader stylelint postcss postcss-scss postcss-html stylelint-config-prettier stylelint-config-recess-order stylelint-config-recommended-scss stylelint-config-standard stylelint-config-standard-vue stylelint-scss stylelint-order stylelint-config-standard-scss -D
 ```
+
+### mock server
+
+```shell
+pnpm add vite-plugin-mock@v2.9.6 -D
+pnpm add mockjs -D
+```
