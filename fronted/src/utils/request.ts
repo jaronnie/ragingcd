@@ -9,6 +9,7 @@ const request = axios.create({
 
 // 添加请求与响应拦截器
 request.interceptors.request.use((config) => {
+  config.headers.set("token", "Admin Token");
   return config;
 });
 
