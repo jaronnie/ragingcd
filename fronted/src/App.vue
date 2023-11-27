@@ -19,14 +19,20 @@
 import { Plus } from "@element-plus/icons-vue";
 
 // 测试 mock 接口
-import axios from "axios";
-axios({
-  url: "/api/user/login",
-  method: "post",
-  data: {
-    username: "admin",
-    password: "123456",
-  },
+import request from "@/utils/request.ts";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  request({
+    url: "/user/login",
+    method: "post",
+    data: {
+      username: "admin",
+      password: "123456",
+    },
+  }).then((res) => {
+    console.log(res);
+  });
 });
 </script>
 
