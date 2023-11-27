@@ -2,6 +2,8 @@
   <div>
     <el-button type="primary" :icon="Plus">Primary</el-button>
 
+    <h1>我是根 App</h1>
+
     <el-pagination
       :page-size="20"
       :pager-count="11"
@@ -17,4 +19,10 @@
 import { Plus } from "@element-plus/icons-vue";
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+div {
+  h1 {
+    color: $color;
+  }
+}
+</style>

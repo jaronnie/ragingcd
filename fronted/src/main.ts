@@ -12,6 +12,9 @@ app.use(ElementPlus);
 import globalComponent from "@/components";
 app.use(globalComponent);
 
+// 引入全局样式
+import "@/styles/index.scss";
+
 // 获取环境配置信息
 console.log(import.meta.env);
 
