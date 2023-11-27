@@ -9,7 +9,7 @@
       :total="1000"
     />
 
-    <SvgIcon name="setting" width="200px" height="500px"></SvgIcon>
+    <SvgIcon name="setting" width="50px" height="50px"></SvgIcon>
   </div>
 </template>
 
