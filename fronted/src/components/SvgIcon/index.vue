@@ -1,10 +1,10 @@
 <template>
   <div>
-    <svg style="width: 30px; height: 30px">
+    <svg>
       <use
         :style="{ width, height }"
         :xlink:href="prefix + name"
-        fill="color"
+        :fill="color"
       ></use>
     </svg>
   </div>

@@ -4,11 +4,13 @@ import { createApp } from "vue";
 import App from "@/App.vue";
 // svg 配置
 import "virtual:svg-icons-register";
-import SvgIcon from "@/components/SvgIcon/index.vue";
 
 const app = createApp(App);
 app.use(ElementPlus);
-app.component("SvgIcon", SvgIcon);
+
+// 引入全局对象组件
+import globalComponent from "@/components";
+app.use(globalComponent);
 
 // 获取环境配置信息
 console.log(import.meta.env);
