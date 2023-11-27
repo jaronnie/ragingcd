@@ -15,6 +15,10 @@ app.use(globalComponent);
 // 引入全局样式
 import "@/styles/index.scss";
 
+// 注册模板路由
+import router from "@/router";
+app.use(router);
+
 // 获取环境配置信息
 console.log(import.meta.env);
 

@@ -12,6 +12,8 @@
     />
 
     <SvgIcon name="setting" width="50px" height="50px"></SvgIcon>
+
+    <router-view></router-view>
   </div>
 </template>
 
