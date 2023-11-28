@@ -1,0 +1,16 @@
+version: "3"
+
+tasks:
+  build:fronted:
+    cmds:
+      - cd fronted;pnpm run build;cd ..
+    silent: true
+  docker:fronted:
+    deps:
+      - build:fronted
+    cmds:
+      - cd fronted;docker build -t jaronnie/admin-fronted:latest .;cd ..
+    silent: true
+  build:backend:
+    cmds:
+      - pwd

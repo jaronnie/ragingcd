@@ -1,0 +1,64 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        - profile=docker-dameng8
+    ports:
+      - '8081:8081'
+    restart: always
+    depends_on:
+      - mysql8
+      - dameng8
+      - oracle11g
+
+  fronted:
+    build:
+      context: ./fronted
+    ports:
+      - '8082:80'    
+  oracle11g:
+    image: deepdiver/docker-oracle-xe-11g
+    restart: always
+    container_name: springboot-oracle11g
+    ports:
+      - '1521:1521'
+  dameng8:
+    image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
+    restart: always
+    container_name: springboot-dameng8
+    privileged: true
+    environment:
+      - PAGE_SIZE=16
+      - LD_LIBRARY_PATH=/opt/dmdbms/bin
+      - EXTENT_SIZE=32
+      - BLANK_PAD_MODE=1
+      - LOG_SIZE=1024
+      - UNICODE_FLAG=1
+      - LENGTH_IN_CHAR=1
+      - INSTANCE_NAME=springboot-dameng8
+    volumes:
+      - ./data/dm8_data:/opt/dmdbms/data
+    ports:
+      - '30236:5236'
+  mysql8:
+    image: mysql:8.0.32
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4096M
+    restart: always
+    container_name: springboot-mysql8
+    ports:
+      - '3306:3306'
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_USER=root
+      - BITNAMI_DEBUG=true
+    volumes:
+      - ./data/data:/var/lib/mysql
+      - ./data/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./data/sql:/docker-entrypoint-initdb.d
