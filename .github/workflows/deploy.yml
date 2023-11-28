@@ -36,6 +36,7 @@ jobs:
 
       - name: build src and docker build image and push to docker hub
         run: |
+          npm i -g pnpm@8.0.0
           task docker:push:fronted
 
       - name: executing remote ssh commands using password
