@@ -19,6 +19,10 @@ import "@/styles/index.scss";
 import router from "@/router";
 app.use(router);
 
+// 状态管理
+import pinia from "@/store";
+app.use(pinia);
+
 // 获取环境配置信息
 console.log(import.meta.env);
 

@@ -54,3 +54,9 @@ pnpm add sass sass-loader stylelint postcss postcss-scss postcss-html stylelint-
 pnpm add vite-plugin-mock@v2.9.6 -D
 pnpm add mockjs -D
 ```
+
+### 状态管理库 pinia
+
+```shell
+pnpm i pinia
+```
