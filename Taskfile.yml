@@ -5,12 +5,14 @@ tasks:
     cmds:
       - cd fronted;pnpm run build;cd ..
     silent: true
-  docker:fronted:
+  docker:build:fronted:
     deps:
       - build:fronted
     cmds:
       - cd fronted;docker build -t jaronnie/admin-fronted:latest .;cd ..
     silent: true
-  build:backend:
+  docker:push:fronted:
+    deps:
+      - docker:build:fronted
     cmds:
-      - pwd
+      - docker push jaronnie/admin-fronted:latest    
