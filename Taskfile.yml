@@ -3,7 +3,7 @@ version: "3"
 tasks:
   build:fronted:
     cmds:
-      - cd fronted;pnpm run build;cd ..
+      - cd fronted;pnpm i;pnpm run build;cd ..
     silent: true
   docker:build:fronted:
     deps:
