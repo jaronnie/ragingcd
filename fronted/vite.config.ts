@@ -5,6 +5,7 @@ import { ConfigEnv, UserConfigExport } from "vite";
 import { viteMockServe } from "vite-plugin-mock";
 
 export default ({ command }: ConfigEnv): UserConfigExport => {
+  const prodMock = true;
   return {
     base: "./",
     plugins: [
@@ -14,7 +15,10 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
         symbolId: "icon-[dir]-[name]",
       }),
       viteMockServe({
+        mockPath: "./mock/", //mock文件地址
         localEnabled: command === "serve",
+        prodEnabled: command !== "serve" && prodMock,
+        injectCode: ` import { setupProdMockServer } from './mockProdServer'; setupProdMockServer(); `,
       }),
     ],
     resolve: { alias: { "@": path.resolve("./src") } },
