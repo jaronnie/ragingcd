@@ -1,6 +1,7 @@
 // 二次封装 axios
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import { GET_TOKEN } from "./token";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -9,7 +10,7 @@ const request = axios.create({
 
 // 添加请求与响应拦截器
 request.interceptors.request.use((config) => {
-  config.headers.set("token", "Admin Token");
+  config.headers.set("token", GET_TOKEN());
   return config;
 });
 

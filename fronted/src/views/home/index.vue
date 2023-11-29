@@ -1,9 +1,13 @@
 <template>
   <div>
-    <h1>测试 workflow</h1>
+    <h1>你好 {{ userStore.username }}</h1>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useUserStore from "@/store/modules/user";
+let userStore = useUserStore();
+userStore.userInfo();
+</script>
 
 <style scoped></style>
