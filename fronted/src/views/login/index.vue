@@ -61,13 +61,26 @@ const loginInput = reactive<loginForm>({
 
 // 表单校验
 const ruleFormRef = ref<FormInstance>();
-
+// 自定义校验
+const validateUsername = (_: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("请输入用户名"));
+  }
+  callback();
+};
+const validatePassword = (_: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("请输入密码"));
+  }
+  callback();
+};
 const rules = reactive<FormRules<loginForm>>({
   username: [
     {
       required: true,
       message: "请输入用户名",
       trigger: "blur",
+      validator: validateUsername,
     },
   ],
   password: [
@@ -75,6 +88,7 @@ const rules = reactive<FormRules<loginForm>>({
       required: true,
       message: "请输入密码",
       trigger: "blur",
+      validator: validatePassword,
     },
   ],
 });
@@ -89,8 +103,8 @@ let loading = ref(false);
 const login = async () => {
   try {
     await ruleFormRef.value.validate();
-  } catch {
-    /* empty */
+  } catch (error) {
+    return;
   }
 
   loading.value = true;
