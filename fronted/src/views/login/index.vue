@@ -3,21 +3,26 @@
     <el-row>
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="login_form">
+        <el-form
+          class="login_form"
+          ref="ruleFormRef"
+          :model="loginInput"
+          :rules="rules"
+        >
           <h1>你好世界!</h1>
           <h2>by jaronnie</h2>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input
               :prefix-icon="User"
-              v-model="loginForm.username"
+              v-model="loginInput.username"
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               type="password"
               :prefix-icon="Lock"
               showPassword
-              v-model="loginForm.password"
+              v-model="loginInput.password"
             ></el-input>
           </el-form-item>
           <el-form-item>
@@ -43,12 +48,35 @@ import useUserStore from "@/store/modules/user";
 import { useRouter } from "vue-router";
 import { ElNotification } from "element-plus";
 import { getTime } from "@/utils/time";
+import type { FormInstance, FormRules } from "element-plus";
+import type { loginForm } from "@/api/user/type";
 
 let userStore = useUserStore();
 
-let loginForm = reactive({
+// 收集用户输入
+const loginInput = reactive<loginForm>({
   username: "",
   password: "",
+});
+
+// 表单校验
+const ruleFormRef = ref<FormInstance>();
+
+const rules = reactive<FormRules<loginForm>>({
+  username: [
+    {
+      required: true,
+      message: "请输入用户名",
+      trigger: "blur",
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: "请输入密码",
+      trigger: "blur",
+    },
+  ],
 });
 
 // 获取路由器
@@ -59,9 +87,15 @@ let loading = ref(false);
 
 // 登录按钮回调
 const login = async () => {
+  try {
+    await ruleFormRef.value.validate();
+  } catch {
+    /* empty */
+  }
+
   loading.value = true;
   try {
-    await userStore.userLogin(loginForm);
+    await userStore.userLogin(loginInput);
     $router.push("/");
     ElNotification({
       type: "success",
