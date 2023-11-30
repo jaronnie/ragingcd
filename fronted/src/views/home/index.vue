@@ -12,6 +12,7 @@ import { useRouter } from "vue-router";
 // 获取路由器
 let $router = useRouter();
 
+let userStore = useUserStore();
 onMounted(async () => {
   try {
     await userStore.userInfo();
@@ -20,9 +21,6 @@ onMounted(async () => {
     $router.push("/login");
   }
 });
-
-let userStore = useUserStore();
-userStore.userInfo();
 </script>
 
 <style scoped></style>
