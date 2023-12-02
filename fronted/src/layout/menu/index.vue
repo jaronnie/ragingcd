@@ -1,27 +1,30 @@
 <template>
-  <el-menu text-color="white" background-color="$base-menu-background">
-    <template v-for="item in menuList" :key="item.path">
-      <el-menu-item
-        v-if="!item.children && !item.meta.hidden"
-        :index="item.path"
-      >
-        <template #title>
-          <span>{{ item.meta.title }}</span>
-        </template>
-      </el-menu-item>
-      <el-sub-menu v-if="item.children && !item.meta.hidden" :index="item.path">
-        <template #title>
-          <span>{{ item.meta.title }}</span>
-        </template>
-        <Menu :menuList="item.children"></Menu>
-      </el-sub-menu>
-    </template>
-  </el-menu>
+  <template v-for="item in menuList" :key="item.path">
+    <el-menu-item v-if="!item.children && !item.meta.hidden" :index="item.path">
+      <template #title>
+        <span>{{ item.meta.title }}</span>
+      </template>
+    </el-menu-item>
+    <el-sub-menu
+      v-if="item.children && !item.meta.hidden"
+      :index="item.path"
+      :key="item.meta.path"
+    >
+      <template #title>
+        <span>{{ item.meta.title }}</span>
+      </template>
+      <Menu :menuList="item.children" />
+    </el-sub-menu>
+  </template>
 </template>
 
 <script setup lang="ts">
 // 获取父组件传递过来的全部路由
-defineProps(["menuList"]);
+type HeaderProps = {
+  menuList: any[];
+};
+const propData = defineProps<HeaderProps>();
+console.log(propData.menuList);
 </script>
 
 <script lang="ts">

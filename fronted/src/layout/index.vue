@@ -4,7 +4,9 @@
     <div class="layout_slider">
       <Logo></Logo>
       <el-scrollbar class="scrollbar">
-        <Menu :menuList="userStore.menuRoutes"></Menu>
+        <el-menu background-color="$base-menu-background" text-color="white">
+          <Menu :menuList="userStore.menuRoutes"></Menu
+        ></el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
