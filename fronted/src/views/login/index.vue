@@ -110,7 +110,7 @@ const login = async () => {
   loading.value = true;
   try {
     await userStore.userLogin(loginInput);
-    $router.push("/");
+    $router.push("/home");
     ElNotification({
       type: "success",
       message: "欢迎回来",

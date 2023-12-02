@@ -1,6 +1,6 @@
-import type { RouteRecordRaw } from "vue-router";
+import { RouteRecordRaw, RouteRecordRedirect } from "vue-router";
 
-const constantRoute: RouteRecordRaw[] = [
+const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
   {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
@@ -11,21 +11,61 @@ const constantRoute: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/home",
-    component: () => import("@/views/home/index.vue"),
-    name: "home",
-    meta: {
-      title: "首页",
-      icon: "HomeFilled",
-    },
-  },
-  {
     path: "/",
     component: () => import("@/layout/index.vue"),
     name: "layout",
     meta: {
       title: "layout",
-      hidden: true,
+    },
+    redirect: "/home",
+    children: [
+      {
+        path: "/home",
+        component: () => import("@/views/home/index.vue"),
+        name: "home",
+        meta: {
+          title: "首页",
+          icon: "HomeFilled",
+        },
+      },
+    ],
+  },
+  {
+    path: "/acl",
+    component: () => import("@/layout/index.vue"),
+    name: "acl",
+    meta: {
+      title: "权限管理",
+    },
+    redirect: "/acl/user",
+    children: [
+      {
+        path: "/acl/user",
+        component: () => import("@/views/acl/user/index.vue"),
+        name: "user",
+        meta: {
+          title: "用户管理",
+          icon: "User",
+        },
+      },
+      {
+        path: "/acl/permission",
+        component: () => import("@/views/acl/permission/index.vue"),
+        name: "permission",
+        meta: {
+          title: "权限管理",
+          icon: "User",
+        },
+      },
+    ],
+  },
+  {
+    path: "/screen",
+    component: () => import("@/views/screen/index.vue"),
+    name: "screen",
+    meta: {
+      title: "数据大屏",
+      icon: "Odometer",
     },
   },
   {
