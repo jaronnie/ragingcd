@@ -12,11 +12,15 @@ import type { UserState } from "./types/type";
 import { SET_TOKEN, GET_TOKEN } from "@/utils/token";
 import { reqUserInfo } from "@/api/user";
 
+// 引入路由
+import constantRoute from "@/router/routes";
+
 const useUserStore = defineStore("User", {
   state: (): UserState => {
     return {
       token: GET_TOKEN(), // 登录成功存储 token
       username: "",
+      menuRoutes: constantRoute,
     };
   },
   actions: {
