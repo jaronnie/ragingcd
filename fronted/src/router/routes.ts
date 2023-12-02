@@ -16,17 +16,8 @@ const constantRoute: RouteRecordRaw[] = [
     name: "home",
     meta: {
       title: "首页",
+      icon: "HomeFilled",
     },
-    children: [
-      {
-        path: "/home",
-        component: () => import("@/views/home/index.vue"),
-        name: "home",
-        meta: {
-          title: "首页",
-        },
-      },
-    ],
   },
   {
     path: "/",
