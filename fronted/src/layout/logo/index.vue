@@ -12,7 +12,7 @@ import setting from "@/setting";
 <style lang="scss" scoped>
 .logo {
   width: 100%;
-  height: 50px;
+  height: $base-menu-log-height;
   // 飘起来
   display: flex;
   // 竖直方向对齐
