@@ -14,7 +14,9 @@
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar">顶部导航</div>
+    <div class="layout_tabbar">
+      <Tabbar></Tabbar>
+    </div>
     <!-- 内容展示 -->
     <div class="layout_main">
       <Main></Main>
@@ -26,6 +28,7 @@
 import Logo from "./logo/index.vue";
 import Menu from "./menu/index.vue";
 import Main from "./main/index.vue";
+import Tabbar from "./tabbar/index.vue";
 import useUserStore from "@/store/modules/user";
 
 const userStore = useUserStore();
