@@ -36,6 +36,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     name: "acl",
     meta: {
       title: "权限管理",
+      icon: "User",
     },
     redirect: "/acl/user",
     children: [
