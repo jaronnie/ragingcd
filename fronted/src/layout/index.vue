@@ -1,24 +1,26 @@
 <template>
   <div class="layout_container">
     <!-- 左侧菜单 -->
-    <div class="layout_slider">
+    <div class="layout_slider" :class="{ fold: menuStore.fold }">
       <Logo></Logo>
       <el-scrollbar class="scrollbar">
         <el-menu
           background-color="$base-menu-background"
           text-color="white"
           :router="true"
+          :collapse="menuStore.fold"
+          :collapse-transition="menuStore.fold"
         >
           <Menu :menuList="userStore.menuRoutes"></Menu
         ></el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar">
+    <div class="layout_tabbar" :class="{ fold: menuStore.fold }">
       <Tabbar></Tabbar>
     </div>
     <!-- 内容展示 -->
-    <div class="layout_main">
+    <div class="layout_main" :class="{ fold: menuStore.fold }">
       <Main></Main>
     </div>
   </div>
@@ -30,8 +32,10 @@ import Menu from "./menu/index.vue";
 import Main from "./main/index.vue";
 import Tabbar from "./tabbar/index.vue";
 import useUserStore from "@/store/modules/user";
+import userMenuStore from "@/store/modules/menu";
 
 const userStore = useUserStore();
+const menuStore = userMenuStore();
 </script>
 
 <style lang="scss" scoped>
@@ -43,6 +47,11 @@ const userStore = useUserStore();
     width: $base-menu-width;
     height: 100vh;
     background-color: $base-menu-background;
+    transition: all 0.1s;
+
+    &.fold {
+      width: $base-menu-fold-width;
+    }
 
     .scrollbar {
       width: 100%;
@@ -60,6 +69,12 @@ const userStore = useUserStore();
     height: $base-tabbar-height;
     top: 0px;
     left: $base-menu-width;
+    transition: all 0.1s;
+
+    &.fold {
+      width: calc(100vw - $base-menu-fold-width);
+      left: $base-menu-fold-width;
+    }
   }
 
   .layout_main {
@@ -73,6 +88,12 @@ const userStore = useUserStore();
     padding: 20px;
     // 滚动条
     overflow: auto;
+    transition: all 0.1s;
+
+    &.fold {
+      width: calc(100vw - $base-menu-fold-width);
+      left: $base-menu-fold-width;
+    }
   }
 }
 </style>

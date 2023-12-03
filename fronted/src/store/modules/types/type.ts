@@ -5,3 +5,7 @@ export interface UserState {
   username: string;
   menuRoutes: RouteRecordRaw[];
 }
+
+export interface MenuState {
+  fold: boolean;
+}

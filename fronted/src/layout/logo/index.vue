@@ -1,6 +1,10 @@
 <template>
   <div class="logo">
-    <img :src="setting.logo.path" v-if="setting.logo.enabled" />
+    <img
+      :src="setting.logo.path"
+      style="width: 40px; height: 40px"
+      v-if="setting.logo.enabled"
+    />
     <p>{{ setting.title }}</p>
   </div>
 </template>
