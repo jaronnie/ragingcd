@@ -1,7 +1,14 @@
 version: '3'
 services:
-  backend:
-    image: jaronnie/admin-backend:latest
+  backend-java:
+    image: jaronnie/admin-backend-java:latest
+    ports:
+      - '8082:8082'
+    restart: always
+    depends_on:
+      - mysql8
+  backend-go:
+    image: jaronnie/admin-backend-go:latest
     ports:
       - '8081:8081'
     restart: always
@@ -10,7 +17,7 @@ services:
   fronted:
     image: jaronnie/admin-fronted:latest
     ports:
-      - '8082:80'
+      - '8080:80'
   oracle11g:
     image: deepdiver/docker-oracle-xe-11g
     restart: always

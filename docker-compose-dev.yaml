@@ -1,23 +1,27 @@
 version: '3'
 services:
-  backend:
+  backend-java:
     build:
-      context: ./backend
-      args:
-        - profile=docker-dameng8
+      context: ./backend-java
     ports:
-      - '8081:8081'
+      - '8082:8082'
     restart: always
     depends_on:
       - mysql8
       - dameng8
       - oracle11g
-
+  backend-go:
+    image: jaronnie/admin-backend-go:latest
+    ports:
+      - '8081:8081'
+    restart: always
+    depends_on:
+      - mysql8
   fronted:
     build:
       context: ./fronted
     ports:
-      - '8082:80'    
+      - '8080:80'
   oracle11g:
     image: deepdiver/docker-oracle-xe-11g
     restart: always

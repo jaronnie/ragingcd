@@ -1,6 +1,11 @@
-name: Deploy
+name: Deploy-fronted
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'fronted/**'
 
 env:
   TZ: Asia/Shanghai
@@ -45,7 +50,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
           script: |
             docker pull jaronnie/admin-fronted
             cd fronted-backend-admin

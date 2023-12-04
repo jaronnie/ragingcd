@@ -5,14 +5,29 @@ tasks:
     cmds:
       - cd fronted;pnpm i;pnpm run build;cd ..
     silent: true
+  build:backend-go:
+    cmds:
+      - cd backend-go;GOOS=linux GOARCH=amd64 go build;cd ..
+    silent: true
   docker:build:fronted:
     deps:
       - build:fronted
     cmds:
       - cd fronted;docker build -t jaronnie/admin-fronted:latest .;cd ..
     silent: true
+  docker:build:backend-go:
+    deps:
+      - build:backend-go
+    cmds:
+      - cd backend-go;docker build -t jaronnie/admin-backend-go:latest .;cd ..
+    silent: true
   docker:push:fronted:
     deps:
       - docker:build:fronted
     cmds:
-      - docker push jaronnie/admin-fronted:latest    
+      - docker push jaronnie/admin-fronted:latest
+  docker:push:backend-go:
+    deps:
+      - docker:build:backend-go
+    cmds:
+      - docker push jaronnie/admin-backend-go:latest       
