@@ -25,7 +25,7 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>退出登录</el-dropdown-item>
+        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
@@ -35,6 +35,7 @@
 import useUserStore from "@/store/modules/user";
 import useLayoutStore from "@/store/modules/layout";
 import screenfull from "screenfull";
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
 const layoutStore = useLayoutStore();
@@ -45,6 +46,13 @@ const refreshMain = () => {
 
 const fullscreen = () => {
   screenfull.toggle();
+};
+
+// 退出登录
+const $router = useRouter();
+const logout = () => {
+  userStore.userLogout();
+  $router.push("/login");
 };
 </script>
 

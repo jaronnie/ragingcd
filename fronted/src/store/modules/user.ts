@@ -9,7 +9,7 @@ import type {
   userInfoResponseData,
 } from "@/api/user/type";
 import type { UserState } from "./types/type";
-import { SET_TOKEN, GET_TOKEN } from "@/utils/token";
+import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
 import { reqUserInfo } from "@/api/user";
 
 // 引入路由
@@ -45,6 +45,13 @@ const useUserStore = defineStore("User", {
       } else {
         return Promise.reject(new Error(res.message));
       }
+    },
+    userLogout() {
+      // TODO 发送接口给服务端
+      this.token = "";
+      this.avatar = "";
+      this.username = "";
+      REMOVE_TOKEN();
     },
   },
   getters: {},

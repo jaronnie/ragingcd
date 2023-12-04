@@ -45,7 +45,7 @@
 import { User, Lock } from "@element-plus/icons-vue";
 import { reactive, ref } from "vue";
 import useUserStore from "@/store/modules/user";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { ElNotification } from "element-plus";
 import { getTime } from "@/utils/time";
 import type { FormInstance, FormRules } from "element-plus";
@@ -95,6 +95,8 @@ const rules = reactive<FormRules<loginForm>>({
 
 // 获取路由器
 let $router = useRouter();
+// 获取路由对象
+let $route = useRoute();
 
 // 控制按钮 loading 变量, 加载效果
 let loading = ref(false);
@@ -110,7 +112,10 @@ const login = async () => {
   loading.value = true;
   try {
     await userStore.userLogin(loginInput);
-    $router.push("/home");
+    let redirect: any = $route.query.redirect;
+    $router.push({
+      path: redirect || "/",
+    });
     ElNotification({
       type: "success",
       message: "欢迎回来",
