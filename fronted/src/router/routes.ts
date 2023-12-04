@@ -15,7 +15,8 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     component: () => import("@/layout/index.vue"),
     name: "layout",
     meta: {
-      title: "layout",
+      title: "",
+      hidden: true,
     },
     redirect: "/home",
     children: [
@@ -38,6 +39,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
       title: "权限管理",
       icon: "User",
     },
+    redirect: "/acl/user",
     children: [
       {
         path: "/acl/user",

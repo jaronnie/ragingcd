@@ -8,7 +8,11 @@
     </el-menu-item>
 
     <el-menu-item
-      v-if="item.children && !item.meta.hidden && item.children.length == 1"
+      v-if="
+        item.children &&
+        item.children.length == 1 &&
+        !item.children[0].meta.hidden
+      "
       :index="item.children[0].path"
     >
       <el-icon
