@@ -5,7 +5,12 @@
     circle
     @click="refreshMain"
   ></el-button>
-  <el-button size="small" icon="FullScreen" circle></el-button>
+  <el-button
+    size="small"
+    icon="FullScreen"
+    circle
+    @click="fullscreen"
+  ></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
   <img
     src="/logo.png"
@@ -28,10 +33,16 @@
 
 <script setup lang="ts">
 import useLayoutStore from "@/store/modules/layout";
+import screenfull from "screenfull";
+
 const layoutStore = useLayoutStore();
 const refreshMain = () => {
   // 点击按钮值更改
   layoutStore.refresh = !layoutStore.refresh;
+};
+
+const fullscreen = () => {
+  screenfull.toggle();
 };
 </script>
 
