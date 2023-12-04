@@ -23,6 +23,8 @@
       v-if="item.children && item.children.length > 1 && !item.meta.hidden"
       :index="item.path"
       :key="item.path"
+      :popper-append-to-body="true"
+      popper-class="menu-popo"
     >
       <template #title>
         <el-icon><component :is="item.meta.icon"></component></el-icon>
@@ -48,4 +50,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:global(.menu-popo) {
+  background: $base-menu-background !important;
+}
+</style>
