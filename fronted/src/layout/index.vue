@@ -1,26 +1,26 @@
 <template>
   <div class="layout_container">
     <!-- 左侧菜单 -->
-    <div class="layout_slider" :class="{ fold: menuStore.fold }">
+    <div class="layout_slider" :class="{ fold: layoutStore.fold }">
       <Logo></Logo>
       <el-scrollbar class="scrollbar">
         <el-menu
           background-color="$base-menu-background"
           text-color="white"
           :router="true"
-          :collapse="menuStore.fold"
-          :collapse-transition="menuStore.fold"
+          :collapse="layoutStore.fold"
+          :collapse-transition="layoutStore.fold"
         >
           <Menu :menuList="userStore.menuRoutes"></Menu
         ></el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar" :class="{ fold: menuStore.fold }">
+    <div class="layout_tabbar" :class="{ fold: layoutStore.fold }">
       <Tabbar></Tabbar>
     </div>
     <!-- 内容展示 -->
-    <div class="layout_main" :class="{ fold: menuStore.fold }">
+    <div class="layout_main" :class="{ fold: layoutStore.fold }">
       <Main></Main>
     </div>
   </div>
@@ -32,10 +32,10 @@ import Menu from "./menu/index.vue";
 import Main from "./main/index.vue";
 import Tabbar from "./tabbar/index.vue";
 import useUserStore from "@/store/modules/user";
-import userMenuStore from "@/store/modules/menu";
+import useLayoutStore from "@/store/modules/layout";
 
 const userStore = useUserStore();
-const menuStore = userMenuStore();
+const layoutStore = useLayoutStore();
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 <template>
   <el-icon style="margin-right: 10px" @click="expandOrFold">
-    <component :is="menuStore.fold ? 'Fold' : 'Expand'"></component>
+    <component :is="layoutStore.fold ? 'Fold' : 'Expand'"></component>
   </el-icon>
   <el-breadcrumb separator-icon="ArrowRight">
     <el-breadcrumb-item
@@ -16,17 +16,16 @@
 </template>
 
 <script setup lang="ts">
-import userMenuStore from "@/store/modules/menu";
+import useLayoutStore from "@/store/modules/layout";
 import { useRoute } from "vue-router";
 
 let $router = useRoute();
 
-let menuStore = userMenuStore();
+let layoutStore = useLayoutStore();
 
 // 控制菜单的折叠或者展开
 const expandOrFold = () => {
-  menuStore.fold = !menuStore.fold;
-  console.log(menuStore.fold);
+  layoutStore.fold = !layoutStore.fold;
 };
 </script>
 

@@ -6,6 +6,7 @@ export interface UserState {
   menuRoutes: RouteRecordRaw[];
 }
 
-export interface MenuState {
+export interface LayoutState {
   fold: boolean;
+  refresh: boolean;
 }

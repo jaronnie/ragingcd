@@ -1,5 +1,10 @@
 <template>
-  <el-button size="small" icon="Refresh" circle></el-button>
+  <el-button
+    size="small"
+    icon="Refresh"
+    circle
+    @click="refreshMain"
+  ></el-button>
   <el-button size="small" icon="FullScreen" circle></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
   <img
@@ -21,7 +26,14 @@
   </el-dropdown>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useLayoutStore from "@/store/modules/layout";
+const layoutStore = useLayoutStore();
+const refreshMain = () => {
+  // 点击按钮值更改
+  layoutStore.refresh = !layoutStore.refresh;
+};
+</script>
 
 <style scoped lang="scss">
 .tabbar_right {

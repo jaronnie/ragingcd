@@ -27,7 +27,7 @@
       v-if="item.children && item.children.length > 1 && !item.meta.hidden"
       :index="item.path"
       :key="item.path"
-      :popper-append-to-body="true"
+      teleported
       popper-class="menu-popo"
     >
       <template #title>
