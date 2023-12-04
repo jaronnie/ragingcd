@@ -13,12 +13,12 @@
   ></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
   <img
-    src="/logo.png"
+    :src="userStore.avatar"
     style="height: 30px; width: 30px; margin-left: 10px; margin-right: 10px"
   />
   <el-dropdown>
     <span class="el-dropdown-link">
-      admin
+      {{ userStore.username }}
       <el-icon class="el-icon--right">
         <arrow-down />
       </el-icon>
@@ -32,9 +32,11 @@
 </template>
 
 <script setup lang="ts">
+import useUserStore from "@/store/modules/user";
 import useLayoutStore from "@/store/modules/layout";
 import screenfull from "screenfull";
 
+const userStore = useUserStore();
 const layoutStore = useLayoutStore();
 const refreshMain = () => {
   // 点击按钮值更改

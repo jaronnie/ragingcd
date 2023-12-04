@@ -20,6 +20,7 @@ const useUserStore = defineStore("User", {
     return {
       token: GET_TOKEN(), // 登录成功存储 token
       username: "",
+      avatar: "",
       menuRoutes: constantRoute,
     };
   },
@@ -38,7 +39,8 @@ const useUserStore = defineStore("User", {
     async userInfo() {
       const res: userInfoResponseData = await reqUserInfo();
       if (res.code === 200) {
-        this.username = res.data.username as string;
+        this.username = res.data.username;
+        this.avatar = res.data.avatar;
         return "ok";
       } else {
         return Promise.reject(new Error(res.message));
