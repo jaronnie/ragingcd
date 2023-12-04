@@ -24,7 +24,7 @@ import pinia from "@/store";
 app.use(pinia);
 
 // 路由鉴权守卫
-import "./permission.ts";
+import "./router/permission.ts";
 
 // 获取环境配置信息
 console.log(import.meta.env);
