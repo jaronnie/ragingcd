@@ -1,6 +1,6 @@
 <template>
   <el-icon style="margin-right: 10px" @click="expandOrFold">
-    <component :is="layoutStore.fold ? 'Fold' : 'Expand'"></component>
+    <component :is="layoutStore.fold ? 'Expand' : 'Fold'"></component>
   </el-icon>
   <el-breadcrumb separator-icon="ArrowRight">
     <el-breadcrumb-item
@@ -9,7 +9,7 @@
       v-show="!item.meta.hidden"
       :to="item.path"
     >
-      <el-icon><component :is="item.meta.icon"></component></el-icon>
+      <!-- <el-icon><component :is="item.meta.icon"></component></el-icon> -->
       <span style="margin: 0px 2px">{{ item.meta.title }}</span>
     </el-breadcrumb-item>
   </el-breadcrumb>

@@ -2,13 +2,13 @@
 
 // 滚动条外观样式
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background-color: #001529;
 }
 ::-webkit-scrollbar-thumb {
-  width: 10px;
-  background-color: yellowgreen;
-  border-radius: 10px;
+  width: 5px;
+  background-color: white;
+  min-height: 5px;
+  border-radius: 5px;
 }

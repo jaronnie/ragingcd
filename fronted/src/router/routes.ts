@@ -32,36 +32,6 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     ],
   },
   {
-    path: "/acl",
-    component: () => import("@/layout/index.vue"),
-    name: "acl",
-    meta: {
-      title: "权限管理",
-      icon: "User",
-    },
-    redirect: "/acl/user",
-    children: [
-      {
-        path: "/acl/user",
-        component: () => import("@/views/acl/user/index.vue"),
-        name: "user",
-        meta: {
-          title: "用户管理",
-          icon: "User",
-        },
-      },
-      {
-        path: "/acl/permission",
-        component: () => import("@/views/acl/permission/index.vue"),
-        name: "permission",
-        meta: {
-          title: "权限管理",
-          icon: "User",
-        },
-      },
-    ],
-  },
-  {
     path: "/screen",
     component: () => import("@/views/screen/index.vue"),
     name: "screen",
@@ -69,6 +39,55 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
       title: "数据大屏",
       icon: "Odometer",
     },
+  },
+  {
+    path: "/admin",
+    component: () => import("@/layout/index.vue"),
+    name: "admin",
+    meta: {
+      title: "超级管理员",
+      icon: "User",
+    },
+    redirect: "/admin/user",
+    children: [
+      {
+        path: "/admin/user",
+        component: () => import("@/views/admin/user/index.vue"),
+        name: "user",
+        meta: {
+          title: "用户管理",
+          icon: "UserFilled",
+        },
+      },
+      {
+        path: "/admin/permission",
+        component: () => import("@/views/admin/permission/index.vue"),
+        name: "permission",
+        meta: {
+          title: "权限管理",
+          icon: "Operation",
+        },
+      },
+    ],
+  },
+  {
+    path: "/gitlog",
+    component: () => import("@/layout/index.vue"),
+    name: "gitlog",
+    meta: {
+      title: "",
+    },
+    children: [
+      {
+        path: "/gitlog/",
+        component: () => import("@/views/gitlog/index.vue"),
+        name: "gitlog",
+        meta: {
+          title: "更新记录",
+          icon: "Flag",
+        },
+      },
+    ],
   },
   {
     path: "/404",

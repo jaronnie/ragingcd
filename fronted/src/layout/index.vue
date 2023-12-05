@@ -80,7 +80,6 @@ const layoutStore = useLayoutStore();
   .layout_main {
     position: absolute;
     width: calc(100% - $base-menu-width);
-    background-color: bisque;
     height: calc(100vh - $base-tabbar-height);
     left: $base-menu-width;
     top: $base-tabbar-height;

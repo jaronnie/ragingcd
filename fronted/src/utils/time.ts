@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export const getTime = (): string => {
   const hours = new Date().getHours();
   console.log(hours);
@@ -19,4 +21,10 @@ export const getTime = (): string => {
   if (hours > 18 && hours <= 23) {
     return "晚上";
   }
+};
+
+export const format_ISO8601 = (originalDateTimeString: string) => {
+  return DateTime.fromISO(originalDateTimeString).toFormat(
+    "yyyy-MM-dd HH:mm:ss",
+  );
 };
