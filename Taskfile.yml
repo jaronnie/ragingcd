@@ -41,7 +41,7 @@ tasks:
       - docker:build:backend-go
     cmds:
       - docker push jaronnie/admin-backend-go:latest
-  docker:push:java:
+  docker:push:backend-java:
     deps:
       - docker:build:backend-java
     cmds:
