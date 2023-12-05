@@ -36,6 +36,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.18.1",
+    "luxon": "^3.4.4",
     "mockjs": "^1.1.0",
     "postcss": "^8.4.31",
     "postcss-html": "^1.5.0",

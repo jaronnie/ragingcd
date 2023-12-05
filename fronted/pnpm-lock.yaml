@@ -57,6 +57,9 @@ devDependencies:
   eslint-plugin-vue:
     specifier: ^9.18.1
     version: registry.npmmirror.com/eslint-plugin-vue@9.19.2(eslint@8.55.0)
+  luxon:
+    specifier: ^3.4.4
+    version: registry.npmmirror.com/luxon@3.4.4
   mockjs:
     specifier: ^1.1.0
     version: registry.npmmirror.com/mockjs@1.1.0
@@ -4727,6 +4730,13 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: registry.npmmirror.com/yallist@4.0.0
+    dev: true
+
+  registry.npmmirror.com/luxon@3.4.4:
+    resolution: {integrity: sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/luxon/-/luxon-3.4.4.tgz}
+    name: luxon
+    version: 3.4.4
+    engines: {node: '>=12'}
     dev: true
 
   registry.npmmirror.com/magic-string@0.30.5:
