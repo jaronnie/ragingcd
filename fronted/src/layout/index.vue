@@ -2,7 +2,7 @@
   <div class="layout_container">
     <!-- 左侧菜单 -->
     <div class="layout_slider" :class="{ fold: layoutStore.fold }">
-      <Logo></Logo>
+      <Logo :showLogoName="!layoutStore.fold"></Logo>
       <el-scrollbar class="scrollbar">
         <el-menu
           background-color="$base-menu-background"

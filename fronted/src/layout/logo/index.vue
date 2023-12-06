@@ -5,12 +5,20 @@
       style="width: 40px; height: 40px"
       v-if="setting.logo.enabled"
     />
-    <p>{{ setting.title }}</p>
+    <template v-if="showLogoName">
+      <p>{{ setting.title }}</p></template
+    >
   </div>
 </template>
 
 <script setup lang="ts">
 import setting from "@/setting";
+
+// 获取父组件传递过来的全部路由
+type HeaderProps = {
+  showLogoName: boolean;
+};
+defineProps<HeaderProps>();
 </script>
 
 <style lang="scss" scoped>
