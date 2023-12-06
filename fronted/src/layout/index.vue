@@ -11,7 +11,8 @@
           :collapse="layoutStore.fold"
           :collapse-transition="layoutStore.fold"
         >
-          <Menu :menuList="userStore.menuRoutes"></Menu
+          <!-- todo 动态判断名称是否是 layout -->
+          <Menu :menuList="userStore.menuRoutes[2].children"></Menu
         ></el-menu>
       </el-scrollbar>
     </div>

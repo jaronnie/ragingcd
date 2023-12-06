@@ -16,7 +16,7 @@ let userStore = useUserStore();
 onMounted(async () => {
   try {
     await userStore.userInfo();
-    $router.push("/home");
+    $router.push("/");
   } catch (error) {
     $router.push("/login");
   }

@@ -2,6 +2,13 @@ import { RouteRecordRaw, RouteRecordRedirect } from "vue-router";
 
 const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
   {
+    path: "/",
+    meta: {
+      hidden: true,
+    },
+    redirect: "/layout/dashboard",
+  },
+  {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
     name: "login",
@@ -11,75 +18,63 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     },
   },
   {
-    path: "/",
+    path: "/layout",
     component: () => import("@/layout/index.vue"),
     name: "layout",
     meta: {
       title: "",
       hidden: true,
     },
-    redirect: "/home",
+    redirect: "/layout/dashboard",
     children: [
       {
-        path: "/home",
+        path: "/layout/dashboard",
         component: () => import("@/views/home/index.vue"),
-        name: "home",
         meta: {
-          title: "首页",
+          title: "仪表盘",
           icon: "HomeFilled",
         },
       },
-    ],
-  },
-  {
-    path: "/screen",
-    component: () => import("@/views/screen/index.vue"),
-    name: "screen",
-    meta: {
-      title: "数据大屏",
-      icon: "Odometer",
-    },
-  },
-  {
-    path: "/admin",
-    component: () => import("@/layout/index.vue"),
-    name: "admin",
-    meta: {
-      title: "超级管理员",
-      icon: "User",
-    },
-    redirect: "/admin/user",
-    children: [
       {
-        path: "/admin/user",
-        component: () => import("@/views/admin/user/index.vue"),
-        name: "user",
+        path: "/layout/screen",
+        component: () => import("@/views/screen/index.vue"),
+        name: "screen",
         meta: {
-          title: "用户管理",
-          icon: "UserFilled",
+          title: "数据大屏",
+          icon: "Odometer",
         },
       },
       {
-        path: "/admin/permission",
-        component: () => import("@/views/admin/permission/index.vue"),
-        name: "permission",
+        path: "/layout/admin",
+        name: "admin",
         meta: {
-          title: "权限管理",
-          icon: "Operation",
+          title: "超级管理员",
+          icon: "User",
         },
+        redirect: "/layout/admin/user",
+        children: [
+          {
+            path: "/layout/admin/user",
+            component: () => import("@/views/admin/user/index.vue"),
+            name: "user",
+            meta: {
+              title: "用户管理",
+              icon: "UserFilled",
+            },
+          },
+          {
+            path: "/layout/admin/permission",
+            component: () => import("@/views/admin/permission/index.vue"),
+            name: "permission",
+            meta: {
+              title: "权限管理",
+              icon: "Operation",
+            },
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: "/gitlog",
-    component: () => import("@/layout/index.vue"),
-    name: "gitlog",
-    meta: {
-      title: "",
-    },
-    children: [
       {
-        path: "/gitlog/",
+        path: "/layout/gitlog/",
         component: () => import("@/views/gitlog/index.vue"),
         name: "gitlog",
         meta: {
