@@ -86,6 +86,11 @@ const menus = [
     },
   },
 ];
+
+// TODO: 通过不同的路由模式实现新开页面
+// const newWindow = (index: string) => {
+//   window.open("/#" + index);
+// };
 </script>
 
 <style lang="scss" scoped>
