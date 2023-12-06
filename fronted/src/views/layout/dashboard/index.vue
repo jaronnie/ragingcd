@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from "@/store/modules/user";
+import useUserStore from "@/store/modules/user.ts";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 

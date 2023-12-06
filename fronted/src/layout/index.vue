@@ -11,8 +11,7 @@
           :collapse="layoutStore.fold"
           :collapse-transition="layoutStore.fold"
         >
-          <!-- todo 动态判断名称是否是 layout -->
-          <Menu :menuList="userStore.menuRoutes[2].children"></Menu
+          <Menu :menuList="menus"></Menu
         ></el-menu>
       </el-scrollbar>
     </div>
@@ -32,11 +31,61 @@ import Logo from "./logo/index.vue";
 import Menu from "./menu/index.vue";
 import Main from "./main/index.vue";
 import Tabbar from "./tabbar/index.vue";
-import useUserStore from "@/store/modules/user";
 import useLayoutStore from "@/store/modules/layout";
 
-const userStore = useUserStore();
 const layoutStore = useLayoutStore();
+
+// TODO: get menus from backend
+const menus = [
+  {
+    path: "/layout/dashboard",
+    meta: {
+      title: "仪表盘",
+      icon: "Odometer",
+    },
+  },
+  {
+    path: "/screen",
+    meta: {
+      title: "数据大屏",
+      icon: "Monitor",
+    },
+  },
+  {
+    path: "/layout/admin",
+    name: "admin",
+    meta: {
+      title: "超级管理员",
+      icon: "User",
+    },
+    children: [
+      {
+        path: "/layout/admin/user",
+        name: "user",
+        meta: {
+          title: "用户管理",
+          icon: "UserFilled",
+        },
+      },
+      {
+        path: "/layout/admin/permission",
+        name: "permission",
+        meta: {
+          title: "权限管理",
+          icon: "Operation",
+        },
+      },
+    ],
+  },
+  {
+    path: "/layout/gitlog/",
+    name: "gitlog",
+    meta: {
+      title: "更新记录",
+      icon: "Flag",
+    },
+  },
+];
 </script>
 
 <style lang="scss" scoped>

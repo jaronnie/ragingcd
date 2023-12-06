@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1>我是 404</h1>
+    <img
+      src="@/assets/images/error_images/404.png"
+      style="display: block; margin: 0 auto"
+    />
   </div>
 </template>
 

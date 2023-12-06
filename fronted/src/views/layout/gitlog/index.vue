@@ -32,7 +32,7 @@
 // 请求获取数据
 import { ref } from "vue";
 import { getCommitList } from "@/api/third/github";
-import { format_ISO8601 } from "@/utils/time";
+import { format_ISO8601 } from "@/utils/time.ts";
 import type {
   getCommitListReq,
   getCommitListResItem,

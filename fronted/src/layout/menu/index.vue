@@ -7,24 +7,8 @@
       </template>
     </el-menu-item>
 
-    <el-menu-item
-      v-if="
-        item.children &&
-        item.children.length == 1 &&
-        !item.children[0].meta.hidden
-      "
-      :index="item.children[0].path"
-    >
-      <el-icon
-        ><component :is="item.children[0].meta.icon"></component
-      ></el-icon>
-      <template #title>
-        <span>{{ item.children[0].meta.title }}</span>
-      </template>
-    </el-menu-item>
-
     <el-sub-menu
-      v-if="item.children && item.children.length > 1 && !item.meta.hidden"
+      v-if="item.children && item.children.length >= 1"
       :index="item.path"
       :key="item.path"
       teleported

@@ -34,7 +34,7 @@ defineProps<HeaderProps>();
   padding: 10px;
 
   img {
-    widows: 50px;
+    width: 50px;
     height: 50px;
   }
 

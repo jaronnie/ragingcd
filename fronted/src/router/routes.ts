@@ -22,25 +22,16 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     component: () => import("@/layout/index.vue"),
     name: "layout",
     meta: {
-      title: "",
+      title: "layout",
       hidden: true,
     },
     redirect: "/layout/dashboard",
     children: [
       {
         path: "/layout/dashboard",
-        component: () => import("@/views/home/index.vue"),
+        component: () => import("@/views/layout/dashboard/index.vue"),
         meta: {
           title: "仪表盘",
-          icon: "HomeFilled",
-        },
-      },
-      {
-        path: "/layout/screen",
-        component: () => import("@/views/screen/index.vue"),
-        name: "screen",
-        meta: {
-          title: "数据大屏",
           icon: "Odometer",
         },
       },
@@ -55,7 +46,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
         children: [
           {
             path: "/layout/admin/user",
-            component: () => import("@/views/admin/user/index.vue"),
+            component: () => import("@/views/layout/admin/user/index.vue"),
             name: "user",
             meta: {
               title: "用户管理",
@@ -64,7 +55,8 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
           },
           {
             path: "/layout/admin/permission",
-            component: () => import("@/views/admin/permission/index.vue"),
+            component: () =>
+              import("@/views/layout/admin/permission/index.vue"),
             name: "permission",
             meta: {
               title: "权限管理",
@@ -75,7 +67,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
       },
       {
         path: "/layout/gitlog/",
-        component: () => import("@/views/gitlog/index.vue"),
+        component: () => import("@/views/layout/gitlog/index.vue"),
         name: "gitlog",
         meta: {
           title: "更新记录",
@@ -83,6 +75,15 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
         },
       },
     ],
+  },
+  {
+    path: "/screen",
+    component: () => import("@/views/screen/index.vue"),
+    name: "screen",
+    meta: {
+      title: "数据大屏",
+      icon: "Monitor",
+    },
   },
   {
     path: "/404",
