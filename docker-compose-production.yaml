@@ -60,5 +60,5 @@ services:
       - MYSQL_DATABASE=backend
     volumes:
       - ./deploy/mysql8/data:/var/lib/mysql
-      - ./deploy/mysql8/config/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./deploy/mysql8/config:/etc/mysql/conf.d
       - ./deploy/mysql8/sql:/docker-entrypoint-initdb.d
