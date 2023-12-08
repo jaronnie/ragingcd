@@ -1,15 +1,10 @@
 <template>
   <div>
     <el-card>
-      <el-button type="primary" icon="Plus">添加用户</el-button>
-      <el-table :data="tableData" style="margin: 10px 0">
-        <el-table-column prop="username" label="用户名" />
-        <el-table-column label="Operations">
-          <template #default>
-            <el-button link type="primary" size="small">查看</el-button>
-            <el-button link type="primary" size="small">更新</el-button>
-          </template>
-        </el-table-column>
+      <el-button type="primary" icon="Plus">添加 spu</el-button>
+      <el-table border style="margin: 10px 0">
+        <el-table-column prop="uuid" label="序号" width="80" align="center" />
+        <el-table-column prop="name" label="spu 名称" />
       </el-table>
       <el-pagination
         v-model:current-page="currentPage"
@@ -34,15 +29,6 @@ const pageSize = ref<number>(10);
 
 //一共有多个数据
 const total = ref<number>(20);
-
-const tableData = [
-  {
-    username: "Tom",
-  },
-  {
-    username: "Tom",
-  },
-];
 </script>
 
 <style scoped></style>

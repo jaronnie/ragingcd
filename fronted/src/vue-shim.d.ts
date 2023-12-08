@@ -5,5 +5,5 @@ declare module "*.vue" {
 }
 
 declare module "nprogress";
-
 declare module "luxon";
+declare module "element-plus/dist/locale/zh-cn.mjs";

@@ -1,7 +1,15 @@
-<template>
-  <router-view></router-view>
-</template>
+<script setup lang="ts">
+import { ElConfigProvider } from "element-plus";
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+import { ref } from "vue";
 
-<script setup lang="ts"></script>
+const locale = ref(zhCn);
+</script>
+
+<template>
+  <el-config-provider :locale="locale">
+    <router-view></router-view>
+  </el-config-provider>
+</template>
 
 <style scoped lang="scss"></style>
