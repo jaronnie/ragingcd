@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class LoginResponseVo {
-    String token;
+    private String token;
 }

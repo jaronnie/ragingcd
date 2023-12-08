@@ -8,9 +8,11 @@ const request = axios.create({
   timeout: 5000, // 5s
 });
 
+const tokenPrefix = "Bearer";
+
 // 添加请求与响应拦截器
 request.interceptors.request.use((config) => {
-  config.headers.set("token", GET_TOKEN());
+  config.headers.set("Authorization", tokenPrefix + " " + GET_TOKEN());
   return config;
 });
 

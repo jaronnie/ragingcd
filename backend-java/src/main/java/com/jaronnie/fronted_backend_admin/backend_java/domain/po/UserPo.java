@@ -28,4 +28,6 @@ public class UserPo extends BaseEntity implements Serializable {
     private String username;
     @TableField(updateStrategy = FieldStrategy.NOT_EMPTY)
     private String password;
+    @TableField(updateStrategy = FieldStrategy.NOT_EMPTY)
+    private String avatar;
 }

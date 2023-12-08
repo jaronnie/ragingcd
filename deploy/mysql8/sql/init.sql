@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS user (
     username VARCHAR(255),
     password VARCHAR(255),
     create_time DATETIME,
-    update_time DATETIME
+    update_time DATETIME,
+    avatar TEXT
 );

@@ -8,8 +8,9 @@ import java.util.Date;
 @Data
 @Builder
 public class UserVo {
-    Integer id;
-    String username;
-    Date createTime;
-    Date updateTime;
+    private Integer id;
+    private String username;
+    private Date createTime;
+    private Date updateTime;
+    private String avatar;
 }

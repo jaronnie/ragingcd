@@ -38,6 +38,7 @@ public class UserServiceImpl implements IUserService {
                 .username(userPo.getUsername())
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
+                .avatar(userPo.getAvatar())
                 .build()).collect(Collectors.toList());
         userVoTableDataInfo.setRows(result);
         return userVoTableDataInfo;
@@ -56,6 +57,7 @@ public class UserServiceImpl implements IUserService {
                 .id(userPo.getId())
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
+                .avatar(userPo.getAvatar())
                 .build();
     }
 
