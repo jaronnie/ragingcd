@@ -44,8 +44,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserVo info(String token) {
-        Object object = StpUtil.getLoginIdByToken(token);
+    public UserVo info(String authorization) {
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            authorization = authorization.substring(7);
+        }
+        Object object = StpUtil.getLoginIdByToken(authorization);
         Integer id = Integer.parseInt(String.valueOf(object));
         UserPo userPo = this.baseMapper.selectById(id);
         return UserVo.builder()

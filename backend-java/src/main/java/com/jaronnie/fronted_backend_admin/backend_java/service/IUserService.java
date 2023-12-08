@@ -8,7 +8,7 @@ import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.UserVo;
 
 public interface IUserService {
     TableDataInfo<UserVo> queryPageList(PageQuery pageQuery);
-    UserVo info(String token);
+    UserVo info(String authorization);
 
     LoginResponseVo login(LoginQuery loginQuery);
 }

@@ -1,5 +1,6 @@
 package com.jaronnie.fronted_backend_admin.backend_java.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.LoginResponseVo;
@@ -27,7 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public R<UserVo> info(@RequestParam String token) {
-        return R.ok(iUserService.info(token));
+    @SaCheckLogin
+    public R<UserVo> info(@RequestHeader("Authorization") String authorization) {
+        return R.ok(iUserService.info(authorization));
     }
 }
