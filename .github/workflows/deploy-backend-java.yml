@@ -53,5 +53,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             docker pull jaronnie/admin-backend-java
+            cd fronted-backend-admin
             docker-compose stop backend-java
             docker-compose up -d backend-java
