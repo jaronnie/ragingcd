@@ -48,6 +48,7 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-namespace": "off", // 禁止使用自定义 TypeScript 模块和命名空间。
     "@typescript-eslint/semi": "off",
+    "vue/valid-attribute-name": "off",
 
     // eslint-plugin-vue (https://eslint.vuejs.org/rules/)
     "vue/multi-word-component-names": "off", // 要求组件名称始终为 “-” 链接的单词

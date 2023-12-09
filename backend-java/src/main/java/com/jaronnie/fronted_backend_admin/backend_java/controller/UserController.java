@@ -19,8 +19,8 @@ public class UserController {
 
     @GetMapping("/list")
     @SaCheckLogin
-    public R<TableDataInfo<UserVo>> getUsers() {
-        return R.ok(iUserService.queryPageList(new PageQuery()));
+    public R<TableDataInfo<UserVo>> getUsers(@ModelAttribute PageQuery pageQuery) {
+        return R.ok(iUserService.queryPageList(pageQuery));
     }
 
     @PostMapping("/login")
