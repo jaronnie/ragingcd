@@ -6,6 +6,7 @@ on:
       - 'main'
     paths:
       - 'backend-java/**'
+      - '.github/workflows/deploy-backend-java.yml'
 
 env:
   TZ: Asia/Shanghai
