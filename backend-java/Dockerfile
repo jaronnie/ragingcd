@@ -10,5 +10,4 @@ EXPOSE 8082
 
 ADD ./target/*.jar ./app.jar
 
-RUN echo "profile: ${profile}"
-ENTRYPOINT ["sh","-c","java ${JAVA_OPTS} -Dspring.profiles.active=${profile} -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
+ENTRYPOINT ["sh","-c","java ${JAVA_OPTS} -Dspring.profiles.active=docker -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
