@@ -18,9 +18,9 @@ let userStore = useUserStore();
 onMounted(async () => {
   try {
     await userStore.userInfo();
-    $router.push("/");
+    await $router.push("/");
   } catch (error) {
-    $router.push("/login");
+    await $router.push("/login");
   }
 });
 </script>

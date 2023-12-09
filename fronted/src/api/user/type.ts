@@ -19,6 +19,17 @@ export interface userInfoResponseData {
   data?: userInfo;
 }
 
+export interface userListResponseData {
+  code?: number;
+  message?: string;
+  data?: userPageResult;
+}
+
+export interface userPageResult {
+  total?: number;
+  rows?: userInfo[];
+}
+
 export interface userInfo {
   userId?: number;
   avatar?: string;
