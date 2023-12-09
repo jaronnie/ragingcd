@@ -8,8 +8,6 @@ services:
     restart: always
     depends_on:
       - mysql8
-      - dameng8
-      - oracle11g
   backend-go:
     image: jaronnie/admin-backend-go:latest
     ports:

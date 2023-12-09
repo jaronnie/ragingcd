@@ -2,15 +2,11 @@ version: '3'
 services:
   backend-java:
     image: jaronnie/admin-backend-java:latest
-    ports:
-      - '8082:8082'
     restart: always
     depends_on:
       - mysql8
   backend-go:
     image: jaronnie/admin-backend-go:latest
-    ports:
-      - '8081:8081'
     restart: always
     depends_on:
       - mysql8
@@ -22,8 +18,6 @@ services:
     image: deepdiver/docker-oracle-xe-11g
     restart: always
     container_name: backend-oracle11g
-    ports:
-      - '1521:1521'
   dameng8:
     image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
     restart: always
@@ -40,8 +34,6 @@ services:
       - INSTANCE_NAME=backend-dameng8
     volumes:
       - ./deploy/dameng8/data:/opt/dmdbms/data
-    ports:
-      - '30236:5236'
   mysql8:
     image: mysql:8.0.32
     deploy:
@@ -51,8 +43,6 @@ services:
           memory: 4096M
     restart: always
     container_name: backend-mysql8
-    ports:
-      - '3306:3306'
     environment:
       - TZ=Asia/Shanghai
       - MYSQL_ROOT_PASSWORD=123456
