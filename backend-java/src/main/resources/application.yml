@@ -7,9 +7,9 @@ dromara:
     qiniu-kodo:
       - platform: qiniu # 存储平台标识
         enable-storage: true # 启用存储
-        access-key: ${Qiniu-AccessKey:??}
-        secret-key: ${Qiniu-SecretKey:??}
-        bucket-name: ${Qiniu-BucketName:??}
+        access-key: ${Qiniu_AccessKey:??}
+        secret-key: ${Qiniu_SecretKey:??}
+        bucket-name: ${Qiniu_BucketName:??}
         domain: https://oss.jaronnie.com/
         base-path: fronted-backend-admin/
 
