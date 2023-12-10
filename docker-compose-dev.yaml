@@ -6,6 +6,10 @@ services:
     ports:
       - '8082:8082'
     restart: always
+    environment:
+      - Qiniu-AccessKey=${Qiniu-AccessKey}
+      - Qiniu-SecretKey=${Qiniu-SecretKey}
+      - Qiniu-BucketName=${Qiniu-BucketName}
     depends_on:
       - mysql8
   backend-go:

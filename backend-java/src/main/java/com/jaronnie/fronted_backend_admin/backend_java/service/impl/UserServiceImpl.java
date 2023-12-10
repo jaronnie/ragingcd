@@ -4,7 +4,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LogUpBo;
+import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.po.UserPo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.LoginResponseVo;
@@ -62,16 +63,34 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public LoginResponseVo login(LoginQuery loginQuery) {
+    public LoginResponseVo login(LoginBo loginBo) {
         LambdaQueryWrapper<UserPo> lqw = Wrappers.lambdaQuery();
-        lqw.eq(UserPo::getUsername, loginQuery.getUsername());
+        lqw.eq(UserPo::getUsername, loginBo.getUsername());
         UserPo userPo = this.baseMapper.selectOne(lqw);
-        if (Objects.equals(userPo.getPassword(), loginQuery.getPassword())) {
+        if (Objects.equals(userPo.getPassword(), loginBo.getPassword())) {
             StpUtil.login(userPo.getId());
             return LoginResponseVo.builder()
                     .token(StpUtil.getTokenValue())
                     .build();
         }
         throw UserErrorCodeEnum.LoginError.newException();
+    }
+
+    @Override
+    public UserVo logUp(LogUpBo logUpBo) {
+        UserPo userPo = UserPo.builder()
+                .avatar(logUpBo.getAvatar().getUrl())
+                .username(logUpBo.getUsername())
+                .password(logUpBo.getPassword())
+                .build();
+        this.baseMapper.insert(userPo);
+
+        return UserVo.builder()
+                .id(userPo.getId())
+                .avatar(logUpBo.getAvatar().getUrl())
+                .username(logUpBo.getUsername())
+                .createTime(userPo.getCreateTime())
+                .updateTime(userPo.getUpdateTime())
+                .build();
     }
 }

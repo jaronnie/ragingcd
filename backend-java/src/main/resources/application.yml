@@ -1,6 +1,18 @@
 server:
   port: 8082
 
+dromara:
+  x-file-storage:
+    default-platform: qiniu
+    qiniu-kodo:
+      - platform: qiniu # 存储平台标识
+        enable-storage: true # 启用存储
+        access-key: ${Qiniu-AccessKey:??}
+        secret-key: ${Qiniu-SecretKey:??}
+        bucket-name: ${Qiniu-BucketName:??}
+        domain: https://oss.jaronnie.com/
+        base-path: fronted-backend-admin/
+
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token 名称

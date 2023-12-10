@@ -1,5 +1,6 @@
 import request from "@/utils/request";
 import {
+  addUserForm,
   loginForm,
   loginResponseData,
   userInfoResponseData,
@@ -11,6 +12,7 @@ enum API {
   LOGIN_URL = "/v1.0/user/login",
   USER_INFO_URL = "/v1.0/user/info",
   USER_LIST_URL = "/v1.0/user/list",
+  USER_ADD_URL = "/v1.0/user/add",
 }
 
 export const reqLogin = (data: loginForm) =>
@@ -21,3 +23,6 @@ export const reqUserInfo = () =>
 
 export const reqUserList = (params: pageQuery) =>
   request.get<any, userListResponseData>(API.USER_LIST_URL, { params });
+
+export const reqUserAdd = (data: addUserForm) =>
+  request.post<any, userListResponseData>(API.USER_ADD_URL, data);

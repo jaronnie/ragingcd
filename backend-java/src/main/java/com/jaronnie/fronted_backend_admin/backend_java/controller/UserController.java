@@ -1,7 +1,8 @@
 package com.jaronnie.fronted_backend_admin.backend_java.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LogUpBo;
+import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.LoginResponseVo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.TableDataInfo;
@@ -23,9 +24,15 @@ public class UserController {
         return R.ok(iUserService.queryPageList(pageQuery));
     }
 
+    @PostMapping("/add")
+    @SaCheckLogin
+    public R<UserVo> add(@RequestBody LogUpBo logUpBo) {
+        return R.ok(iUserService.logUp(logUpBo));
+    }
+
     @PostMapping("/login")
-    public R<LoginResponseVo> login(@RequestBody LoginQuery loginQuery) {
-        return R.ok(iUserService.login(loginQuery));
+    public R<LoginResponseVo> login(@RequestBody LoginBo loginBo) {
+        return R.ok(iUserService.login(loginBo));
     }
 
     @GetMapping("/info")

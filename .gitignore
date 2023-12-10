@@ -1,2 +1,3 @@
 .vscode
 deploy/mysql8/data
+.env

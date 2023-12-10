@@ -1,6 +1,14 @@
+import { OssFileVo } from "@/api/type.ts";
+
 export interface loginForm {
   username?: string;
   password?: string;
+}
+
+export interface addUserBo {
+  username?: string;
+  password?: string;
+  avatar?: OssFileVo;
 }
 
 interface dataType {
