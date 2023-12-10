@@ -12,6 +12,7 @@
           <el-upload
             class="avatar-uploader"
             action="/api/v1.0/system/oss_file/upload"
+            :headers="{ Authorization: tokenPrefix + ' ' + GET_TOKEN() }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -43,6 +44,8 @@ import type { UploadProps } from "element-plus";
 import { ElMessage } from "element-plus";
 import type { addUserBo } from "@/api/user/type.ts";
 import { reqUserAdd } from "@/api/user";
+import { GET_TOKEN } from "@/utils/token.ts";
+import { tokenPrefix } from "@/utils/request.ts";
 
 type HeaderProps = {
   visible: boolean;

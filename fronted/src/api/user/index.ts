@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import {
-  addUserForm,
+  addUserBo,
   loginForm,
   loginResponseData,
   userInfoResponseData,
@@ -24,5 +24,5 @@ export const reqUserInfo = () =>
 export const reqUserList = (params: pageQuery) =>
   request.get<any, userListResponseData>(API.USER_LIST_URL, { params });
 
-export const reqUserAdd = (data: addUserForm) =>
+export const reqUserAdd = (data: addUserBo) =>
   request.post<any, userListResponseData>(API.USER_ADD_URL, data);
