@@ -216,6 +216,6 @@ public class GlobalExceptionHandler {
         }
 
         // 返回给前端
-        return Response.error(ResponseEnum.INVALID_TOKEN_ERROR);
+        return Response.error(401, message);
     }
 }

@@ -16,7 +16,6 @@ public enum ResponseEnum implements CommonExceptionAssert {
     SERVER_ERROR(504, "网络异常"),
     VALID_ERROR(507, "参数校验异常"),
     NullPointer_ERROR(508, "空指针异常"),
-    INVALID_TOKEN_ERROR(401, "token 失效"),
     Method_Argument_Type_Mismatch_ERROR(509, "方法参数类型不匹配");
 
     private int code;

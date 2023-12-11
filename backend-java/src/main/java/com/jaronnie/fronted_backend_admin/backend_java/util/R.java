@@ -18,7 +18,7 @@ public class R<T> implements Serializable {
     }
 
     public static <T> R<T> ok(T data) {
-        return restResult(data, 200, null);
+        return restResult(data, 200, "ok");
     }
 
     public static <T> R<Object> ok(String msg) {

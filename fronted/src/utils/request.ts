@@ -28,7 +28,7 @@ request.interceptors.response.use(
         message = "接口 404 异常";
         break;
       default:
-        message = "服务异常";
+        message = "后端服务异常";
         break;
     }
     return Promise.reject(new AxiosError(message));

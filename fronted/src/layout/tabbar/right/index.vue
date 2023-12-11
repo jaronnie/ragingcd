@@ -36,6 +36,7 @@ import useUserStore from "@/store/modules/user";
 import useLayoutStore from "@/store/modules/layout";
 import screenfull from "screenfull";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 
 const userStore = useUserStore();
 const layoutStore = useLayoutStore();
@@ -50,9 +51,16 @@ const fullscreen = () => {
 
 // 退出登录
 const $router = useRouter();
-const logout = () => {
-  userStore.userLogout();
-  $router.push("/login");
+const logout = async () => {
+  try {
+    await userStore.userLogout();
+  } catch (error) {
+    ElMessage({
+      type: "error",
+      message: error,
+    });
+  }
+  await $router.push("/login");
 };
 </script>
 

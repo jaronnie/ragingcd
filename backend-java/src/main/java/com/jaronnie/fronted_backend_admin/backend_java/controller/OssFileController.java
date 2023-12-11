@@ -3,6 +3,8 @@ package com.jaronnie.fronted_backend_admin.backend_java.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.OssFileVo;
 import com.jaronnie.fronted_backend_admin.backend_java.util.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.FileStorageService;
@@ -13,15 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
+@Api(tags = "oss 文件管理")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1.0/system/oss_file")
 public class OssFileController {
     private final FileStorageService fileStorageService;//注入实列
 
-    /**
-     * 上传文件
-     */
+    @ApiOperation(value = "上传文件")
     @SaCheckLogin
     @PostMapping("/upload")
     public R<OssFileVo> upload(MultipartFile file) {

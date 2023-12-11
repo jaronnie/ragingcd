@@ -47,12 +47,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserVo info(String authorization) {
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            authorization = authorization.substring(7);
-        }
-        Object object = StpUtil.getLoginIdByToken(authorization);
-        Integer id = Integer.parseInt(String.valueOf(object));
+    public UserVo info() {
+        Integer id = StpUtil.getLoginIdAsInt();
         UserPo userPo = this.baseMapper.selectById(id);
         return UserVo.builder()
                 .username(userPo.getUsername())
@@ -75,6 +71,11 @@ public class UserServiceImpl implements IUserService {
                     .build();
         }
         throw UserErrorCodeEnum.LoginError.newException();
+    }
+
+    @Override
+    public void logout() {
+        StpUtil.logout();
     }
 
     @Override

@@ -42,7 +42,7 @@ router.beforeEach(async (to, _from, next) => {
           type: "error",
           message: error.message,
         });
-        userStore.userLogout();
+        await userStore.userLogout();
         // 回到 login 并带上参数
         next({
           path: "/login",

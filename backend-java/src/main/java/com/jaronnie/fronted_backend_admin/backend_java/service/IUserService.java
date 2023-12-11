@@ -9,9 +9,11 @@ import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.UserVo;
 
 public interface IUserService {
     TableDataInfo<UserVo> queryPageList(PageQuery pageQuery);
-    UserVo info(String authorization);
+    UserVo info();
 
     LoginResponseVo login(LoginBo loginBo);
+
+    void logout();
 
     UserVo logUp(LogUpBo logUpBo);
 }

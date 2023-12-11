@@ -1,7 +1,7 @@
 // 用户相关
 import { defineStore } from "pinia";
 // 引入 api
-import { reqLogin } from "@/api/user";
+import { reqLogin, reqLogout } from "@/api/user";
 
 import type {
   loginForm,
@@ -46,12 +46,18 @@ const useUserStore = defineStore("User", {
         return Promise.reject(new Error(res.message));
       }
     },
-    userLogout() {
-      // TODO 发送接口给服务端
-      this.token = "";
-      this.avatar = "";
-      this.username = "";
-      REMOVE_TOKEN();
+    async userLogout() {
+      try {
+        const res = await reqLogout();
+        if (res.code === 200) {
+          this.token = "";
+          this.avatar = "";
+          this.username = "";
+          REMOVE_TOKEN();
+        }
+      } catch (error) {
+        return Promise.reject(error.message);
+      }
     },
   },
   getters: {},

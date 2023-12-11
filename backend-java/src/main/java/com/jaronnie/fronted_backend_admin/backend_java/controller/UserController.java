@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1.0/user")
-@Api(tags = "超级管理员用户管理")
+@Api(tags = "用户管理")
 public class UserController {
     private final IUserService iUserService;
 
@@ -28,20 +28,31 @@ public class UserController {
         return R.ok(iUserService.queryPageList(pageQuery));
     }
 
+    @ApiOperation(value = "添加用户")
     @PostMapping("/add")
     @SaCheckLogin
     public R<UserVo> add(@RequestBody LogUpBo logUpBo) {
         return R.ok(iUserService.logUp(logUpBo));
     }
 
+    @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public R<LoginResponseVo> login(@RequestBody LoginBo loginBo) {
         return R.ok(iUserService.login(loginBo));
     }
 
+    @ApiOperation(value = "用户登出")
+    @SaCheckLogin
+    @GetMapping("/logout")
+    public R<Void> logout() {
+        iUserService.logout();
+        return R.ok("ok", null);
+    }
+
+    @ApiOperation(value = "获取用户信息")
     @GetMapping("/info")
     @SaCheckLogin
-    public R<UserVo> info(@RequestHeader("Authorization") String authorization) {
-        return R.ok(iUserService.info(authorization));
+    public R<UserVo> info() {
+        return R.ok(iUserService.info());
     }
 }
