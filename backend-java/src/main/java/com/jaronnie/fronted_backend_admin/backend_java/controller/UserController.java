@@ -9,15 +9,19 @@ import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.service.IUserService;
 import com.jaronnie.fronted_backend_admin.backend_java.util.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1.0/user")
+@Api(tags = "超级管理员用户管理")
 public class UserController {
     private final IUserService iUserService;
 
+    @ApiOperation(value = "获取用户列表")
     @GetMapping("/list")
     @SaCheckLogin
     public R<TableDataInfo<UserVo>> getUsers(@ModelAttribute PageQuery pageQuery) {
