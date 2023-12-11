@@ -6,7 +6,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     meta: {
       hidden: true,
     },
-    redirect: "/layout/dashboard",
+    redirect: "/layout",
   },
   {
     path: "/login",

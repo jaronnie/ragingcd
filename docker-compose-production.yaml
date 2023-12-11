@@ -4,9 +4,9 @@ services:
     image: jaronnie/admin-backend-java:latest
     restart: always
     environment:
-      - Qiniu-AccessKey=${Qiniu-AccessKey}
-      - Qiniu-SecretKey=${Qiniu-SecretKey}
-      - Qiniu-BucketName=${Qiniu-BucketName}
+      - Qiniu_AccessKey=${Qiniu_AccessKey}
+      - Qiniu_SecretKey=${Qiniu_SecretKey}
+      - Qiniu_BucketName=${Qiniu_BucketName}
     depends_on:
       - mysql8
   backend-go:

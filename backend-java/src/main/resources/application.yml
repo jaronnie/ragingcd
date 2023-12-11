@@ -28,7 +28,7 @@ sa-token:
   # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
   token-style: random-128
   # 是否输出操作日志
-  is-log: true
+  is-log: false
   # 是否从 cookie 中读取
   is-read-cookie: false
   # 从请求头中获取

@@ -1,6 +1,5 @@
 // 二次封装 axios
-import axios from "axios";
-import { ElMessage } from "element-plus";
+import axios, { AxiosError } from "axios";
 import { GET_TOKEN } from "./token";
 
 const request = axios.create({
@@ -25,19 +24,14 @@ request.interceptors.response.use(
     let message = "";
     const status = error.response.status;
     switch (status) {
-      case "404":
-        message = "请求地址错误";
+      case 404:
+        message = "接口 404 异常";
         break;
       default:
-        message = "网络错误";
+        message = "服务异常";
         break;
     }
-    // 提示错误消息
-    ElMessage({
-      type: "error",
-      message: message,
-    });
-    return Promise.reject(error);
+    return Promise.reject(new AxiosError(message));
   },
 );
 

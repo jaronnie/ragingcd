@@ -2,13 +2,13 @@
   <div>
     <el-dialog :model-value="visible" title="添加用户">
       <el-form label-width="80px" style="width: 80%">
-        <el-form-item label="用户名">
+        <el-form-item label="用户名" required>
           <el-input placeholder="请输入用户名" v-model="addUserForm.username" />
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" required>
           <el-input placeholder="请输入密码" v-model="addUserForm.password" />
         </el-form-item>
-        <el-form-item label="用户头像">
+        <el-form-item label="用户头像" required>
           <el-upload
             class="avatar-uploader"
             action="/api/v1.0/system/oss_file/upload"

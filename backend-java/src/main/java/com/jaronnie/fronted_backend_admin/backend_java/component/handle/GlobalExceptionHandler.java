@@ -1,5 +1,6 @@
 package com.jaronnie.fronted_backend_admin.backend_java.component.handle;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.jaronnie.fronted_backend_admin.backend_java.component.exception.*;
 import lombok.extern.slf4j.Slf4j;
@@ -178,5 +179,43 @@ public class GlobalExceptionHandler {
         log.error(err);
         Response<?> res = Response.error(ResponseEnum.Method_Argument_Type_Mismatch_ERROR);
         return new ResponseEntity<>(res, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotLoginException.class)
+    @ResponseBody
+    public Response<?> HandlerNotLoginException(NotLoginException nle) throws Exception {
+
+        // 打印堆栈，以供调试
+        nle.printStackTrace();
+
+        // 判断场景值，定制化异常信息
+        String message = "";
+        if(nle.getType().equals(NotLoginException.NOT_TOKEN)) {
+            message = "未能读取到有效 token";
+        }
+        else if(nle.getType().equals(NotLoginException.INVALID_TOKEN)) {
+            message = "token 无效";
+        }
+        else if(nle.getType().equals(NotLoginException.TOKEN_TIMEOUT)) {
+            message = "token 已过期";
+        }
+        else if(nle.getType().equals(NotLoginException.BE_REPLACED)) {
+            message = "token 已被顶下线";
+        }
+        else if(nle.getType().equals(NotLoginException.KICK_OUT)) {
+            message = "token 已被踢下线";
+        }
+        else if(nle.getType().equals(NotLoginException.TOKEN_FREEZE)) {
+            message = "token 已被冻结";
+        }
+        else if(nle.getType().equals(NotLoginException.NO_PREFIX)) {
+            message = "未按照指定前缀提交 token";
+        }
+        else {
+            message = "当前会话未登录";
+        }
+
+        // 返回给前端
+        return Response.error(ResponseEnum.INVALID_TOKEN_ERROR);
     }
 }

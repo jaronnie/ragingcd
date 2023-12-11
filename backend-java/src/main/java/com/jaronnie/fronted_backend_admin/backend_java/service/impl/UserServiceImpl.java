@@ -29,6 +29,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public TableDataInfo<UserVo> queryPageList(PageQuery pageQuery) {
         LambdaQueryWrapper<UserPo> lqw = Wrappers.lambdaQuery();
+        lqw.orderByDesc(UserPo::getUpdateTime);
 
         Page<UserPo> page = baseMapper.selectPage(pageQuery.build(), lqw);
 

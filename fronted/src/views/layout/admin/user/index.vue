@@ -83,7 +83,7 @@ const cancelAddUser = () => {
 
 const confirmAddUser = () => {
   viewState.addUser.visible = false;
-  //  TODO: 刷新列表
+  reqUserListFunc();
 };
 
 onMounted(() => {

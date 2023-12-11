@@ -9,6 +9,7 @@ import "nprogress/nprogress.css";
 nprogress.configure({ showSpinner: false });
 
 import useUserStore from "@/store/modules/user";
+import { ElMessage } from "element-plus";
 
 // 全局前置守卫
 router.beforeEach(async (to, _from, next) => {
@@ -37,6 +38,10 @@ router.beforeEach(async (to, _from, next) => {
         // token 过期
         // 用户手动修改本地存储的 token
         // 直接退出登录
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
         userStore.userLogout();
         // 回到 login 并带上参数
         next({

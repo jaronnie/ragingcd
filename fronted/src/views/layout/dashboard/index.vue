@@ -7,21 +7,16 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from "@/store/modules/user.ts";
+// import useUserStore from "@/store/modules/user.ts";
 import { onMounted } from "vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 
-// 获取路由器
-let $router = useRouter();
-
-let userStore = useUserStore();
+// // 获取路由器
+// let $router = useRouter();
+//
+// let userStore = useUserStore();
 onMounted(async () => {
-  try {
-    await userStore.userInfo();
-    await $router.push("/");
-  } catch (error) {
-    await $router.push("/login");
-  }
+  console.log("dashboard");
 });
 </script>
 

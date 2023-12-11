@@ -113,7 +113,7 @@ const login = async () => {
   try {
     await userStore.userLogin(loginInput);
     let redirect: any = $route.query.redirect;
-    $router.push({
+    await $router.push({
       path: redirect || "/",
     });
     ElNotification({
