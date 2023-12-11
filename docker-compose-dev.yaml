@@ -67,3 +67,11 @@ services:
       - ./deploy/mysql8/data:/var/lib/mysql
       - ./deploy/mysql8/config:/etc/mysql/conf.d
       - ./deploy/mysql8/sql:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:latest
+    container_name: backend-redis
+    restart: always
+    volumes:
+      - ./deploy/redis/data:/data
+    ports:
+      - '6379:6379'

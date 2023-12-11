@@ -1,3 +1,4 @@
 .vscode
 deploy/mysql8/data
+deploy/redis/data
 .env
