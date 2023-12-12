@@ -47,13 +47,14 @@ const useUserStore = defineStore("User", {
       }
     },
     async userLogout() {
+      this.token = "";
+      this.avatar = "";
+      this.username = "";
+      REMOVE_TOKEN();
       try {
         const res = await reqLogout();
         if (res.code === 200) {
-          this.token = "";
-          this.avatar = "";
-          this.username = "";
-          REMOVE_TOKEN();
+          return "ok";
         }
       } catch (error) {
         return Promise.reject(error.message);
