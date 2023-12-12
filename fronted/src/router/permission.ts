@@ -24,32 +24,39 @@ router.beforeEach(async (to, _from, next) => {
   const token = userStore.token;
 
   if (token) {
-    // 用户已经登录
-    // 不能再访问 login
+    // 有 token
+    // 不能再访问
     if (to.path === "/login") {
-      next({ path: "/" });
+      if (userStore.username != "") {
+        next("/");
+      } else {
+        // token 过期了
+        await userStore.userLogout();
+        next();
+      }
     } else {
       // 在守卫这里发请求获取用户信息
-      try {
-        // TODO: 每次切换路由都会调用 info 接口性能不好
-        await userStore.userInfo();
-        next();
-      } catch (error) {
-        // token 过期
-        // 用户手动修改本地存储的 token
-        // 直接退出登录
-        ElMessage({
-          type: "error",
-          message: error.message,
-        });
-        await userStore.userLogout();
-        // 回到 login 并带上参数
-        next({
-          path: "/login",
-          query: {
-            redirect: to.path,
-          },
-        });
+      if (userStore.username == "") {
+        try {
+          await userStore.userInfo();
+          next();
+        } catch (error) {
+          // token 过期
+          // 用户手动修改本地存储的 token
+          // 直接退出登录
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+          await userStore.userLogout();
+          // 回到 login 并带上参数
+          next({
+            path: "/login",
+            query: {
+              redirect: to.path,
+            },
+          });
+        }
       }
       next();
     }
