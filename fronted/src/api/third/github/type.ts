@@ -5,6 +5,7 @@ export interface getCommitListReq {
 
 export interface getCommitListResItem {
   commit: commit;
+  committer: committer;
 }
 
 export interface commit {
@@ -12,8 +13,13 @@ export interface commit {
   message: string;
 }
 
+export interface committer {
+  avatar_url: string;
+}
+
 export interface author {
   name: string;
   email: string;
   date: string;
+  avatar_url: string;
 }

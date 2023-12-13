@@ -1,17 +1,23 @@
 <template>
-  <div>
+  <div class="gitlog_timeline_container">
     <el-timeline>
       <template v-for="item in result_show" :key="item">
         <el-timeline-item
           :timestamp="format_ISO8601(item.commit.author.date)"
           placement="top"
         >
+          <div class="custom-icon-container">
+            <img :src="item.committer.avatar_url" class="custom-icon" />
+          </div>
           <el-card>
             <h2>
               {{ item.commit.author.name }}({{ item.commit.author.email }})
             </h2>
             <br />
-            <p>{{ item.commit.message }}</p>
+            <div class="gitlog_timeline_item_message">
+              <p>{{ item.commit.message }}</p>
+              <Svg-Icon name="successFilled"></Svg-Icon>
+            </div>
           </el-card>
         </el-timeline-item>
       </template>
@@ -78,5 +84,20 @@ h2 {
 }
 .gitlog_readmore {
   margin-left: 28px;
+}
+.gitlog_timeline_container {
+  margin-left: 50px;
+}
+.custom-icon-container {
+  position: absolute;
+  top: 45px;
+  left: -50px;
+}
+.custom-icon {
+  width: 50px;
+  height: 50px;
+}
+.gitlog_timeline_item_message {
+  display: flex;
 }
 </style>
