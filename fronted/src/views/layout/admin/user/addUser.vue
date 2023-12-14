@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-dialog :model-value="visible" title="添加用户">
+    <el-dialog
+      :model-value="visible"
+      title="添加用户"
+      draggable
+      :before-close="beforeClose"
+    >
       <el-form label-width="80px" style="width: 80%">
         <el-form-item label="用户名" required>
           <el-input placeholder="请输入用户名" v-model="addUserForm.username" />
@@ -83,6 +88,10 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
 };
 
 const cancel = () => {
+  emits("cancel");
+};
+
+const beforeClose = () => {
   emits("cancel");
 };
 
