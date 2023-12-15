@@ -22,7 +22,6 @@
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
         @current-change="reqUserListFunc"
-        @size-change="reqUserListFunc"
         :page-sizes="[10, 20, 30, 40, 50]"
         :background="true"
         layout="prev, pager, next, jumper, ->,  total, sizes"
