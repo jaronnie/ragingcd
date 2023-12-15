@@ -64,6 +64,10 @@ public class UserServiceImpl implements IUserService {
         LambdaQueryWrapper<UserPo> lqw = Wrappers.lambdaQuery();
         lqw.eq(UserPo::getUsername, loginBo.getUsername());
         UserPo userPo = this.baseMapper.selectOne(lqw);
+        if (userPo == null) {
+            throw UserErrorCodeEnum.LoginError.newException();
+        }
+
         if (Objects.equals(userPo.getPassword(), loginBo.getPassword())) {
             StpUtil.login(userPo.getId());
             return LoginResponseVo.builder()
