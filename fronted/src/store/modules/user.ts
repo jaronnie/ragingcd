@@ -1,11 +1,12 @@
 // 用户相关
 import { defineStore } from "pinia";
 // 引入 api
-import { reqLogin, reqLogout } from "@/api/user";
+import { reqLogin, reqLogout, reqPublicKey } from "@/api/user";
 
 import type {
   loginForm,
   loginResponseData,
+  publicKeyResponseData,
   userInfoResponseData,
 } from "@/api/user/type";
 import type { UserState } from "./types/type";
@@ -14,6 +15,7 @@ import { reqUserInfo } from "@/api/user";
 
 // 引入路由
 import constantRoute from "@/router/routes";
+import { encrypt } from "@/utils/crypto.ts";
 
 const useUserStore = defineStore("User", {
   state: (): UserState => {
@@ -26,7 +28,19 @@ const useUserStore = defineStore("User", {
   },
   actions: {
     async userLogin(data: loginForm) {
-      const result: loginResponseData = await reqLogin(data);
+      // 获取 public key
+      let publicKey: string;
+      const publicKeyResult: publicKeyResponseData = await reqPublicKey();
+      if (publicKeyResult.code == 200) {
+        publicKey = publicKeyResult.data.publicKey;
+      } else {
+        return Promise.reject(new Error(publicKeyResult.message));
+      }
+
+      const result: loginResponseData = await reqLogin({
+        username: data.username,
+        password: <string>encrypt(data.password, publicKey),
+      });
       if (result.code == 200) {
         this.token = result.data.token as string;
         // 本地存储

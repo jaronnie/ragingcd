@@ -2,7 +2,7 @@ import { OssFileVo } from "@/api/type.ts";
 
 export interface loginForm {
   username?: string;
-  password?: string;
+  password: string;
 }
 
 export interface addUserBo {
@@ -42,4 +42,15 @@ export interface userInfo {
   userId?: number;
   avatar?: string;
   username?: string;
+}
+
+export interface publicKeyResponseData {
+  code?: number;
+  message?: string;
+  data?: publicKeyVo;
+}
+
+export interface publicKeyVo {
+  type: string;
+  publicKey: string;
 }

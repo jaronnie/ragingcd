@@ -9,12 +9,15 @@ import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.po.UserPo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.LoginResponseVo;
+import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.PublicKeyVo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.enumeration.errcode.UserErrorCodeEnum;
 import com.jaronnie.fronted_backend_admin.backend_java.mapper.UserMapper;
 import com.jaronnie.fronted_backend_admin.backend_java.service.IUserService;
+import com.jaronnie.fronted_backend_admin.backend_java.util.RsaCrypto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +28,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserMapper baseMapper;
+
+    @Value("${backend.encrypt.type}")
+    private String Type;
+
+    @Value("${backend.encrypt.private-key}")
+    private String PrivateKey;
+
+    @Value("${backend.encrypt.public-key}")
+    private String PublicKey;
 
     @Override
     public TableDataInfo<UserVo> queryPageList(PageQuery pageQuery) {
@@ -68,7 +80,7 @@ public class UserServiceImpl implements IUserService {
             throw UserErrorCodeEnum.LoginError.newException();
         }
 
-        if (Objects.equals(userPo.getPassword(), loginBo.getPassword())) {
+        if (Objects.equals(RsaCrypto.decrypt(loginBo.getPassword(), PrivateKey), userPo.getPassword())) {
             StpUtil.login(userPo.getId());
             return LoginResponseVo.builder()
                     .token(StpUtil.getTokenValue())
@@ -97,6 +109,14 @@ public class UserServiceImpl implements IUserService {
                 .username(logUpBo.getUsername())
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
+                .build();
+    }
+
+    @Override
+    public PublicKeyVo getPublicKey() {
+        return PublicKeyVo.builder()
+                .type(Type)
+                .publicKey(PublicKey)
                 .build();
     }
 }

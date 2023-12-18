@@ -5,6 +5,7 @@ import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LogUpBo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.bo.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.LoginResponseVo;
+import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.PublicKeyVo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.service.IUserService;
@@ -54,5 +55,11 @@ public class UserController {
     @SaCheckLogin
     public R<UserVo> info() {
         return R.ok(iUserService.info());
+    }
+
+    @ApiOperation(value = "获取公钥")
+    @GetMapping("/public-key")
+    public R<PublicKeyVo> getPublicKey() {
+        return R.ok(iUserService.getPublicKey());
     }
 }
