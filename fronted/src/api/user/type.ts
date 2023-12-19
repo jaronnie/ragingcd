@@ -39,9 +39,9 @@ export interface userPageResult {
 }
 
 export interface userInfo {
-  userId?: number;
-  avatar?: string;
-  username?: string;
+  id: number;
+  avatar: string;
+  username: string;
 }
 
 export interface publicKeyResponseData {

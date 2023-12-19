@@ -16,6 +16,7 @@ enum API {
   USER_LIST_URL = "/v1.0/user/list",
   USER_ADD_URL = "/v1.0/user/add",
   PUBLIC_KEY_URL = "/v1.0/user/public-key",
+  USER_DELETE_URL = "/v1.0/user/delete",
 }
 
 export const reqLogin = (data: loginForm) =>
@@ -34,3 +35,6 @@ export const reqUserList = (params: pageQuery) =>
 
 export const reqUserAdd = (data: addUserBo) =>
   request.post<any, userListResponseData>(API.USER_ADD_URL, data);
+
+export const reqUserDelete = (userId: number) =>
+  request.get<any, boolean>(`${API.USER_DELETE_URL}/${userId}`);

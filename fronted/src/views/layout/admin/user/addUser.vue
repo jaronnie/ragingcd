@@ -3,7 +3,6 @@
     <el-dialog
       :model-value="visible"
       title="添加用户"
-      draggable
       @open="beforeOpenCallback"
       :before-close="beforeClose"
     >
@@ -66,7 +65,7 @@ type HeaderProps = {
 };
 defineProps<HeaderProps>();
 
-const emits = defineEmits(["cancel", "confirm"]);
+const emits = defineEmits(["cancelAdd", "confirmAdd"]);
 
 // 收集用户信息
 let addUserForm = reactive<addUserBo>({
@@ -145,11 +144,11 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
 };
 
 const cancel = () => {
-  emits("cancel");
+  emits("cancelAdd");
 };
 
 const beforeClose = () => {
-  emits("cancel");
+  emits("cancelAdd");
 };
 
 const beforeOpenCallback = () => {
@@ -186,13 +185,12 @@ const confirm = async () => {
     password: encrypt(addUserForm.password, publicKey),
     avatar: addUserForm.avatar,
   });
-  console.log(result);
   if (result.code === 200) {
     ElMessage({
       type: "success",
       message: "添加成功",
     });
-    emits("confirm");
+    emits("confirmAdd");
   } else {
     ElMessage({
       type: "error",

@@ -21,7 +21,6 @@ request.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.log(error);
     // 失败回调
     let message = "";
     const status = error.response.status;
