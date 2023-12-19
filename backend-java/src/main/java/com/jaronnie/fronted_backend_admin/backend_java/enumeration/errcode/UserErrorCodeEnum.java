@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserErrorCodeEnum implements BusinessExceptionAssert {
-    LoginError(10001, "用户名或密码错误");
+    LoginError(10001, "用户名或密码错误"),
+    LogUpError(10002, "用户名重名");
 
     private final int code;
     private final String message;

@@ -15,6 +15,7 @@ import com.jaronnie.fronted_backend_admin.backend_java.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.enumeration.errcode.UserErrorCodeEnum;
 import com.jaronnie.fronted_backend_admin.backend_java.mapper.UserMapper;
 import com.jaronnie.fronted_backend_admin.backend_java.service.IUserService;
+import com.jaronnie.fronted_backend_admin.backend_java.util.Md5SaltUtil;
 import com.jaronnie.fronted_backend_admin.backend_java.util.RsaCrypto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.jaronnie.fronted_backend_admin.backend_java.enumeration.errcode.UserErrorCodeEnum.LogUpError;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,8 @@ public class UserServiceImpl implements IUserService {
 
     @Value("${backend.encrypt.public-key}")
     private String PublicKey;
+
+    private static final String Salt = "jaronnie";
 
     @Override
     public TableDataInfo<UserVo> queryPageList(PageQuery pageQuery) {
@@ -80,7 +85,10 @@ public class UserServiceImpl implements IUserService {
             throw UserErrorCodeEnum.LoginError.newException();
         }
 
-        if (Objects.equals(RsaCrypto.decrypt(loginBo.getPassword(), PrivateKey), userPo.getPassword())) {
+        // 解密前端传来的 cipherText
+        String password = RsaCrypto.decrypt(loginBo.getPassword(), PrivateKey);
+        // 比对数据库中的 password
+        if (Md5SaltUtil.verify(password, Salt, userPo.getPassword())) {
             StpUtil.login(userPo.getId());
             return LoginResponseVo.builder()
                     .token(StpUtil.getTokenValue())
@@ -96,10 +104,22 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVo logUp(LogUpBo logUpBo) {
+        // username 不能重名
+        LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(UserPo::getUsername, logUpBo.getUsername());
+        if (this.baseMapper.exists(lqw)) {
+            throw LogUpError.newException();
+        }
+
+        // 加密存储 password
+        // 1. 前端采用 rsa 加密算法加密传送到后台
+        // 2. 后台解密
+        // 3. 对解密的内容进行 md5 hash 存储
+        String password = RsaCrypto.decrypt(logUpBo.getPassword(), PrivateKey);
         UserPo userPo = UserPo.builder()
                 .avatar(logUpBo.getAvatar().getUrl())
                 .username(logUpBo.getUsername())
-                .password(logUpBo.getPassword())
+                .password(Md5SaltUtil.generateHash(password, Salt))
                 .build();
         this.baseMapper.insert(userPo);
 

@@ -55,9 +55,11 @@ import { reactive, ref } from "vue";
 import type { FormInstance, UploadProps } from "element-plus";
 import { ElMessage, FormRules } from "element-plus";
 import type { addUserBo } from "@/api/user/type.ts";
-import { reqUserAdd } from "@/api/user";
+import { reqPublicKey, reqUserAdd } from "@/api/user";
 import { GET_TOKEN } from "@/utils/token.ts";
 import { tokenPrefix } from "@/utils/request.ts";
+import { encrypt } from "@/utils/crypto.ts";
+import { publicKeyResponseData } from "@/api/user/type.ts";
 
 type HeaderProps = {
   visible: boolean;
@@ -165,9 +167,27 @@ const confirm = async () => {
     return;
   }
 
+  // 获取 public key
+  let publicKey: string;
+  const publicKeyResult: publicKeyResponseData = await reqPublicKey();
+  if (publicKeyResult.code == 200) {
+    publicKey = publicKeyResult.data.publicKey;
+  } else {
+    ElMessage({
+      type: "error",
+      message: publicKeyResult.message,
+    });
+    return;
+  }
+
   // 发送请求
-  let result: any = await reqUserAdd(addUserForm);
-  if (result.code == 200) {
+  let result: any = await reqUserAdd({
+    username: addUserForm.username,
+    password: encrypt(addUserForm.password, publicKey),
+    avatar: addUserForm.avatar,
+  });
+  console.log(result);
+  if (result.code === 200) {
     ElMessage({
       type: "success",
       message: "添加成功",
@@ -176,7 +196,7 @@ const confirm = async () => {
   } else {
     ElMessage({
       type: "error",
-      message: result.data.message,
+      message: result.message,
     });
   }
 };

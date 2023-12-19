@@ -17,9 +17,11 @@ request.interceptors.request.use((config) => {
 
 request.interceptors.response.use(
   (response) => {
+    console.log(response.data);
     return response.data;
   },
   (error) => {
+    console.log(error);
     // 失败回调
     let message = "";
     const status = error.response.status;
