@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.jaronnie.fronted_backend_admin.backend_java.enumeration.errcode.UserErrorCodeEnum.LogUpError;
@@ -100,6 +99,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void logout() {
         StpUtil.logout();
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        StpUtil.logout(id);
+        return this.baseMapper.deleteById(id) == 1;
     }
 
     @Override

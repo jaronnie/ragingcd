@@ -16,6 +16,8 @@ public interface IUserService {
 
     void logout();
 
+    boolean delete(Integer id);
+
     UserVo logUp(LogUpBo logUpBo);
 
     PublicKeyVo getPublicKey();

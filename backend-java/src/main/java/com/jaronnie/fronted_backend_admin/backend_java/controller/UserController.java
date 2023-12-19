@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1.0/user")
@@ -34,6 +36,13 @@ public class UserController {
     @SaCheckLogin
     public R<UserVo> add(@RequestBody LogUpBo logUpBo) {
         return R.ok(iUserService.logUp(logUpBo));
+    }
+
+    @ApiOperation(value = "删除用户")
+    @GetMapping("/delete/{id}")
+    @SaCheckLogin
+    public R<Boolean> delete(@Valid @PathVariable Integer id) {
+        return R.ok(iUserService.delete(id));
     }
 
     @ApiOperation(value = "用户登录")
