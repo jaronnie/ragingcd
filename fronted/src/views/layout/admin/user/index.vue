@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
 import { reqUserList } from "@/api/user";
-import { userInfo as User, userListResponseData } from "@/api/user/type.ts";
+import { UserVo as User, UserListVoResponseData } from "@/api/user/type.ts";
 import { pageQuery } from "@/api/type.ts";
 import addUser from "./addUser.vue";
 import deleteUser from "./deleteUser.vue";
@@ -83,7 +83,7 @@ const reqUserListFunc = async (page = 1) => {
     pageNum: currentPage.value,
     pageSize: pageSize.value,
   };
-  const response: userListResponseData = await reqUserList(query);
+  const response: UserListVoResponseData = await reqUserList(query);
   if (response.code == 200) {
     userListRes.value = response.data.rows;
     total.value = response.data.total;

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class LoginResponseVo {
+public class LoginVo {
     private String token;
 }

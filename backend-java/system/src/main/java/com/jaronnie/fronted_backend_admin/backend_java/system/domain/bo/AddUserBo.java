@@ -4,7 +4,7 @@ import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.OssFileV
 import lombok.Data;
 
 @Data
-public class LogUpBo {
+public class AddUserBo {
     String username;
     String password;
     OssFileVo avatar;

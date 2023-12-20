@@ -19,8 +19,8 @@ import java.util.Date;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1.0/system/oss_file")
-public class OssFileController {
-    private final FileStorageService fileStorageService;//注入实列
+public class SystemOssFileController {
+    private final FileStorageService fileStorageService;
 
     @ApiOperation(value = "上传文件")
     @SaCheckLogin

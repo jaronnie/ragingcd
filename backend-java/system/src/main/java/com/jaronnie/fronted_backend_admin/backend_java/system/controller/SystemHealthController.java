@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "服务运行状态管理")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1.0/health")
-public class HealthController {
+@RequestMapping("/api/v1.0/system/health")
+public class SystemHealthController {
     @ApiOperation(value = "获取服务健康状态")
     @GetMapping("")
     public R<String> health() {

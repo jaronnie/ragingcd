@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class HealthGraphqlController {
+public class SystemHealthGraphqlController {
     @QueryMapping
     public String health() {
         return "ok";

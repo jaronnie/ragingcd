@@ -1,10 +1,10 @@
 package com.jaronnie.fronted_backend_admin.backend_java.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.LogUpBo;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.AddUserBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.PageQuery;
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.LoginResponseVo;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.LoginVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.PublicKeyVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.UserVo;
@@ -19,9 +19,9 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1.0/user")
+@RequestMapping("/api/v1.0/system/user_manage")
 @Api(tags = "用户管理")
-public class UserController {
+public class SystemUserManageController {
     private final IUserService iUserService;
 
     @ApiOperation(value = "获取用户列表")
@@ -34,7 +34,7 @@ public class UserController {
     @ApiOperation(value = "添加用户")
     @PostMapping("/add")
     @SaCheckLogin
-    public R<UserVo> add(@RequestBody LogUpBo logUpBo) {
+    public R<UserVo> add(@RequestBody AddUserBo logUpBo) {
         return R.ok(iUserService.logUp(logUpBo));
     }
 
@@ -47,7 +47,7 @@ public class UserController {
 
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
-    public R<LoginResponseVo> login(@RequestBody LoginBo loginBo) {
+    public R<LoginVo> login(@RequestBody LoginBo loginBo) {
         return R.ok(iUserService.login(loginBo));
     }
 

@@ -4,11 +4,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.LogUpBo;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.AddUserBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.po.UserPo;
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.LoginResponseVo;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.LoginVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.PublicKeyVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.UserVo;
@@ -19,8 +19,6 @@ import com.jaronnie.fronted_backend_admin.backend_java.common.util.Md5SaltUtil;
 import com.jaronnie.fronted_backend_admin.backend_java.common.util.RsaCrypto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,7 +76,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public LoginResponseVo login(LoginBo loginBo) {
+    public LoginVo login(LoginBo loginBo) {
         LambdaQueryWrapper<UserPo> lqw = Wrappers.lambdaQuery();
         lqw.eq(UserPo::getUsername, loginBo.getUsername());
         UserPo userPo = this.baseMapper.selectOne(lqw);
@@ -91,7 +89,7 @@ public class UserServiceImpl implements IUserService {
         // 比对数据库中的 password
         if (Md5SaltUtil.verify(password, Salt, userPo.getPassword())) {
             StpUtil.login(userPo.getId());
-            return LoginResponseVo.builder()
+            return LoginVo.builder()
                     .token(StpUtil.getTokenValue())
                     .build();
         }
@@ -110,10 +108,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserVo logUp(LogUpBo logUpBo) {
+    public UserVo logUp(AddUserBo addUserBo) {
         // username 不能重名
         LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(UserPo::getUsername, logUpBo.getUsername());
+        lqw.eq(UserPo::getUsername, addUserBo.getUsername());
         if (this.baseMapper.exists(lqw)) {
             throw LogUpError.newException();
         }
@@ -122,18 +120,18 @@ public class UserServiceImpl implements IUserService {
         // 1. 前端采用 rsa 加密算法加密传送到后台
         // 2. 后台解密
         // 3. 对解密的内容进行 md5 hash 存储
-        String password = RsaCrypto.decrypt(logUpBo.getPassword(), PrivateKey);
+        String password = RsaCrypto.decrypt(addUserBo.getPassword(), PrivateKey);
         UserPo userPo = UserPo.builder()
-                .avatar(logUpBo.getAvatar().getUrl())
-                .username(logUpBo.getUsername())
+                .avatar(addUserBo.getAvatar().getUrl())
+                .username(addUserBo.getUsername())
                 .password(Md5SaltUtil.generateHash(password, Salt))
                 .build();
         this.baseMapper.insert(userPo);
 
         return UserVo.builder()
                 .id(userPo.getId())
-                .avatar(logUpBo.getAvatar().getUrl())
-                .username(logUpBo.getUsername())
+                .avatar(addUserBo.getAvatar().getUrl())
+                .username(addUserBo.getUsername())
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
                 .build();

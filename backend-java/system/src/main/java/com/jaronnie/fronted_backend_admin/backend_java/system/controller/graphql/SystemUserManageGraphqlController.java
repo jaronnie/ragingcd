@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class UserGraphqlController {
+public class SystemUserManageGraphqlController {
     private final IUserService iUserService;
 
     @QueryMapping
