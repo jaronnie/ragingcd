@@ -49,12 +49,12 @@ import { useRouter, useRoute } from "vue-router";
 import { ElNotification } from "element-plus";
 import { getTime } from "@/utils/time";
 import type { FormInstance, FormRules } from "element-plus";
-import type { loginForm } from "@/api/user/type";
+import type { LoginBo } from "@/api/user/type";
 
 let userStore = useUserStore();
 
 // 收集用户输入
-const loginInput = reactive<loginForm>({
+const loginInput = reactive<LoginBo>({
   username: "",
   password: "",
 });
@@ -74,7 +74,7 @@ const validatePassword = (_: any, value: any, callback: any) => {
   }
   callback();
 };
-const rules = reactive<FormRules<loginForm>>({
+const rules = reactive<FormRules<LoginBo>>({
   username: [
     {
       required: true,

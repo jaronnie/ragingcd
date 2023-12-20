@@ -1,56 +1,56 @@
 import { OssFileVo } from "@/api/type.ts";
 
-export interface loginForm {
+export interface LoginBo {
   username: string;
   password: string;
 }
 
-export interface addUserBo {
+export interface AddUserBo {
   username: string;
   password: string;
   avatar: OssFileVo;
 }
 
-interface dataType {
+interface LoginVo {
   token?: string;
 }
 
-export interface loginResponseData {
+export interface LoginVoResponseData {
   code?: number;
   message?: string;
-  data?: dataType;
+  data?: LoginVo;
 }
 
-export interface userInfoResponseData {
+export interface UserVoResponseData {
   code?: number;
   message?: string;
-  data?: userInfo;
+  data?: UserVo;
 }
 
-export interface userListResponseData {
+export interface UserListVoResponseData {
   code?: number;
   message?: string;
-  data?: userPageResult;
+  data?: UserListVo;
 }
 
-export interface userPageResult {
+export interface UserListVo {
   total?: number;
-  rows?: userInfo[];
+  rows?: UserVo[];
 }
 
-export interface userInfo {
+export interface UserVo {
   id: number;
   avatar: string;
   username: string;
 }
 
-export interface publicKeyResponseData {
+export interface PublicKeyVoResponseData {
   code?: number;
   message?: string;
-  data?: publicKeyVo;
+  data?: PublicKeyVo;
 }
 
-export interface publicKeyVo {
+export interface PublicKeyVo {
   type: string;
   publicKey: string;
 }

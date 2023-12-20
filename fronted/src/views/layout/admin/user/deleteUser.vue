@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { userInfo as User } from "@/api/user/type.ts";
+import { UserVo as User } from "@/api/user/type.ts";
 import { reqUserDelete } from "@/api/user";
 import { ElMessage } from "element-plus";
 

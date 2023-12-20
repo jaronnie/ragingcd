@@ -4,10 +4,10 @@ import { defineStore } from "pinia";
 import { reqLogin, reqLogout, reqPublicKey } from "@/api/user";
 
 import type {
-  loginForm,
-  loginResponseData,
-  publicKeyResponseData,
-  userInfoResponseData,
+  LoginBo,
+  LoginVoResponseData,
+  PublicKeyVoResponseData,
+  UserVoResponseData,
 } from "@/api/user/type";
 import type { UserState } from "./types/type";
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
@@ -27,17 +27,17 @@ const useUserStore = defineStore("User", {
     };
   },
   actions: {
-    async userLogin(data: loginForm) {
+    async userLogin(data: LoginBo) {
       // 获取 public key
       let publicKey: string;
-      const publicKeyResult: publicKeyResponseData = await reqPublicKey();
+      const publicKeyResult: PublicKeyVoResponseData = await reqPublicKey();
       if (publicKeyResult.code == 200) {
         publicKey = publicKeyResult.data.publicKey;
       } else {
         return Promise.reject(new Error(publicKeyResult.message));
       }
 
-      const result: loginResponseData = await reqLogin({
+      const result: LoginVoResponseData = await reqLogin({
         username: data.username,
         password: <string>encrypt(data.password, publicKey),
       });
@@ -51,7 +51,7 @@ const useUserStore = defineStore("User", {
       }
     },
     async userInfo() {
-      const res: userInfoResponseData = await reqUserInfo();
+      const res: UserVoResponseData = await reqUserInfo();
       if (res.code === 200) {
         this.username = res.data.username;
         this.avatar = res.data.avatar;
