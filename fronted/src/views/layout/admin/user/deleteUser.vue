@@ -4,6 +4,7 @@
       :model-value="visible"
       :title="`确定删除 ${userInfo.username} 吗`"
       style="width: 428px; height: 168px"
+      :before-close="beforeClose"
     >
       <template #footer>
         <span class="dialog-footer">
@@ -33,6 +34,11 @@ const emits = defineEmits(["cancelDelete", "confirmDelete"]);
 const cancel = () => {
   emits("cancelDelete");
 };
+
+const beforeClose = () => {
+  emits("cancelDelete");
+};
+
 const confirm = async (id: number) => {
   // 调用删除接口
   let result: any = await reqUserDelete(id);
