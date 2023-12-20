@@ -8,6 +8,6 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shangh
 
 EXPOSE 8082
 
-ADD ./target/*.jar ./app.jar
+ADD ./admin/target/*.jar ./app.jar
 
 ENTRYPOINT ["sh","-c","java ${JAVA_OPTS} -Dspring.profiles.active=docker -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
