@@ -53,12 +53,12 @@
 import { reactive, ref } from "vue";
 import type { FormInstance, UploadProps } from "element-plus";
 import { ElMessage, FormRules } from "element-plus";
-import type { addUserBo } from "@/api/user/type.ts";
+import type { AddUserBo } from "@/api/user/type.ts";
 import { reqPublicKey, reqUserAdd } from "@/api/user";
 import { GET_TOKEN } from "@/utils/token.ts";
 import { tokenPrefix } from "@/utils/request.ts";
 import { encrypt } from "@/utils/crypto.ts";
-import { publicKeyResponseData } from "@/api/user/type.ts";
+import { PublicKeyVoResponseData } from "@/api/user/type.ts";
 
 type HeaderProps = {
   visible: boolean;
@@ -68,7 +68,7 @@ defineProps<HeaderProps>();
 const emits = defineEmits(["cancelAdd", "confirmAdd"]);
 
 // 收集用户信息
-let addUserForm = reactive<addUserBo>({
+let addUserForm = reactive<AddUserBo>({
   username: "",
   password: "",
   avatar: {
@@ -102,7 +102,7 @@ const validateAvatar = (_: any, value: any, callback: any) => {
   callback();
 };
 
-const rules = reactive<FormRules<addUserBo>>({
+const rules = reactive<FormRules<AddUserBo>>({
   username: [
     {
       required: true,
@@ -168,7 +168,7 @@ const confirm = async () => {
 
   // 获取 public key
   let publicKey: string;
-  const publicKeyResult: publicKeyResponseData = await reqPublicKey();
+  const publicKeyResult: PublicKeyVoResponseData = await reqPublicKey();
   if (publicKeyResult.code == 200) {
     publicKey = publicKeyResult.data.publicKey;
   } else {
