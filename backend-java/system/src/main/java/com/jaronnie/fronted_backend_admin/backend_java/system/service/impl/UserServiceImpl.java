@@ -4,9 +4,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jaronnie.fronted_backend_admin.backend_java.common.util.RandomCodeGen;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.AddUserBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.LoginBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.PageQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.RegisterUserBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.po.UserPo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.LoginVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.PublicKeyVo;
@@ -14,6 +16,7 @@ import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.TableDat
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.common.enumeration.errcode.UserErrorCodeEnum;
 import com.jaronnie.fronted_backend_admin.backend_java.system.mapper.UserMapper;
+import com.jaronnie.fronted_backend_admin.backend_java.system.service.IMailService;
 import com.jaronnie.fronted_backend_admin.backend_java.system.service.IUserService;
 import com.jaronnie.fronted_backend_admin.backend_java.common.util.Md5SaltUtil;
 import com.jaronnie.fronted_backend_admin.backend_java.common.util.RsaCrypto;
@@ -30,6 +33,10 @@ import static com.jaronnie.fronted_backend_admin.backend_java.common.enumeration
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserMapper baseMapper;
+    private final IMailService iMailService;
+
+    @Value("${spring.mail.username}")
+    private String From;
 
     @Value("${backend.encrypt.type}")
     private String Type;
@@ -84,9 +91,7 @@ public class UserServiceImpl implements IUserService {
             throw UserErrorCodeEnum.LoginError.newException();
         }
 
-        // 解密前端传来的 cipherText
         String password = RsaCrypto.decrypt(loginBo.getPassword(), PrivateKey);
-        // 比对数据库中的 password
         if (Md5SaltUtil.verify(password, Salt, userPo.getPassword())) {
             StpUtil.login(userPo.getId());
             return LoginVo.builder()
@@ -108,18 +113,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserVo logUp(AddUserBo addUserBo) {
-        // username 不能重名
+    public UserVo add(AddUserBo addUserBo) {
         LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
         lqw.eq(UserPo::getUsername, addUserBo.getUsername());
         if (this.baseMapper.exists(lqw)) {
             throw LogUpError.newException();
         }
 
-        // 加密存储 password
-        // 1. 前端采用 rsa 加密算法加密传送到后台
-        // 2. 后台解密
-        // 3. 对解密的内容进行 md5 hash 存储
         String password = RsaCrypto.decrypt(addUserBo.getPassword(), PrivateKey);
         UserPo userPo = UserPo.builder()
                 .avatar(addUserBo.getAvatar().getUrl())
@@ -135,6 +135,18 @@ public class UserServiceImpl implements IUserService {
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
                 .build();
+    }
+
+    @Override
+    public UserVo register(RegisterUserBo registerUserBo) {
+        return null;
+    }
+
+    @Override
+    public Boolean sendMail(String mail, String username) {
+        String verificationCode = RandomCodeGen.genRandomCode(6);
+        String content = String.format("你好，%s：\n  本次邮箱验证码：%s", username, verificationCode);
+        return iMailService.sendSimpleEmail(From, mail, "邮箱验证码", content);
     }
 
     @Override

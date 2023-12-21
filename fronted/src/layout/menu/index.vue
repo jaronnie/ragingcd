@@ -8,7 +8,7 @@
     </el-menu-item>
 
     <el-sub-menu
-      v-if="item.children && item.children.length >= 1"
+      v-if="item.children && item.children.length >= 1 && !item.meta.hidden"
       :index="item.path"
       :key="item.path"
       teleported

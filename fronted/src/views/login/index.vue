@@ -9,8 +9,7 @@
           :model="loginInput"
           :rules="rules"
         >
-          <h1>你好世界!</h1>
-          <h2>by jaronnie</h2>
+          <h1>用户登录</h1>
           <el-form-item prop="username">
             <el-input
               :prefix-icon="User"
@@ -33,6 +32,16 @@
               :loading="loading"
               @click="login"
               >登录</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              class="login_btn"
+              type="primary"
+              size="default"
+              :loading="loading"
+              @click="register"
+              >注册</el-button
             >
           </el-form-item>
         </el-form>
@@ -141,22 +150,18 @@ const login = async () => {
 }
 .login_form {
   position: relative;
-  width: 80%;
+  width: 65%;
   top: 30vh;
   background: url("@/assets/images/login_form.png") no-repeat;
   background-size: cover;
   padding: 40px;
+  left: 145px;
 }
 
 h1 {
   color: white;
   font-size: 40px;
-}
-
-h2 {
-  font-size: 20px;
-  color: white;
-  margin: 20px 0px;
+  margin: 30px 0px;
 }
 
 .login_btn {

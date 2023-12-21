@@ -148,5 +148,12 @@
             <version>2.0.7</version>
         </dependency>
 
+        <!--集成发送邮件的功能-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+
     </dependencies>
 </project>

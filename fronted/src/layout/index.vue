@@ -73,6 +73,7 @@ const menus = [
         meta: {
           title: "权限管理",
           icon: "Operation",
+          hidden: true,
         },
       },
     ],
@@ -83,6 +84,7 @@ const menus = [
     meta: {
       title: "产品管理",
       icon: "Shop",
+      hidden: true,
     },
     children: [
       {

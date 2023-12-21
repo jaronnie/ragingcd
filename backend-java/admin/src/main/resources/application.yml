@@ -107,6 +107,23 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  mail:
+    # 腾讯企业邮箱
+    host: smtp.exmail.qq.com
+    port: 465
+    username: jaron@jaronnie.com
+    password: ${MAIL_PASSWORD:pwd}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            # 开启 ssl
+            enable: true
+            socketFactory:
+              class: com.sun.mail.util.MailSSLSocketFactory
+              fallback: false
+
 
 # MyBatisPlus配置
 # https://baomidou.com/config/

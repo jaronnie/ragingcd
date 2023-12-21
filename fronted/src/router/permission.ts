@@ -64,6 +64,8 @@ router.beforeEach(async (to, _from, next) => {
     if (to.path === "/login") {
       // 放行
       next();
+    } else if (to.path === "/register") {
+      next();
     } else {
       // 用户未登录, 任意路由将跳转到 login, 并且带上参数
       next({

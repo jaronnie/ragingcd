@@ -18,6 +18,15 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     },
   },
   {
+    path: "/register",
+    component: () => import("@/views/register/index.vue"),
+    name: "register",
+    meta: {
+      title: " 注册",
+      hidden: true,
+    },
+  },
+  {
     path: "/layout",
     component: () => import("@/layout/index.vue"),
     name: "layout",
