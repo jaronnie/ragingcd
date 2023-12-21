@@ -110,6 +110,9 @@ let $route = useRoute();
 // 控制按钮 loading 变量, 加载效果
 let loading = ref(false);
 
+// 注册按钮回调
+const register = async () => {};
+
 // 登录按钮回调
 const login = async () => {
   try {
