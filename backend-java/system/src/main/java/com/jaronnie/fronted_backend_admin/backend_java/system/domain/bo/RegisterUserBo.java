@@ -7,4 +7,5 @@ public class RegisterUserBo {
     String username;
     String password;
     String email;
+    String verifyCode;
 }

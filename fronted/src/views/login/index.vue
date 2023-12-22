@@ -111,7 +111,9 @@ let $route = useRoute();
 let loading = ref(false);
 
 // 注册按钮回调
-const register = async () => {};
+const register = async () => {
+  await $router.push("/register");
+};
 
 // 登录按钮回调
 const login = async () => {
@@ -154,7 +156,7 @@ const login = async () => {
 .login_form {
   position: relative;
   width: 65%;
-  top: 30vh;
+  top: 25vh;
   background: url("@/assets/images/login_form.png") no-repeat;
   background-size: cover;
   padding: 40px;

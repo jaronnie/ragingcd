@@ -26,7 +26,7 @@ router.beforeEach(async (to, _from, next) => {
   if (token) {
     // 有 token
     // 不能再访问
-    if (to.path === "/login") {
+    if (to.path === "/login" || to.path === "/register") {
       if (userStore.username != "") {
         next("/");
       } else {

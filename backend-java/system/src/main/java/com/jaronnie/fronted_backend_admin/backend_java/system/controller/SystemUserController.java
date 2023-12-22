@@ -35,14 +35,13 @@ public class SystemUserController {
     }
 
     @ApiOperation(value = "发送邮件获取验证码")
-    @GetMapping("/send_mail/{mail}")
-    public R<Boolean> sendMail(@PathVariable String mail, @RequestParam String username) {
-        return R.ok(iUserService.sendMail(mail, username));
+    @GetMapping("/send_email/{email}")
+    public R<Boolean> sendMail(@PathVariable String email, @RequestParam String username) {
+        return R.ok(iUserService.sendEmail(email, username));
     }
 
     @ApiOperation(value = "用户注册")
     @PostMapping("/register")
-    @SaCheckLogin
     public R<UserVo> register(@RequestBody RegisterUserBo registerUserBo) {
         return R.ok(iUserService.register(registerUserBo));
     }

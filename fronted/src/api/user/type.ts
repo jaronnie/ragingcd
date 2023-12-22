@@ -5,6 +5,13 @@ export interface LoginBo {
   password: string;
 }
 
+export interface RegisterUserBo {
+  username: string;
+  password: string;
+  email: string;
+  verifyCode: string;
+}
+
 export interface AddUserBo {
   username: string;
   password: string;

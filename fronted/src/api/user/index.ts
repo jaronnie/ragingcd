@@ -6,6 +6,7 @@ import {
   PublicKeyVoResponseData,
   UserVoResponseData,
   UserListVoResponseData,
+  RegisterUserBo,
 } from "./type";
 import type { pageQuery } from "@/api/type.ts";
 
@@ -17,6 +18,8 @@ enum API {
   USER_ADD_URL = "/v1.0/system/user_manage/add",
   PUBLIC_KEY_URL = "/v1.0/system/user/public-key",
   USER_DELETE_URL = "/v1.0/system/user_manage/delete",
+  USER_REGISTER_URL = "/v1.0/system/user/register",
+  USER_REGISTER_SEND_MAIL = "/v1.0/system/user/send_email",
 }
 
 export const reqLogin = (data: LoginBo) =>
@@ -36,5 +39,13 @@ export const reqUserList = (params: pageQuery) =>
 export const reqUserAdd = (data: AddUserBo) =>
   request.post<any, UserListVoResponseData>(API.USER_ADD_URL, data);
 
+export const reqUserRegister = (data: RegisterUserBo) =>
+  request.post<any, UserVoResponseData>(API.USER_REGISTER_URL, data);
+
 export const reqUserDelete = (userId: number) =>
   request.get<any, boolean>(`${API.USER_DELETE_URL}/${userId}`);
+
+export const reqUserRegisterSendMail = (mail: string, username: string) =>
+  request.get<boolean>(`${API.USER_REGISTER_SEND_MAIL}/${mail}`, {
+    params: { username },
+  });

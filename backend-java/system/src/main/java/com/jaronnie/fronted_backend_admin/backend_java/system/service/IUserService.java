@@ -25,7 +25,7 @@ public interface IUserService {
 
     UserVo register(RegisterUserBo registerUserBo);
 
-    Boolean sendMail(String mail, String username);
+    Boolean sendEmail(String email, String username);
 
     PublicKeyVo getPublicKey();
 }

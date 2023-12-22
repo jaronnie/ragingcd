@@ -139,11 +139,28 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVo register(RegisterUserBo registerUserBo) {
-        return null;
+        LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(UserPo::getUsername, registerUserBo.getUsername());
+        if (this.baseMapper.exists(lqw)) {
+            throw LogUpError.newException();
+        }
+        String password = RsaCrypto.decrypt(registerUserBo.getPassword(), PrivateKey);
+        UserPo userPo = UserPo.builder()
+                .username(registerUserBo.getUsername())
+                .password(Md5SaltUtil.generateHash(password, Salt))
+                .build();
+        this.baseMapper.insert(userPo);
+        return UserVo.builder()
+                .id(userPo.getId())
+                .avatar(userPo.getAvatar())
+                .username(userPo.getUsername())
+                .createTime(userPo.getCreateTime())
+                .updateTime(userPo.getUpdateTime())
+                .build();
     }
 
     @Override
-    public Boolean sendMail(String mail, String username) {
+    public Boolean sendEmail(String mail, String username) {
         String verificationCode = RandomCodeGen.genRandomCode(6);
         String content = String.format("你好，%s：\n  本次邮箱验证码：%s", username, verificationCode);
         return iMailService.sendSimpleEmail(From, mail, "邮箱验证码", content);

@@ -71,7 +71,5 @@ services:
     image: redis:latest
     container_name: backend-redis
     restart: always
-    volumes:
-      - ./deploy/redis/data:/data
     ports:
       - '6379:6379'

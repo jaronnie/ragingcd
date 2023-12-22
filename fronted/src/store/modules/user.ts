@@ -1,13 +1,13 @@
 // 用户相关
 import { defineStore } from "pinia";
 // 引入 api
-import { reqLogin, reqLogout, reqPublicKey } from "@/api/user";
+import { reqLogin, reqLogout, reqPublicKey, reqUserRegister } from "@/api/user";
 
 import type {
   LoginBo,
   LoginVoResponseData,
-  PublicKeyVoResponseData,
-  UserVoResponseData,
+  PublicKeyVoResponseData, RegisterUserBo,
+  UserVoResponseData
 } from "@/api/user/type";
 import type { UserState } from "./types/type";
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
@@ -45,6 +45,28 @@ const useUserStore = defineStore("User", {
         this.token = result.data.token as string;
         // 本地存储
         SET_TOKEN(this.token);
+        return "ok";
+      } else {
+        return Promise.reject(new Error(result.message));
+      }
+    },
+    async userRegister(data: RegisterUserBo) {
+      // 获取 public key
+      let publicKey: string;
+      const publicKeyResult: PublicKeyVoResponseData = await reqPublicKey();
+      if (publicKeyResult.code == 200) {
+        publicKey = publicKeyResult.data.publicKey;
+      } else {
+        return Promise.reject(new Error(publicKeyResult.message));
+      }
+
+      const result: UserVoResponseData = await reqUserRegister({
+        username: data.username,
+        password: <string>encrypt(data.password, publicKey),
+        email: data.email,
+        verifyCode: data.verifyCode,
+      });
+      if (result.code == 200) {
         return "ok";
       } else {
         return Promise.reject(new Error(result.message));
