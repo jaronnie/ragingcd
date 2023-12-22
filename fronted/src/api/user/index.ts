@@ -9,6 +9,7 @@ import {
   RegisterUserBo,
 } from "./type";
 import type { pageQuery } from "@/api/type.ts";
+import { BooleanResponseData } from "@/api/type.ts";
 
 enum API {
   LOGIN_URL = "/v1.0/system/user/login",
@@ -43,9 +44,12 @@ export const reqUserRegister = (data: RegisterUserBo) =>
   request.post<any, UserVoResponseData>(API.USER_REGISTER_URL, data);
 
 export const reqUserDelete = (userId: number) =>
-  request.get<any, boolean>(`${API.USER_DELETE_URL}/${userId}`);
+  request.get<any, BooleanResponseData>(`${API.USER_DELETE_URL}/${userId}`);
 
 export const reqUserRegisterSendMail = (mail: string, username: string) =>
-  request.get<boolean>(`${API.USER_REGISTER_SEND_MAIL}/${mail}`, {
-    params: { username },
-  });
+  request.get<any, BooleanResponseData>(
+    `${API.USER_REGISTER_SEND_MAIL}/${mail}`,
+    {
+      params: { username },
+    },
+  );

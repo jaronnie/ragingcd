@@ -22,12 +22,16 @@ import com.jaronnie.fronted_backend_admin.backend_java.common.util.Md5SaltUtil;
 import com.jaronnie.fronted_backend_admin.backend_java.common.util.RsaCrypto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.jaronnie.fronted_backend_admin.backend_java.common.enumeration.errcode.UserErrorCodeEnum.LogUpError;
+import static com.jaronnie.fronted_backend_admin.backend_java.common.enumeration.errcode.UserErrorCodeEnum.RegisterEmailVerificationCodeError;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +52,9 @@ public class UserServiceImpl implements IUserService {
     private String PublicKey;
 
     private static final String Salt = "jaronnie";
+    private static final String RedisEmailVerificationCodeKeyPrefix = "verification_code";
+
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public TableDataInfo<UserVo> queryPageList(PageQuery pageQuery) {
@@ -139,6 +146,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVo register(RegisterUserBo registerUserBo) {
+        // 验证邮箱验证码对不对
+        String verifyCode = redisTemplate.opsForValue().get(RedisEmailVerificationCodeKeyPrefix + ":" + registerUserBo.getEmail());
+        if (!Objects.equals(verifyCode, registerUserBo.getVerifyCode())) {
+            throw RegisterEmailVerificationCodeError.newException();
+        }
+        // TODO: 限制一分钟只能发送一次邮箱
+
         LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
         lqw.eq(UserPo::getUsername, registerUserBo.getUsername());
         if (this.baseMapper.exists(lqw)) {
@@ -163,7 +177,13 @@ public class UserServiceImpl implements IUserService {
     public Boolean sendEmail(String mail, String username) {
         String verificationCode = RandomCodeGen.genRandomCode(6);
         String content = String.format("你好，%s：\n  本次邮箱验证码：%s", username, verificationCode);
-        return iMailService.sendSimpleEmail(From, mail, "邮箱验证码", content);
+        if (iMailService.sendSimpleEmail(From, mail, "邮箱验证码", content)) {
+            // 发送成功, 将验证码存储在 redis 上, 超时时间 5 分钟
+            String key = RedisEmailVerificationCodeKeyPrefix + ":" + mail;
+            redisTemplate.opsForValue().set(key, verificationCode);
+            redisTemplate.expire(key, 5, TimeUnit.MINUTES);
+        }
+        return true;
     }
 
     @Override

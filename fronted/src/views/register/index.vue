@@ -32,10 +32,16 @@
                 type="primary"
                 style="margin-left: 15px"
                 @click="getVerifyCodeFunc"
+                :loading="loadingSendEmail"
                 :disabled="
-                  registerInput.username == '' || registerInput.email == ''
+                  registerInput.username == '' ||
+                  registerInput.email == '' ||
+                  countdown > 0
                 "
-                >获取验证码</el-button
+              >
+                {{
+                  countdown > 0 ? `${countdown} 秒` : "获取验证码"
+                }}</el-button
               >
             </div>
           </el-form-item>
@@ -53,7 +59,7 @@
               class="login_btn"
               type="primary"
               size="default"
-              :loading="loading"
+              :loading="loadingRegister"
               @click="register"
               >立即注册</el-button
             >
@@ -72,6 +78,7 @@ import { reqUserRegisterSendMail } from "@/api/user";
 import useUserStore from "@/store/modules/user.ts";
 import { ElNotification } from "element-plus";
 import { useRouter } from "vue-router";
+import { BooleanResponseData } from "@/api/type.ts";
 
 let userStore = useUserStore();
 
@@ -148,10 +155,25 @@ const rules = reactive<FormRules<RegisterUserBo>>({
 });
 
 // 控制按钮 loading 变量, 加载效果
-let loading = ref(false);
+let loadingRegister = ref(false);
+let loadingSendEmail = ref(false);
 
 const getVerifyCodeFunc = async () => {
-  await reqUserRegisterSendMail(registerInput.email, registerInput.username);
+  loadingSendEmail.value = true;
+  let result: BooleanResponseData = await reqUserRegisterSendMail(
+    registerInput.email,
+    registerInput.username,
+  );
+  loadingSendEmail.value = false;
+
+  if (result.code == 200) {
+    startCountdown();
+  } else {
+    ElNotification({
+      type: "error",
+      message: result.message,
+    });
+  }
 };
 
 // 注册按钮回调
@@ -162,7 +184,7 @@ const register = async () => {
     return;
   }
 
-  loading.value = true;
+  loadingRegister.value = true;
 
   // 注册
   try {
@@ -175,10 +197,23 @@ const register = async () => {
   } catch (error) {
     ElNotification({
       type: "error",
-      message: "注册失败",
+      message: error.message,
     });
   }
-  loading.value = false;
+  loadingRegister.value = false;
+};
+
+// 按钮倒计时
+const countdown = ref(0);
+const startCountdown = () => {
+  countdown.value = 60;
+  const timer = setInterval(() => {
+    if (countdown.value > 0) {
+      countdown.value--;
+    } else {
+      clearInterval(timer);
+    }
+  }, 1000);
 };
 
 // 初始化输入框的值

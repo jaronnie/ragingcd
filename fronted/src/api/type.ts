@@ -8,3 +8,9 @@ export interface OssFileVo {
   uploadTime: string;
   url: string;
 }
+
+export interface BooleanResponseData {
+  code?: number;
+  message?: string;
+  data?: boolean;
+}
