@@ -42,6 +42,9 @@ public class UserServiceImpl implements IUserService {
     @Value("${spring.mail.username}")
     private String From;
 
+    @Value("${spring.mail.password}")
+    private String Password;
+
     @Value("${backend.encrypt.type}")
     private String Type;
 
@@ -175,6 +178,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Boolean sendEmail(String mail, String username) {
+        System.out.println("邮箱密码:" + Password);
         String verificationCode = RandomCodeGen.genRandomCode(6);
         String content = String.format("你好，%s：\n  本次邮箱验证码：%s", username, verificationCode);
         if (iMailService.sendSimpleEmail(From, mail, "邮箱验证码", content)) {
