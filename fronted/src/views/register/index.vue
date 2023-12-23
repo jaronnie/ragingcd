@@ -56,12 +56,21 @@
           </el-form-item>
           <el-form-item>
             <el-button
-              class="login_btn"
+              class="register_btn"
               type="primary"
               size="default"
               :loading="loadingRegister"
               @click="register"
               >立即注册</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              class="register_btn"
+              type="primary"
+              size="default"
+              @click="returnLoginFunc"
+              >返回登录</el-button
             >
           </el-form-item>
         </el-form>
@@ -216,6 +225,10 @@ const startCountdown = () => {
   }, 1000);
 };
 
+const returnLoginFunc = async () => {
+  await $router.push("/login");
+};
+
 // 初始化输入框的值
 onMounted(() => {
   registerInput.username = "";
@@ -253,7 +266,7 @@ h1 {
   flex-grow: 1;
 }
 
-.login_btn {
+.register_btn {
   width: 100%;
 }
 </style>
