@@ -13,10 +13,6 @@ import { ElMessage } from "element-plus";
 
 // 全局前置守卫
 router.beforeEach(async (to, _from, next) => {
-  // to: 你将要访问的路由
-  // from: 你从哪个路由而来
-  // next: 路由的放行函数
-
   // 获取用户仓库
   const userStore = useUserStore();
 

@@ -8,7 +8,10 @@
         <el-table-column prop="username" label="用户名" />
         <el-table-column label="用户头像">
           <template #="{ row }">
-            <el-image :src="row.avatar" style="height: 40px; width: 40px" />
+            <el-image
+              :src="row.avatar"
+              style="height: 40px; width: 40px; border-radius: 50%"
+            />
           </template>
         </el-table-column>
         <el-table-column label="Operations">

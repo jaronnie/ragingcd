@@ -6,8 +6,9 @@ import { reqLogin, reqLogout, reqPublicKey, reqUserRegister } from "@/api/user";
 import type {
   LoginBo,
   LoginVoResponseData,
-  PublicKeyVoResponseData, RegisterUserBo,
-  UserVoResponseData
+  PublicKeyVoResponseData,
+  RegisterUserBo,
+  UserVoResponseData,
 } from "@/api/user/type";
 import type { UserState } from "./types/type";
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
@@ -77,6 +78,10 @@ const useUserStore = defineStore("User", {
       if (res.code === 200) {
         this.username = res.data.username;
         this.avatar = res.data.avatar;
+        console.log(this.avatar);
+        if (this.avatar == "" || this.avatar == null) {
+          this.avatar = "/logo.png";
+        }
         return "ok";
       } else {
         return Promise.reject(new Error(res.message));
