@@ -14,7 +14,13 @@
   <el-button size="small" icon="Setting" circle></el-button>
   <img
     :src="userStore.avatar"
-    style="height: 30px; width: 30px; margin-left: 10px; margin-right: 10px"
+    style="
+      height: 30px;
+      width: 30px;
+      margin-left: 10px;
+      margin-right: 10px;
+      border-radius: 50%;
+    "
   />
   <el-dropdown>
     <span class="el-dropdown-link">

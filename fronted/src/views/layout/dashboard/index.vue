@@ -1,19 +1,11 @@
 <template>
   <div>
-    <el-card style="height: 128px; margin-top: -10px">
+    <el-card style="height: 140px; margin-top: -10px">
       <div class="card">
         <div class="card_left">
-          <img
-            :src="userStore.avatar"
-            style="
-              height: 120px;
-              width: 120px;
-              border-radius: 50%;
-              margin-top: -15px;
-            "
-          />
+          <img :src="userStore.avatar" class="card_left_image" />
           <div class="card_left_title">
-            <h1>你好 {{ userStore.username }}, 欢迎回来!</h1>
+            <h1>{{ getTime() }}好 {{ userStore.username }}, 欢迎回来!</h1>
             <h3 class="small_title">{{ setting.title }}</h3>
           </div>
         </div>
@@ -34,11 +26,7 @@
 import useUserStore from "@/store/modules/user.ts";
 import { onMounted } from "vue";
 import setting from "@/setting";
-
-// import { useRouter } from "vue-router";
-
-// // 获取路由器
-// let $router = useRouter();
+import { getTime } from "@/utils/time.ts";
 
 let userStore = useUserStore();
 onMounted(async () => {
@@ -58,21 +46,26 @@ onMounted(async () => {
   .card_left {
     display: flex;
     width: 50%;
-    height: auto;
-  }
 
-  .card_left_title {
-    h1 {
-      margin-left: 10px;
-      margin-top: 30px;
-      font-size: 25px;
+    .card_left_image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
     }
 
-    .small_title {
-      margin-left: 10px;
-      margin-top: 15px;
-      font-style: italic;
-      color: skyblue;
+    .card_left_title {
+      h1 {
+        margin-left: 18px;
+        margin-top: 30px;
+        font-size: 25px;
+      }
+
+      .small_title {
+        margin-left: 18px;
+        margin-top: 15px;
+        font-style: italic;
+        color: skyblue;
+      }
     }
   }
 }

@@ -9,7 +9,7 @@
         <el-table-column label="用户头像">
           <template #="{ row }">
             <el-image
-              :src="row.avatar"
+              :src="row.avatar !== '' && row.avatar !== null ? row.avatar : '/logo.png'"
               style="height: 40px; width: 40px; border-radius: 50%"
             />
           </template>
