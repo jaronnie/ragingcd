@@ -108,21 +108,30 @@ const ruleFormRef = ref<FormInstance>();
 const validateUsername = (_: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入用户名"));
+  } else if (value.length < 3 || value.length > 20) {
+    callback(new Error("用户名长度必须在3到20个字符之间"));
+  } else {
+    callback();
   }
-  callback();
 };
 const validatePassword = (_: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入密码"));
+  } else if (!/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/.test(value)) {
+    callback(new Error("密码必须包含字母和数字，且长度不少于6位"));
+  } else {
+    callback();
   }
-  callback();
 };
 
 const validateEmail = (_: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入邮箱"));
+  } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)) {
+    callback(new Error("请输入有效的邮箱地址"));
+  } else {
+    callback();
   }
-  callback();
 };
 
 const validateVerifyCode = (_: any, value: any, callback: any) => {

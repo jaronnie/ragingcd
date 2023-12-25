@@ -84,15 +84,20 @@ const ruleFormRef = ref<FormInstance>();
 const validateUsername = (_: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入用户名"));
+  } else if (value.length < 3 || value.length > 20) {
+    callback(new Error("用户名长度必须在3到20个字符之间"));
+  } else {
+    callback();
   }
-  callback();
 };
-
 const validatePassword = (_: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入密码"));
+  } else if (!/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/.test(value)) {
+    callback(new Error("密码必须包含字母和数字，且长度不少于6位"));
+  } else {
+    callback();
   }
-  callback();
 };
 
 const validateAvatar = (_: any, value: any, callback: any) => {
@@ -106,7 +111,6 @@ const rules = reactive<FormRules<AddUserBo>>({
   username: [
     {
       required: true,
-      message: "请输入用户名",
       trigger: "blur",
       validator: validateUsername,
     },
@@ -114,7 +118,6 @@ const rules = reactive<FormRules<AddUserBo>>({
   password: [
     {
       required: true,
-      message: "请输入密码",
       trigger: "blur",
       validator: validatePassword,
     },
@@ -122,7 +125,6 @@ const rules = reactive<FormRules<AddUserBo>>({
   avatar: [
     {
       required: true,
-      message: "请上传 LOGO",
       trigger: "blur",
       validator: validateAvatar,
     },
