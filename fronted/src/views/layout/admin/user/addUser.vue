@@ -26,6 +26,7 @@
             :headers="{ Authorization: tokenPrefix + ' ' + GET_TOKEN() }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
+            :on-progress="handleAvatarProgress"
             :before-upload="beforeAvatarUpload"
           >
             <img
@@ -33,7 +34,10 @@
               :src="addUserForm.avatar.url"
               style="width: 178px; height: 178px"
             />
-            <el-icon v-else class="avatar-uploader-icon"
+            <el-icon
+              v-else
+              class="avatar-uploader-icon"
+              :class="{ 'uploading-icon': uploading }"
               ><uploadFilled
             /></el-icon>
           </el-upload>
@@ -80,6 +84,8 @@ let addUserForm = reactive<AddUserBo>({
 
 // 表单校验
 const ruleFormRef = ref<FormInstance>();
+
+const uploading = ref(false);
 // 自定义校验
 const validateUsername = (_: any, value: any, callback: any) => {
   if (value === "") {
@@ -133,6 +139,15 @@ const rules = reactive<FormRules<AddUserBo>>({
 
 const handleAvatarSuccess: UploadProps["onSuccess"] = (response) => {
   addUserForm.avatar = response.data;
+  ElMessage({
+    type: "success",
+    message: "上传成功",
+  });
+  uploading.value = false;
+};
+
+const handleAvatarProgress = () => {
+  uploading.value = true;
 };
 
 const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
@@ -230,5 +245,18 @@ const confirm = async () => {
   width: 178px;
   height: 178px;
   text-align: center;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.avatar-uploader-icon.uploading-icon {
+  animation: rotate 1s linear infinite;
 }
 </style>
