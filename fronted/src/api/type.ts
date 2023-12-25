@@ -1,4 +1,4 @@
-export interface pageQuery {
+export interface PageQuery {
   pageNum: number;
   pageSize: number;
 }

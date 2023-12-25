@@ -1,12 +1,32 @@
 <template>
+  <el-card style="height: 120px; margin-top: -10px">
+    <el-form :inline="true">
+      <el-form-item label="用户名">
+        <el-input
+          placeholder="请输入用户名"
+          v-model="searchUserForm.username"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input
+          placeholder="请输入邮箱"
+          v-model="searchUserForm.email"
+        ></el-input>
+      </el-form-item>
+    </el-form>
+    <el-button type="primary" icon="Search" @click="searchUserFunc"
+      >查询</el-button
+    >
+    <el-button type="primary" icon="Refresh" @click="resetSearchUserFunc"
+      >重置</el-button
+    >
+  </el-card>
   <div>
-    <el-card>
+    <el-card style="margin-top: 10px">
       <el-button type="primary" icon="Plus" @click="addUserFunc"
         >添加用户</el-button
       >
       <el-table :data="userListRes" style="margin: 10px 0" border>
-        <el-table-column prop="username" label="用户名" />
-        <el-table-column prop="email" label="邮箱" />
         <el-table-column label="用户头像">
           <template #="{ row }">
             <el-image
@@ -19,6 +39,8 @@
             />
           </template>
         </el-table-column>
+        <el-table-column prop="username" label="用户名" />
+        <el-table-column prop="email" label="邮箱" />
         <el-table-column label="操作">
           <template #default="{ row }">
             <el-button
@@ -62,8 +84,12 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
 import { reqUserList } from "@/api/user";
-import { UserVo as User, UserListVoResponseData } from "@/api/user/type.ts";
-import { pageQuery } from "@/api/type.ts";
+import {
+  UserVo as User,
+  UserListVoResponseData,
+  SearchUserQuery,
+} from "@/api/user/type.ts";
+import { PageQuery } from "@/api/type.ts";
 import addUser from "./addUser.vue";
 import deleteUser from "./deleteUser.vue";
 import { Delete } from "@element-plus/icons-vue";
@@ -85,13 +111,22 @@ const viewState = reactive({
   },
 });
 
+// 收集查询用户时填写的表单
+let searchUserForm = reactive<SearchUserQuery>({
+  username: "",
+  email: "",
+});
+
 const reqUserListFunc = async (page = 1) => {
   currentPage.value = page;
-  const query: pageQuery = {
+  const query: PageQuery = {
     pageNum: currentPage.value,
     pageSize: pageSize.value,
   };
-  const response: UserListVoResponseData = await reqUserList(query);
+  const response: UserListVoResponseData = await reqUserList(
+    query,
+    searchUserForm,
+  );
   if (response.code == 200) {
     userListRes.value = response.data.rows;
     total.value = response.data.total;
@@ -126,9 +161,20 @@ const confirmDeleteUser = () => {
   reqUserListFunc();
 };
 
+// ================================== 查询 user 业务 ==================================
+const searchUserFunc = () => {
+  reqUserListFunc();
+};
+
+const resetSearchUserFunc = () => {
+  searchUserForm.email = "";
+  searchUserForm.username = "";
+  reqUserListFunc();
+};
+
 onMounted(() => {
   reqUserListFunc();
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

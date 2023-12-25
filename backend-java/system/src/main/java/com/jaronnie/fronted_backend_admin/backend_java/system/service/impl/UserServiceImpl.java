@@ -2,14 +2,16 @@ package com.jaronnie.fronted_backend_admin.backend_java.system.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jaronnie.fronted_backend_admin.backend_java.common.util.RandomCodeGen;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.AddUserBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.LoginBo;
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.PageQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.query.PageQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.RegisterUserBo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.po.UserPo;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.query.SearchUserQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.LoginVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.PublicKeyVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.TableDataInfo;
@@ -59,9 +61,11 @@ public class UserServiceImpl implements IUserService {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public TableDataInfo<UserVo> queryPageList(PageQuery pageQuery) {
+    public TableDataInfo<UserVo> queryPageList(PageQuery pageQuery, SearchUserQuery searchUserQuery) {
         LambdaQueryWrapper<UserPo> lqw = Wrappers.lambdaQuery();
         lqw.orderByDesc(UserPo::getUpdateTime);
+        lqw.like(StringUtils.isNotBlank(searchUserQuery.getEmail()), UserPo::getEmail, searchUserQuery.getEmail());
+        lqw.like(StringUtils.isNotBlank(searchUserQuery.getUsername()), UserPo::getUsername, searchUserQuery.getUsername());
 
         Page<UserPo> page = baseMapper.selectPage(pageQuery.build(), lqw);
 

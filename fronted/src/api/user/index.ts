@@ -7,8 +7,9 @@ import {
   UserVoResponseData,
   UserListVoResponseData,
   RegisterUserBo,
+  SearchUserQuery,
 } from "./type";
-import type { pageQuery } from "@/api/type.ts";
+import type { PageQuery } from "@/api/type.ts";
 import { BooleanResponseData } from "@/api/type.ts";
 
 enum API {
@@ -34,8 +35,16 @@ export const reqUserInfo = () =>
 export const reqPublicKey = () =>
   request.get<any, PublicKeyVoResponseData>(API.PUBLIC_KEY_URL);
 
-export const reqUserList = (params: pageQuery) =>
-  request.get<any, UserListVoResponseData>(API.USER_LIST_URL, { params });
+export const reqUserList = (
+  pageQuery: PageQuery,
+  searchQuery: SearchUserQuery,
+) =>
+  request.get<any, UserListVoResponseData>(API.USER_LIST_URL, {
+    params: {
+      ...pageQuery,
+      ...searchQuery,
+    },
+  });
 
 export const reqUserAdd = (data: AddUserBo) =>
   request.post<any, UserListVoResponseData>(API.USER_ADD_URL, data);

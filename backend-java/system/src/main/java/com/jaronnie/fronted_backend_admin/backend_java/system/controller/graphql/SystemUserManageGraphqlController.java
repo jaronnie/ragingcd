@@ -1,6 +1,7 @@
 package com.jaronnie.fronted_backend_admin.backend_java.system.controller.graphql;
 
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.PageQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.query.PageQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.query.SearchUserQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.service.IUserService;
@@ -15,7 +16,7 @@ public class SystemUserManageGraphqlController {
 
     @QueryMapping
     public TableDataInfo<UserVo> getUsers() {
-        return iUserService.queryPageList(new PageQuery());
+        return iUserService.queryPageList(new PageQuery(), new SearchUserQuery());
     }
 }
 

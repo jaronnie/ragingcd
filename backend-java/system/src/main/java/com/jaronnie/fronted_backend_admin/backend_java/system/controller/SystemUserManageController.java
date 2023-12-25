@@ -2,7 +2,8 @@ package com.jaronnie.fronted_backend_admin.backend_java.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.AddUserBo;
-import com.jaronnie.fronted_backend_admin.backend_java.system.domain.bo.PageQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.query.PageQuery;
+import com.jaronnie.fronted_backend_admin.backend_java.system.domain.query.SearchUserQuery;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.TableDataInfo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.domain.vo.UserVo;
 import com.jaronnie.fronted_backend_admin.backend_java.system.service.IUserService;
@@ -24,8 +25,8 @@ public class SystemUserManageController {
     @ApiOperation(value = "获取用户列表")
     @GetMapping("/list")
     @SaCheckLogin
-    public R<TableDataInfo<UserVo>> getUsers(@ModelAttribute PageQuery pageQuery) {
-        return R.ok(iUserService.queryPageList(pageQuery));
+    public R<TableDataInfo<UserVo>> getUsers(@ModelAttribute PageQuery pageQuery, @ModelAttribute SearchUserQuery searchUserQuery) {
+        return R.ok(iUserService.queryPageList(pageQuery, searchUserQuery));
     }
 
     @ApiOperation(value = "添加用户")

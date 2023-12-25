@@ -19,6 +19,11 @@ export interface AddUserBo {
   avatar: OssFileVo;
 }
 
+export interface SearchUserQuery {
+  username: string;
+  email: string;
+}
+
 interface LoginVo {
   token?: string;
 }
