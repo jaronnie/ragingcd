@@ -1,45 +1,83 @@
 <template>
-  <div>
-    <div id="chart-container"></div>
+  <div class="container">
+    <!--数据大屏展示内容区域-->
+    <div class="screen" ref="screen">
+      <!--顶部-->
+      <div class="top">
+        <Top></Top>
+      </div>
+      <!--底部-->
+      <div class="bottom">
+        <div class="left">bottom_left</div>
+        <div class="center">bottom_center</div>
+        <div class="right">bottom_right</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import * as echarts from "echarts";
+import { ref, onMounted } from "vue";
+import Top from "./components/top/index.vue";
+
+// 定义大屏缩放比例
+const getScale = (w = 1920, h = 1080) => {
+  const ww = window.innerWidth / w;
+  const wh = window.innerHeight / h;
+  return ww < wh ? ww : wh;
+};
+
+// 监听窗口的变化
+window.onresize = () => {
+  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%)`;
+};
 
 onMounted(() => {
-  const chartContainer = document.getElementById("chart-container");
-  const chart = echarts.init(chartContainer);
-
-  // 在这里配置和渲染你的Echarts图表
-  const options = {
-    title: {
-      text: "ECharts 入门示例",
-    },
-    tooltip: {},
-    legend: {
-      data: ["销量"],
-    },
-    xAxis: {
-      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-    },
-    yAxis: {},
-    series: [
-      {
-        name: "销量",
-        type: "bar",
-        data: [5, 20, 36, 10, 10, 20],
-      },
-    ],
-  };
-  chart.setOption(options);
+  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%)`;
 });
+
+let screen = ref();
 </script>
 
-<style lang="scss" scoped>
-#chart-container {
-  width: 100%;
-  height: 300px;
+<style scoped lang="scss">
+.container {
+  width: 100vw;
+  height: 100vh;
+  background: url("@/assets/images/screen/bg.png") no-repeat;
+  background-size: cover;
+
+  .screen {
+    position: fixed;
+    width: 1920px;
+    height: 1080px;
+    left: 50%;
+    top: 50%;
+    transform-origin: left top;
+
+    .top {
+      width: 100%;
+      height: 40px;
+      background-color: cyan;
+    }
+
+    .bottom {
+      display: flex;
+
+      .right {
+        background-color: cornflowerblue;
+        flex: 1;
+      }
+
+      .left {
+        background-color: burlywood;
+        flex: 1;
+      }
+
+      .center {
+        background-color: blueviolet;
+        flex: 2;
+      }
+    }
+  }
 }
 </style>
