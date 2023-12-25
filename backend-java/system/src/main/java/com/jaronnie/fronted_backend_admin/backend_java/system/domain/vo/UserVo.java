@@ -17,4 +17,5 @@ public class UserVo {
     private Date createTime;
     private Date updateTime;
     private String avatar;
+    private String email;
 }

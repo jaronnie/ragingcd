@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 public class AddUserBo {
-    String username;
-    String password;
-    OssFileVo avatar;
+    private String username;
+    private String password;
+    private OssFileVo avatar;
+    private String email;
 }

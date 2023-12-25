@@ -15,6 +15,7 @@ export interface RegisterUserBo {
 export interface AddUserBo {
   username: string;
   password: string;
+  email: string;
   avatar: OssFileVo;
 }
 
@@ -49,6 +50,7 @@ export interface UserVo {
   id: number;
   avatar: string;
   username: string;
+  email: string;
 }
 
 export interface PublicKeyVoResponseData {

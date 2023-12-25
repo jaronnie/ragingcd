@@ -6,15 +6,20 @@
       >
       <el-table :data="userListRes" style="margin: 10px 0" border>
         <el-table-column prop="username" label="用户名" />
+        <el-table-column prop="email" label="邮箱" />
         <el-table-column label="用户头像">
           <template #="{ row }">
             <el-image
-              :src="row.avatar !== '' && row.avatar !== null ? row.avatar : '/logo.png'"
+              :src="
+                row.avatar !== '' && row.avatar !== null
+                  ? row.avatar
+                  : '/logo.png'
+              "
               style="height: 40px; width: 40px; border-radius: 50%"
             />
           </template>
         </el-table-column>
-        <el-table-column label="Operations">
+        <el-table-column label="操作">
           <template #default="{ row }">
             <el-button
               size="small"

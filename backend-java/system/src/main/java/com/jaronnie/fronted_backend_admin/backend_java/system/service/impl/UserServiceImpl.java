@@ -30,8 +30,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.jaronnie.fronted_backend_admin.backend_java.common.enumeration.errcode.UserErrorCodeEnum.LogUpError;
-import static com.jaronnie.fronted_backend_admin.backend_java.common.enumeration.errcode.UserErrorCodeEnum.RegisterEmailVerificationCodeError;
+import static com.jaronnie.fronted_backend_admin.backend_java.common.enumeration.errcode.UserErrorCodeEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +73,7 @@ public class UserServiceImpl implements IUserService {
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
                 .avatar(userPo.getAvatar())
+                .email(userPo.getEmail())
                 .build()).collect(Collectors.toList());
         userVoTableDataInfo.setRows(result);
         return userVoTableDataInfo;
@@ -89,6 +89,7 @@ public class UserServiceImpl implements IUserService {
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
                 .avatar(userPo.getAvatar())
+                .email(userPo.getEmail())
                 .build();
     }
 
@@ -127,7 +128,7 @@ public class UserServiceImpl implements IUserService {
         LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
         lqw.eq(UserPo::getUsername, addUserBo.getUsername());
         if (this.baseMapper.exists(lqw)) {
-            throw LogUpError.newException();
+            throw DuplicateUsernameError.newException();
         }
 
         String password = RsaCrypto.decrypt(addUserBo.getPassword(), PrivateKey);
@@ -135,6 +136,7 @@ public class UserServiceImpl implements IUserService {
                 .avatar(addUserBo.getAvatar().getUrl())
                 .username(addUserBo.getUsername())
                 .password(Md5SaltUtil.generateHash(password, Salt))
+                .email(addUserBo.getEmail())
                 .build();
         this.baseMapper.insert(userPo);
 
@@ -144,6 +146,7 @@ public class UserServiceImpl implements IUserService {
                 .username(addUserBo.getUsername())
                 .createTime(userPo.getCreateTime())
                 .updateTime(userPo.getUpdateTime())
+                .email(userPo.getEmail())
                 .build();
     }
 
@@ -159,21 +162,27 @@ public class UserServiceImpl implements IUserService {
         LambdaQueryWrapper<UserPo> lqw = new LambdaQueryWrapper<>();
         lqw.eq(UserPo::getUsername, registerUserBo.getUsername());
         if (this.baseMapper.exists(lqw)) {
-            throw LogUpError.newException();
+            throw DuplicateUsernameError.newException();
         }
         String password = RsaCrypto.decrypt(registerUserBo.getPassword(), PrivateKey);
         UserPo userPo = UserPo.builder()
                 .username(registerUserBo.getUsername())
                 .password(Md5SaltUtil.generateHash(password, Salt))
+                .email(registerUserBo.getEmail())
                 .build();
-        this.baseMapper.insert(userPo);
-        return UserVo.builder()
-                .id(userPo.getId())
-                .avatar(userPo.getAvatar())
-                .username(userPo.getUsername())
-                .createTime(userPo.getCreateTime())
-                .updateTime(userPo.getUpdateTime())
-                .build();
+        try {
+            this.baseMapper.insert(userPo);
+            return UserVo.builder()
+                    .id(userPo.getId())
+                    .avatar(userPo.getAvatar())
+                    .username(userPo.getUsername())
+                    .createTime(userPo.getCreateTime())
+                    .updateTime(userPo.getUpdateTime())
+                    .email(userPo.getEmail())
+                    .build();
+        } catch (Exception e) {
+            throw RegisterError.newException(e);
+        }
     }
 
     @Override

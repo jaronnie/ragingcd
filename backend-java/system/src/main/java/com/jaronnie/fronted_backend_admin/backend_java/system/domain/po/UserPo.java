@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = false)
-@TableName(value = "user", autoResultMap = true)
+@TableName(value = "user", autoResultMap = false)
 @Entity
 @Data
 @Builder
@@ -30,4 +30,6 @@ public class UserPo extends BaseEntity implements Serializable {
     private String password;
     @TableField(updateStrategy = FieldStrategy.NOT_EMPTY)
     private String avatar;
+    @TableField(updateStrategy = FieldStrategy.NOT_EMPTY)
+    private String email;
 }

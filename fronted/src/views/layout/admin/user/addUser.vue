@@ -16,6 +16,9 @@
         <el-form-item label="用户名" prop="username" required>
           <el-input placeholder="请输入用户名" v-model="addUserForm.username" />
         </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input placeholder="请输入邮箱" v-model="addUserForm.email" />
+        </el-form-item>
         <el-form-item label="密码" prop="password" required>
           <el-input placeholder="请输入密码" v-model="addUserForm.password" />
         </el-form-item>
@@ -75,6 +78,7 @@ const emits = defineEmits(["cancelAdd", "confirmAdd"]);
 let addUserForm = reactive<AddUserBo>({
   username: "",
   password: "",
+  email: "",
   avatar: {
     url: "",
     uploadTime: "",
@@ -173,7 +177,8 @@ const beforeOpenCallback = () => {
   addUserForm.username = "";
   addUserForm.password = "";
   addUserForm.avatar.url = "";
-  ruleFormRef.value?.clearValidate(["username", "password", "avatar"]);
+  addUserForm.email = "";
+  ruleFormRef.value?.clearValidate(["username", "password", "avatar", "email"]);
 };
 
 const confirm = async () => {
@@ -201,6 +206,7 @@ const confirm = async () => {
     username: addUserForm.username,
     password: encrypt(addUserForm.password, publicKey),
     avatar: addUserForm.avatar,
+    email: addUserForm.email,
   });
   if (result.code === 200) {
     ElMessage({
