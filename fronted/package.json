@@ -19,6 +19,7 @@
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.6.2",
     "element-plus": "^2.4.2",
+    "moment": "^2.29.4",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "screenfull": "^6.0.2",

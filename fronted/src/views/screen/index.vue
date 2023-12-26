@@ -8,9 +8,9 @@
       </div>
       <!--底部-->
       <div class="bottom">
-        <div class="left">bottom_left</div>
-        <div class="center">bottom_center</div>
-        <div class="right">bottom_right</div>
+        <div class="left"></div>
+        <div class="center"></div>
+        <div class="right"></div>
       </div>
     </div>
   </div>
@@ -57,24 +57,20 @@ let screen = ref();
     .top {
       width: 100%;
       height: 40px;
-      background-color: cyan;
     }
 
     .bottom {
       display: flex;
 
       .right {
-        background-color: cornflowerblue;
         flex: 1;
       }
 
       .left {
-        background-color: burlywood;
         flex: 1;
       }
 
       .center {
-        background-color: blueviolet;
         flex: 2;
       }
     }

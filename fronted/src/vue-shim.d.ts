@@ -8,3 +8,4 @@ declare module "nprogress";
 declare module "luxon";
 declare module "element-plus/dist/locale/zh-cn.mjs";
 declare module "sm-crypto";
+declare module "moment";
