@@ -1,16 +1,19 @@
 <template>
   <div class="container">
-    <!--数据大屏展示内容区域-->
     <div class="screen" ref="screen">
-      <!--顶部-->
       <div class="top">
         <Top></Top>
       </div>
-      <!--底部-->
       <div class="bottom">
-        <div class="left"></div>
-        <div class="center"></div>
-        <div class="right"></div>
+        <div class="left">
+          <Left></Left>
+        </div>
+        <div class="center">
+          <Center></Center>
+        </div>
+        <div class="right">
+          <Right></Right>
+        </div>
       </div>
     </div>
   </div>
@@ -19,6 +22,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import Top from "./components/top/index.vue";
+import Left from "./components/left/index.vue";
+import Right from "./components/right/index.vue";
+import Center from "./components/center/index.vue";
 
 // 定义大屏缩放比例
 const getScale = (w = 1920, h = 1080) => {

@@ -4,11 +4,11 @@
       <span class="lbtn" @click="goHome">首页</span>
     </div>
     <div class="center">
-      <div class="title">jaronnie 运营平台数据大屏</div>
+      <div class="title">运营平台数据大屏</div>
     </div>
     <div class="right">
       <span class="rbtn">统计报告</span>
-      <span class="time">当前时间 {{ time }}</span>
+      <span class="time">当前时间: {{ time }}</span>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ onBeforeUnmount(() => {
 
     .lbtn {
       float: right;
-      width: 128px;
+      width: 135px;
       height: 40px;
       background-size: 100% 100%;
       background: url("@/assets/images/screen/dataScreen-header-btn-bg-l.png")
@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
 
     .rbtn {
       float: left;
-      width: 150px;
+      width: 140px;
       height: 40px;
       background-size: 100% 100%;
       background: url("@/assets/images/screen/dataScreen-header-btn-bg-r.png")
