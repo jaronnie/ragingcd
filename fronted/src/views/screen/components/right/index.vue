@@ -6,7 +6,11 @@
   </div>
 </template>
 
-<script lang="ts"></script>
+<script lang="ts">
+export default {
+  name: "Right",
+};
+</script>
 
 <style scoped lang="scss">
 .right {

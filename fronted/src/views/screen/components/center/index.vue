@@ -4,7 +4,12 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts">
+export default {
+  // eslint-disable-next-line vue/no-reserved-component-names
+  name: "Center",
+};
+</script>
 
 <style scoped lang="scss">
 .center {
