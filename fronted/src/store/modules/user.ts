@@ -89,8 +89,6 @@ const useUserStore = defineStore("User", {
     },
     async userLogout() {
       this.token = "";
-      this.avatar = "";
-      this.username = "";
       REMOVE_TOKEN();
       try {
         const res = await reqLogout();
