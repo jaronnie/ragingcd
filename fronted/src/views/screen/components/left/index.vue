@@ -1,6 +1,8 @@
 <template>
   <div class="left">
-    <div class="top"></div>
+    <div class="top">
+      <LeftTop></LeftTop>
+    </div>
     <div class="center"></div>
     <div class="bottom"></div>
   </div>
@@ -12,14 +14,14 @@ export default {
 };
 </script>
 
+<script setup lang="ts">
+import LeftTop from "@/views/screen/components/left/leftTop/index.vue";
+</script>
+
 <style scoped lang="scss">
 .left {
   .top {
-    height: 380px;
-    width: 480px;
-    background: url("@/assets/images/screen/dataScreen-main-lt.png") no-repeat;
-    background-size: cover;
-    margin-top: 10px;
+
   }
 
   .center {
