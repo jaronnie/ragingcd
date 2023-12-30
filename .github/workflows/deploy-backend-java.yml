@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'backend-java/**'
+      - 'stdb/**'
       - '.github/workflows/deploy-backend-java.yml'
 
 env:

@@ -11,7 +11,7 @@ tasks:
     silent: true
   build:backend-java:
     cmds:
-      - cd backend-java;mvn package -Dmaven.test.skip=true;cd ..
+      - cd stdb;mvn package -Dmaven.test.skip=true;cd ..
     silent: true    
   docker:build:fronted:
     deps:
