@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jaronnie.fronted_backend_admin</groupId>
+    <groupId>com.jaronnie.ragingcd</groupId>
     <artifactId>stdb</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>backend_java version</description>
+    <description>stdb version</description>
     <modules>
         <module>admin</module>
         <module>system</module>
@@ -29,12 +29,12 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.jaronnie.fronted_backend_admin.backend_java</groupId>
+                <groupId>com.jaronnie.ragingcd.stdb</groupId>
                 <artifactId>system</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.jaronnie.fronted_backend_admin.backend_java</groupId>
+                <groupId>com.jaronnie.ragingcd.stdb</groupId>
                 <artifactId>common</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>

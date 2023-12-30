@@ -17,7 +17,7 @@ dromara:
         secret-key: ${Qiniu_SecretKey:??}
         bucket-name: ${Qiniu_BucketName:??}
         domain: https://oss.jaronnie.com/
-        base-path: fronted-backend-admin/
+        base-path: ragingcd/
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:

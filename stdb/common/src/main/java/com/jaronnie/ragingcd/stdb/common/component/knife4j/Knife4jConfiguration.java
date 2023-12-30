@@ -20,11 +20,11 @@ public class Knife4jConfiguration {
                 .apiInfo(new ApiInfoBuilder()
                         .title("接口文档")
                         .description("backend-java")
-                        .contact(new Contact("Jaronnie", "https://fronted-backend-admin.cloud.jaronnie.com", "jaron@jaronnie.com"))
+                        .contact(new Contact("Jaronnie", "https://ragingcd.cloud.jaronnie.com", "jaron@jaronnie.com"))
                         .version("v1.0")
                         .build())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.jaronnie.fronted_backend_admin.backend_java"))
+                .apis(RequestHandlerSelectors.basePackage("com.jaronnie.ragingcd.stdb"))
                 .paths(PathSelectors.any())
                 .build();
     }
