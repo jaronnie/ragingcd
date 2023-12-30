@@ -29,7 +29,7 @@ tasks:
     deps:
       - build:backend-java
     cmds:
-      - cd backend-java;docker build -t jaronnie/admin-backend-java:latest .;cd ..
+      - cd stdb;docker build -t jaronnie/admin-backend-java:latest .;cd ..
     silent: true    
   docker:push:fronted:
     deps:
