@@ -67,58 +67,6 @@ const menus = [
           icon: "UserFilled",
         },
       },
-      {
-        path: "/layout/admin/permission",
-        name: "permission",
-        meta: {
-          title: "权限管理",
-          icon: "Operation",
-          hidden: true,
-        },
-      },
-    ],
-  },
-  {
-    path: "/layout/product",
-    name: "product",
-    meta: {
-      title: "产品管理",
-      icon: "Shop",
-      hidden: true,
-    },
-    children: [
-      {
-        path: "/layout/product/attr",
-        name: "attr",
-        meta: {
-          title: "属性管理",
-          icon: "UserFilled",
-        },
-      },
-      {
-        path: "/layout/product/spu",
-        name: "spu",
-        meta: {
-          title: "spu 管理",
-          icon: "Operation",
-        },
-      },
-      {
-        path: "/layout/product/sku",
-        name: "sku",
-        meta: {
-          title: "sku 管理",
-          icon: "Operation",
-        },
-      },
-      {
-        path: "/layout/product/trademark",
-        name: "trademark",
-        meta: {
-          title: "trademark 管理",
-          icon: "Operation",
-        },
-      },
     ],
   },
   {

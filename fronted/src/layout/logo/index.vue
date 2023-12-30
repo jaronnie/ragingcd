@@ -4,6 +4,7 @@
       :src="setting.logo.path"
       style="width: 40px; height: 40px"
       v-if="setting.logo.enabled"
+      @click="goHome"
     />
     <template v-if="showLogoName">
       <p>{{ setting.title }}</p></template
@@ -13,12 +14,19 @@
 
 <script setup lang="ts">
 import setting from "@/setting";
+import { useRouter } from "vue-router";
+
+let $router = useRouter();
 
 // 获取父组件传递过来的全部路由
 type HeaderProps = {
   showLogoName: boolean;
 };
 defineProps<HeaderProps>();
+
+const goHome = async () => {
+  await $router.push("/");
+};
 </script>
 
 <style lang="scss" scoped>

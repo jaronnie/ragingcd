@@ -62,64 +62,6 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
               icon: "UserFilled",
             },
           },
-          {
-            path: "/layout/admin/permission",
-            component: () =>
-              import("@/views/layout/admin/permission/index.vue"),
-            name: "permission",
-            meta: {
-              title: "权限管理",
-              icon: "Operation",
-            },
-          },
-        ],
-      },
-      {
-        path: "/layout/product",
-        name: "product",
-        meta: {
-          title: "产品管理",
-          icon: "Product",
-        },
-        redirect: "/layout/product/attr",
-        children: [
-          {
-            path: "/layout/product/attr",
-            component: () => import("@/views/layout/product/attr/index.vue"),
-            name: "attr",
-            meta: {
-              title: "属性管理",
-              icon: "UserFilled",
-            },
-          },
-          {
-            path: "/layout/product/spu",
-            component: () => import("@/views/layout/product/spu/index.vue"),
-            name: "spu",
-            meta: {
-              title: "spu 管理",
-              icon: "Operation",
-            },
-          },
-          {
-            path: "/layout/product/sku",
-            component: () => import("@/views/layout/product/sku/index.vue"),
-            name: "sku",
-            meta: {
-              title: "sku 管理",
-              icon: "Operation",
-            },
-          },
-          {
-            path: "/layout/product/trademark",
-            component: () =>
-              import("@/views/layout/product/trademark/index.vue"),
-            name: "trademark",
-            meta: {
-              title: "trademark 管理",
-              icon: "Operation",
-            },
-          },
         ],
       },
       {

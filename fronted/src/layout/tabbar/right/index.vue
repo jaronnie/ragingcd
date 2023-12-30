@@ -1,4 +1,7 @@
 <template>
+  <el-button circle size="small" @click="gotoGithub">
+    <Svg-Icon name="gitHub"></Svg-Icon>
+  </el-button>
   <el-button
     size="small"
     icon="Refresh"
@@ -46,6 +49,11 @@ import { ElMessage } from "element-plus";
 
 const userStore = useUserStore();
 const layoutStore = useLayoutStore();
+
+const gotoGithub = () => {
+  window.open("https://github.com/jaronnie/ragingcd", "_blank");
+};
+
 const refreshMain = () => {
   // 点击按钮值更改
   layoutStore.refresh = !layoutStore.refresh;

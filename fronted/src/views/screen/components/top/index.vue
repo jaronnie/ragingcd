@@ -4,7 +4,7 @@
       <span class="lbtn" @click="goHome">首页</span>
     </div>
     <div class="center">
-      <div class="title">运营平台数据大屏</div>
+      <div class="title">{{ setting.title }}数据大屏</div>
     </div>
     <div class="right">
       <span class="rbtn">统计报告</span>
@@ -17,6 +17,7 @@
 import { useRouter } from "vue-router";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import moment from "moment";
+import setting from "@/setting.ts";
 
 let $router = useRouter();
 
