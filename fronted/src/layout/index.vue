@@ -70,6 +70,14 @@ const menus = [
     ],
   },
   {
+    path: "/layout/code-hosting-manage",
+    name: "code-hosting-manage",
+    meta: {
+      title: "代码托管平台管理",
+      icon: "SwitchFilled",
+    },
+  },
+  {
     path: "/layout/gitlog/",
     name: "gitlog",
     meta: {
