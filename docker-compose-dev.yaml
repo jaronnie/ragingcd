@@ -1,8 +1,8 @@
 version: '3'
 services:
-  backend-java:
+  stdb:
     build:
-      context: ./backend-java
+      context: ./stdb
     ports:
       - '8082:8082'
     restart: always
@@ -13,8 +13,8 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
     depends_on:
       - mysql8
-  backend-go:
-    image: jaronnie/admin-backend-go:latest
+  core:
+    image: jaronnie/ragingcd-core:latest
     ports:
       - '8081:8081'
     restart: always
@@ -23,32 +23,33 @@ services:
   fronted:
     build:
       context: ./fronted
+    restart: always      
     ports:
       - '8080:80'
-  oracle11g:
-    image: deepdiver/docker-oracle-xe-11g
-    restart: always
-    container_name: backend-oracle11g
-    ports:
-      - '1521:1521'
-  dameng8:
-    image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
-    restart: always
-    container_name: backend-dameng8
-    privileged: true
-    environment:
-      - PAGE_SIZE=16
-      - LD_LIBRARY_PATH=/opt/dmdbms/bin
-      - EXTENT_SIZE=32
-      - BLANK_PAD_MODE=1
-      - LOG_SIZE=1024
-      - UNICODE_FLAG=1
-      - LENGTH_IN_CHAR=1
-      - INSTANCE_NAME=backend-dameng8
-    volumes:
-      - ./deploy/dameng8/data:/opt/dmdbms/data
-    ports:
-      - '30236:5236'
+  # oracle11g:
+  #   image: deepdiver/docker-oracle-xe-11g
+  #   restart: always
+  #   container_name: ragingcd-oracle11g
+  #   ports:
+  #     - '1521:1521'
+  # dameng8:
+  #   image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
+  #   restart: always
+  #   container_name: ragingcd-dameng8
+  #   privileged: true
+  #   environment:
+  #     - PAGE_SIZE=16
+  #     - LD_LIBRARY_PATH=/opt/dmdbms/bin
+  #     - EXTENT_SIZE=32
+  #     - BLANK_PAD_MODE=1
+  #     - LOG_SIZE=1024
+  #     - UNICODE_FLAG=1
+  #     - LENGTH_IN_CHAR=1
+  #     - INSTANCE_NAME=ragingcd-dameng8
+  #   volumes:
+  #     - ./deploy/dameng8/data:/opt/dmdbms/data
+  #   ports:
+  #     - '30236:5236'
   mysql8:
     image: mysql:8.0.32
     deploy:
@@ -57,7 +58,7 @@ services:
           cpus: '1'
           memory: 1024M
     restart: always
-    container_name: backend-mysql8
+    container_name: ragingcd-mysql8
     ports:
       - '3306:3306'
     environment:
@@ -69,8 +70,8 @@ services:
       - ./deploy/mysql8/config:/etc/mysql/conf.d
       - ./deploy/mysql8/sql:/docker-entrypoint-initdb.d
   redis:
-    image: redis:latest
-    container_name: backend-redis
+    image: redis:5.0
+    container_name: ragingcd-redis
     restart: always
     ports:
       - '6379:6379'

@@ -1,7 +1,7 @@
 version: '3'
 services:
-  backend-java:
-    image: jaronnie/admin-backend-java:latest
+  stdb:
+    image: jaronnie/ragingcd-stdb:latest
     restart: always
     environment:
       - Qiniu_AccessKey=${Qiniu_AccessKey}
@@ -10,35 +10,38 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
     depends_on:
       - mysql8
-  backend-go:
-    image: jaronnie/admin-backend-go:latest
+  core:
+    image: jaronnie/ragingcd-core:latest
     restart: always
     depends_on:
       - mysql8
   fronted:
-    image: jaronnie/admin-fronted:latest
+    image: jaronnie/ragingcd-fronted:latest
+    restart: always
     ports:
       - '8080:80'
-  oracle11g:
-    image: deepdiver/docker-oracle-xe-11g
-    restart: always
-    container_name: backend-oracle11g
-  dameng8:
-    image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
-    restart: always
-    container_name: backend-dameng8
-    privileged: true
-    environment:
-      - PAGE_SIZE=16
-      - LD_LIBRARY_PATH=/opt/dmdbms/bin
-      - EXTENT_SIZE=32
-      - BLANK_PAD_MODE=1
-      - LOG_SIZE=1024
-      - UNICODE_FLAG=1
-      - LENGTH_IN_CHAR=1
-      - INSTANCE_NAME=backend-dameng8
-    volumes:
-      - ./deploy/dameng8/data:/opt/dmdbms/data
+    depends_on:
+      - stdb      
+  # oracle11g:
+  #   image: deepdiver/docker-oracle-xe-11g
+  #   restart: always
+  #   container_name: ragingcd-oracle11g
+  # dameng8:
+  #   image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
+  #   restart: always
+  #   container_name: ragingcd-dameng8
+  #   privileged: true
+  #   environment:
+  #     - PAGE_SIZE=16
+  #     - LD_LIBRARY_PATH=/opt/dmdbms/bin
+  #     - EXTENT_SIZE=32
+  #     - BLANK_PAD_MODE=1
+  #     - LOG_SIZE=1024
+  #     - UNICODE_FLAG=1
+  #     - LENGTH_IN_CHAR=1
+  #     - INSTANCE_NAME=ragingcd-dameng8
+  #   volumes:
+  #     - ./deploy/dameng8/data:/opt/dmdbms/data
   mysql8:
     image: mysql:8.0.32
     deploy:
@@ -47,19 +50,18 @@ services:
           cpus: '4'
           memory: 4096M
     restart: always
-    container_name: backend-mysql8
+    container_name: ragingcd-mysql8
     environment:
       - TZ=Asia/Shanghai
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_ROOT_USER=root
-      - MYSQL_DATABASE=backend
     volumes:
       - ./deploy/mysql8/data:/var/lib/mysql
       - ./deploy/mysql8/config:/etc/mysql/conf.d
       - ./deploy/mysql8/sql:/docker-entrypoint-initdb.d
   redis:
-    image: redis:latest
-    container_name: backend-redis
+    image: redis:5.0
+    container_name: ragingcd-redis
     restart: always
     volumes:
       - ./deploy/redis/data:/data

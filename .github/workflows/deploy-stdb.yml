@@ -1,11 +1,13 @@
-name: Deploy-backend-go
+name: Deploy-stdb
 
 on:
   push:
     branches:
       - 'main'
     paths:
-      - 'backend-go/**'
+      - 'Taskfile.yml'
+      - 'stdb/**'
+      - '.github/workflows/deploy-stdb.yml'
 
 env:
   TZ: Asia/Shanghai
@@ -28,10 +30,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set up Go
-        uses: actions/setup-go@v3
+      - name: Set up java
+        uses: actions/setup-java@v4
         with:
-          go-version: '1.20.6'
+          distribution: 'corretto'
+          java-version: '8'
+          cache: 'maven'
 
       - name: Install Task
         uses: arduino/setup-task@v1
@@ -41,7 +45,7 @@ jobs:
 
       - name: build src and docker build image and push to docker hub
         run: |
-          task docker:push:backend-go
+          task docker:push:stdb
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v0.1.10
@@ -50,5 +54,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker pull jaronnie/admin-backend-go
-            # todo
+            docker pull jaronnie/admin-stdb
+            cd ragingcd
+            docker-compose stop stdb
+            docker-compose up -d stdb

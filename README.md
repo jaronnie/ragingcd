@@ -1,4 +1,4 @@
-# fronted-backend-admin
+# ragingcd
 
 <h1 align="center">
     <img src="./fronted/public/logo.png" alt="Logo">
@@ -20,7 +20,7 @@
       <img src="https://img.shields.io/badge/golang-1.20-brightgreen" alt="element-plus">
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/license/jaronnie/fronted-backend-admin">
+        <img src="https://img.shields.io/github/license/jaronnie/ragingcd">
     </a>
 </p>
 

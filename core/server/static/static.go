@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jaronnie/fronted-backend-admin/backend-go/public"
+	"github.com/jaronnie/ragingcd/core/public"
 )
 
 func Static(r *gin.RouterGroup, f fs.FS) {

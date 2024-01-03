@@ -5,11 +5,11 @@ tasks:
     cmds:
       - cd fronted;pnpm i;pnpm run build;cd ..
     silent: true
-  build:backend-go:
+  build:core:
     cmds:
-      - cd backend-go;GOOS=linux GOARCH=amd64 go build;cd ..
+      - cd core;GOOS=linux GOARCH=amd64 go build;cd ..
     silent: true
-  build:backend-java:
+  build:stdb:
     cmds:
       - cd stdb;mvn package -Dmaven.test.skip=true;cd ..
     silent: true    
@@ -17,32 +17,32 @@ tasks:
     deps:
       - build:fronted
     cmds:
-      - cd fronted;docker build -t jaronnie/admin-fronted:latest .;cd ..
+      - cd fronted;docker build -t jaronnie/ragingcd-fronted:latest .;cd ..
     silent: true
-  docker:build:backend-go:
+  docker:build:core:
     deps:
-      - build:backend-go
+      - build:core
     cmds:
-      - cd backend-go;docker build -t jaronnie/admin-backend-go:latest .;cd ..
+      - cd core;docker build -t jaronnie/ragingcd-core:latest .;cd ..
     silent: true
-  docker:build:backend-java:
+  docker:build:stdb:
     deps:
-      - build:backend-java
+      - build:stdb
     cmds:
-      - cd stdb;docker build -t jaronnie/admin-backend-java:latest .;cd ..
+      - cd stdb;docker build -t jaronnie/ragingcd-stdb:latest .;cd ..
     silent: true    
   docker:push:fronted:
     deps:
       - docker:build:fronted
     cmds:
-      - docker push jaronnie/admin-fronted:latest     
-  docker:push:backend-go:
+      - docker push jaronnie/ragingcd-fronted:latest     
+  docker:push:core:
     deps:
-      - docker:build:backend-go
+      - docker:build:core
     cmds:
-      - docker push jaronnie/admin-backend-go:latest
-  docker:push:backend-java:
+      - docker push jaronnie/ragingcd-core:latest
+  docker:push:stdb:
     deps:
-      - docker:build:backend-java
+      - docker:build:stdb
     cmds:
-      - docker push jaronnie/admin-backend-java:latest
+      - docker push jaronnie/ragingcd-stdb:latest

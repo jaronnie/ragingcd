@@ -3,9 +3,9 @@ package server
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/jaronnie/fronted-backend-admin/backend-go/public"
-	apiv1 "github.com/jaronnie/fronted-backend-admin/backend-go/server/api/v1"
-	"github.com/jaronnie/fronted-backend-admin/backend-go/server/static"
+	"github.com/jaronnie/ragingcd/core/public"
+	apiv1 "github.com/jaronnie/ragingcd/core/server/api/v1"
+	"github.com/jaronnie/ragingcd/core/server/static"
 )
 
 func Router(e *gin.Engine) {

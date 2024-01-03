@@ -14,15 +14,15 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jaronnie/fronted-backend-admin/backend-go/server"
+	"github.com/jaronnie/ragingcd/core/server"
 	"github.com/spf13/cobra"
 )
 
 // serverCmd represents the server command
 var serverCmd = &cobra.Command{
 	Use:   "server",
-	Short: "backend-go server",
-	Long:  `backend-go server`,
+	Short: "core server",
+	Long:  `core server`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		r := gin.New()
 		server.Cors(r)

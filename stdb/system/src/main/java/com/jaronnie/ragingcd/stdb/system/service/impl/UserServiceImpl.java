@@ -46,13 +46,13 @@ public class UserServiceImpl implements IUserService {
     @Value("${spring.mail.password}")
     private String Password;
 
-    @Value("${backend.encrypt.type}")
+    @Value("${stdb.encrypt.type}")
     private String Type;
 
-    @Value("${backend.encrypt.private-key}")
+    @Value("${stdb.encrypt.private-key}")
     private String PrivateKey;
 
-    @Value("${backend.encrypt.public-key}")
+    @Value("${stdb.encrypt.public-key}")
     private String PublicKey;
 
     private static final String Salt = "jaronnie";

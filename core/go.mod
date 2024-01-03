@@ -1,4 +1,4 @@
-module github.com/jaronnie/fronted-backend-admin/backend-go
+module github.com/jaronnie/ragingcd/core
 
 go 1.20
 

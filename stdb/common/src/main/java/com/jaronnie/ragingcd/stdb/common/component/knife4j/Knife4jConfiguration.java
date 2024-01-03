@@ -19,7 +19,7 @@ public class Knife4jConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("接口文档")
-                        .description("backend-java")
+                        .description("stdb")
                         .contact(new Contact("Jaronnie", "https://ragingcd.cloud.jaronnie.com", "jaron@jaronnie.com"))
                         .version("v1.0")
                         .build())
