@@ -27,16 +27,25 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
       {
         path: "/layout/dashboard",
         component: () => import("@/views/layout/dashboard/index.vue"),
+        meta: {
+          title: "仪表盘",
+        },
       },
       {
         path: "/layout/admin",
         name: "admin",
         redirect: "/layout/admin/user",
+        meta: {
+          title: "超级管理员",
+        },
         children: [
           {
             path: "/layout/admin/user",
             component: () => import("@/views/layout/admin/user/index.vue"),
             name: "user",
+            meta: {
+              title: "用户管理",
+            },
           },
         ],
       },
@@ -44,11 +53,17 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
         path: "/layout/code-hosting-manage",
         component: () => import("@/views/layout/code-hosting-manage/index.vue"),
         name: "code-hosting-manage",
+        meta: {
+          title: "代码托管平台管理",
+        },
       },
       {
         path: "/layout/gitlog",
         component: () => import("@/views/layout/gitlog/index.vue"),
         name: "gitlog",
+        meta: {
+          title: "更新记录",
+        },
       },
     ],
   },
@@ -56,6 +71,9 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     path: "/screen",
     component: () => import("@/views/screen/index.vue"),
     name: "screen",
+    meta: {
+      title: "数据大屏",
+    },
   },
   {
     path: "/404",

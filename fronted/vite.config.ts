@@ -1,13 +1,13 @@
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import { ConfigEnv, UserConfigExport, loadEnv } from "vite";
+import { ConfigEnv, UserConfigExport } from "vite";
 import { viteMockServe } from "vite-plugin-mock";
 
-export default ({ command, mode }: ConfigEnv): UserConfigExport => {
+export default ({ command }: ConfigEnv): UserConfigExport => {
   const prodMock = false;
   const devMock = false;
-  const env = loadEnv(mode, process.cwd());
+  // const env = loadEnv(mode, process.cwd());
   return {
     base: "./",
     plugins: [
@@ -35,11 +35,17 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     // 代理跨域
     server: {
       proxy: {
-        [env.VITE_APP_BASE_API]: {
+        "/gateway/stdb": {
           target: "http://127.0.0.1:8082/",
           // 需要代理跨域
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, "/api"),
+          rewrite: (path) => path.replace(/^\/gateway\/stdb/, ""),
+        },
+        "/gateway/core": {
+          target: "http://127.0.0.1:8081/",
+          // 需要代理跨域
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/gateway\/core/, ""),
         },
       },
     },
