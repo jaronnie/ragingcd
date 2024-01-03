@@ -11,6 +11,8 @@ import com.jaronnie.ragingcd.stdb.system.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -51,6 +53,22 @@ public class SystemUserController {
     @SaCheckLogin
     public R<UserVo> info() {
         return R.ok(iUserService.info());
+    }
+
+    @ApiOperation(value = "鉴权中间件")
+    @GetMapping("/auth")
+    @SaCheckLogin
+    public ResponseEntity<UserVo> auth() {
+        UserVo userInfo = iUserService.info();
+        System.out.println("=========鉴权中间件, 获取用户信息=========");
+        System.out.println(userInfo);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Forward-Auth-Header", String.valueOf(userInfo.getId()));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(userInfo);
     }
 
     @ApiOperation(value = "获取公钥")

@@ -1,11 +1,30 @@
 version: '3'
 services:
+  gateway:
+    # The official v2 Traefik docker image
+    image: traefik:latest
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker --log.level=DEBUG
+    ports:
+      # The Web UI (enabled by --api.insecure=true)
+      - "28080:8080"
+    labels: 
+      - "traefik.http.middlewares.prefix-stripper.stripprefixregex.regex=/apps.*?/"
+      - "traefik.http.middlewares.auth-middleware.forwardauth.address=http://stdb:8082/api/v1.0/system/user/auth" # 鉴权中间件调用 stdb 的 auth 接口
+      - "traefik.http.middlewares.auth-middleware.forwardauth.authresponseheaders=X-Forward-Auth-Header" # 鉴权中间件自定义的响应头部
+      - "traefik.http.middlewares.auth-middleware.forwardauth.trustForwardHeader=true"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock   
   stdb:
     build:
       context: ./stdb
     ports:
       - '8082:8082'
     restart: always
+    labels:
+      - "traefik.http.routers.stdb.rule=PathPrefix(`/apps.stdb`)"
+      - "traefik.http.routers.stdb.middlewares=prefix-stripper"    
     environment:
       - Qiniu_AccessKey=${Qiniu_AccessKey}
       - Qiniu_SecretKey=${Qiniu_SecretKey}
@@ -14,10 +33,14 @@ services:
     depends_on:
       - mysql8
   core:
-    image: jaronnie/ragingcd-core:latest
+    build:
+      context: ./core
     ports:
       - '8081:8081'
     restart: always
+    labels:
+      - "traefik.http.routers.core.rule=PathPrefix(`/apps.core`)"
+      - "traefik.http.routers.core.middlewares=prefix-stripper, auth-middleware"
     depends_on:
       - mysql8
   fronted:
@@ -26,30 +49,6 @@ services:
     restart: always      
     ports:
       - '8080:80'
-  # oracle11g:
-  #   image: deepdiver/docker-oracle-xe-11g
-  #   restart: always
-  #   container_name: ragingcd-oracle11g
-  #   ports:
-  #     - '1521:1521'
-  # dameng8:
-  #   image: dm8_single:dm8_20230808_rev197096_x86_rh6_64
-  #   restart: always
-  #   container_name: ragingcd-dameng8
-  #   privileged: true
-  #   environment:
-  #     - PAGE_SIZE=16
-  #     - LD_LIBRARY_PATH=/opt/dmdbms/bin
-  #     - EXTENT_SIZE=32
-  #     - BLANK_PAD_MODE=1
-  #     - LOG_SIZE=1024
-  #     - UNICODE_FLAG=1
-  #     - LENGTH_IN_CHAR=1
-  #     - INSTANCE_NAME=ragingcd-dameng8
-  #   volumes:
-  #     - ./deploy/dameng8/data:/opt/dmdbms/data
-  #   ports:
-  #     - '30236:5236'
   mysql8:
     image: mysql:8.0.32
     deploy:

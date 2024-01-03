@@ -13,15 +13,15 @@ import type { PageQuery } from "@/api/type.ts";
 import { BooleanResponseData } from "@/api/type.ts";
 
 enum API {
-  LOGIN_URL = "/v1.0/system/user/login",
-  LOGOUT_URL = "/v1.0/system/user/logout",
-  USER_INFO_URL = "/v1.0/system/user/info",
-  USER_LIST_URL = "/v1.0/system/user_manage/list",
-  USER_ADD_URL = "/v1.0/system/user_manage/add",
-  PUBLIC_KEY_URL = "/v1.0/system/user/public-key",
-  USER_DELETE_URL = "/v1.0/system/user_manage/delete",
-  USER_REGISTER_URL = "/v1.0/system/user/register",
-  USER_REGISTER_SEND_MAIL = "/v1.0/system/user/send_email",
+  LOGIN_URL = "/gateway/stdb/v1.0/system/user/login",
+  LOGOUT_URL = "/gateway/stdb/v1.0/system/user/logout",
+  USER_INFO_URL = "/gateway/stdb/v1.0/system/user/info",
+  USER_LIST_URL = "/gateway/stdb/v1.0/system/user_manage/list",
+  USER_ADD_URL = "/gateway/stdb/v1.0/system/user_manage/add",
+  PUBLIC_KEY_URL = "/gateway/stdb/v1.0/system/user/public-key",
+  USER_DELETE_URL = "/gateway/stdb/v1.0/system/user_manage/delete",
+  USER_REGISTER_URL = "/gateway/stdb/v1.0/system/user/register",
+  USER_REGISTER_SEND_MAIL = "/gateway/stdb/v1.0/system/user/send_email",
 }
 
 export const reqLogin = (data: LoginBo) =>
