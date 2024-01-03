@@ -54,7 +54,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker pull jaronnie/admin-stdb
+            docker pull jaronnie/ragingcd-stdb
             cd ragingcd
             docker-compose stop stdb
             docker-compose up -d stdb

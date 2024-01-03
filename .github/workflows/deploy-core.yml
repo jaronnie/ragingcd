@@ -52,5 +52,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker pull jaronnie/admin-core
+            docker pull jaronnie/ragingcd-core
             # todo

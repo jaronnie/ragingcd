@@ -53,7 +53,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker pull jaronnie/admin-fronted
+            docker pull jaronnie/ragingcd-fronted
             cd ragingcd
             docker-compose stop fronted
             docker-compose up -d fronted
