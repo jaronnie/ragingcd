@@ -4,6 +4,7 @@ export interface getCommitListReq {
 }
 
 export interface getCommitListResItem {
+  html_url: string;
   commit: commit;
   committer: committer;
 }

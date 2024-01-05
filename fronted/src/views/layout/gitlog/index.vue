@@ -15,7 +15,13 @@
             </h2>
             <br />
             <div class="gitlog_timeline_item_message">
-              <p>{{ item.commit.message }}</p>
+              <a
+                :href="item.html_url"
+                target="_blank"
+                style="color: cornflowerblue"
+              >
+                <p>{{ item.commit.message }}</p>
+              </a>
               <Svg-Icon name="successFilled"></Svg-Icon>
             </div>
           </el-card>
@@ -99,5 +105,9 @@ h2 {
 }
 .gitlog_timeline_item_message {
   display: flex;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
