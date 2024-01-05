@@ -78,7 +78,6 @@ const useUserStore = defineStore("User", {
       if (res.code === 200) {
         this.username = res.data.username;
         this.avatar = res.data.avatar;
-        console.log(this.avatar);
         if (this.avatar == "" || this.avatar == null) {
           this.avatar = "/logo.png";
         }
