@@ -32,3 +32,11 @@
 docker-compose -f docker-compose-production.yaml up -d
 ```
 
+## 本地开发
+
+```shell
+# 安装 task 工具
+go install github.com/go-task/task/v3/cmd/task@latest
+
+docker-compose -f docker-compose-dev.yaml up -d
+```

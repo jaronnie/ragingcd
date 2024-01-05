@@ -46,3 +46,13 @@ tasks:
       - docker:build:stdb
     cmds:
       - docker push jaronnie/ragingcd-stdb:latest
+  deploy:production:
+    cmds:
+      - docker-compose -f docker-compose-production.yaml up -d
+  deploy:dev:
+    deps:
+      - build:fronted
+      - build:stdb
+      - build:core
+    cmds:
+      - docker-compose -f docker-compose-dev.yaml up -d
