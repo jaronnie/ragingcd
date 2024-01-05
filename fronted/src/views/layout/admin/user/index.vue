@@ -1,27 +1,27 @@
 <template>
-  <el-card style="height: 120px; margin-top: -10px">
-    <el-form :inline="true">
-      <el-form-item label="用户名">
-        <el-input
-          placeholder="请输入用户名"
-          v-model="searchUserForm.username"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input
-          placeholder="请输入邮箱"
-          v-model="searchUserForm.email"
-        ></el-input>
-      </el-form-item>
-    </el-form>
-    <el-button type="primary" icon="Search" @click="searchUserFunc"
-      >查询</el-button
-    >
-    <el-button type="primary" icon="Refresh" @click="resetSearchUserFunc"
-      >重置</el-button
-    >
-  </el-card>
   <div>
+    <el-card style="height: 120px; margin-top: -10px">
+      <el-form :inline="true">
+        <el-form-item label="用户名">
+          <el-input
+            placeholder="请输入用户名"
+            v-model="searchUserForm.username"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input
+            placeholder="请输入邮箱"
+            v-model="searchUserForm.email"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <el-button type="primary" icon="Search" @click="searchUserFunc"
+        >查询</el-button
+      >
+      <el-button type="primary" icon="Refresh" @click="resetSearchUserFunc"
+        >重置</el-button
+      >
+    </el-card>
     <el-card style="margin-top: 10px">
       <el-button type="primary" icon="Plus" @click="addUserFunc"
         >添加用户</el-button
