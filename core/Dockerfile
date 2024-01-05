@@ -8,6 +8,8 @@ RUN mkdir -p /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.s
 
 RUN apk --no-cache add tzdata ca-certificates libc6-compat libstdc++ curl bash
 
+EXPOSE 8081
+
 COPY ./core /app/
 
 ENTRYPOINT ["/app/core", "server"]
