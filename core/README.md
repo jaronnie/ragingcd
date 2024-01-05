@@ -1,7 +1,5 @@
 # core
 
-core
-
 ## install
 
 ```shell

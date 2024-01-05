@@ -1,12 +1,14 @@
 package com.jaronnie.ragingcd.stdb.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import com.google.gson.Gson;
 import com.jaronnie.ragingcd.stdb.common.util.R;
 import com.jaronnie.ragingcd.stdb.system.domain.bo.LoginBo;
 import com.jaronnie.ragingcd.stdb.system.domain.bo.RegisterUserBo;
 import com.jaronnie.ragingcd.stdb.system.domain.vo.LoginVo;
 import com.jaronnie.ragingcd.stdb.system.domain.vo.PublicKeyVo;
 import com.jaronnie.ragingcd.stdb.system.domain.vo.UserVo;
+import com.jaronnie.ragingcd.stdb.system.domain.vo.XForwardAuthHeaderVo;
 import com.jaronnie.ragingcd.stdb.system.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "用户登录/注册")
 public class SystemUserController {
     private final IUserService iUserService;
+
+    private final String XForwardAuthHeaderKey = "X-Forward-Auth-Header";
+    private final Gson gson = new Gson();
 
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
@@ -60,11 +65,15 @@ public class SystemUserController {
     @SaCheckLogin
     public ResponseEntity<UserVo> auth() {
         UserVo userInfo = iUserService.info();
+        // TODO: 使用日志组件
         System.out.println("=========鉴权中间件, 获取用户信息=========");
         System.out.println(userInfo);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Forward-Auth-Header", String.valueOf(userInfo.getId()));
+
+        XForwardAuthHeaderVo xForwardAuthHeaderVo = new XForwardAuthHeaderVo();
+        xForwardAuthHeaderVo.setUserId(userInfo.getId());
+        headers.add(XForwardAuthHeaderKey, gson.toJson(xForwardAuthHeaderVo));
 
         return ResponseEntity.ok()
                 .headers(headers)

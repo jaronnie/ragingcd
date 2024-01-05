@@ -10,4 +10,7 @@ func ApiRouter(rg *gin.RouterGroup) {
 			Message string `json:"message"`
 		}{Message: "ok"})
 	})
+
+	codeHostingApi := rg.Group("/codeHosting")
+	BuildCodeHostingRouter(codeHostingApi)
 }

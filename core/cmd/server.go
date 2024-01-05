@@ -8,13 +8,14 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/jaronnie/ragingcd/core/server/middlewares"
+	"github.com/jaronnie/ragingcd/core/server/routers"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jaronnie/ragingcd/core/server"
 	"github.com/spf13/cobra"
 )
 
@@ -25,8 +26,8 @@ var serverCmd = &cobra.Command{
 	Long:  `core server`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		r := gin.New()
-		server.Cors(r)
-		server.Router(r)
+		middlewares.Cors(r)
+		routers.Router(r)
 		base := fmt.Sprintf("%s:%s", "0.0.0.0", "8081")
 
 		go func() {
