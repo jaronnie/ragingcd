@@ -8,4 +8,4 @@ RUN apk --no-cache add tzdata ca-certificates bash curl
 
 COPY ./core /app/
 
-ENTRYPOINT ["/app/core", "server"]
+CMD ["/app/core", "server"]
