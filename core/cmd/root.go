@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/jaronnie/ragingcd/core/config"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -38,7 +40,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is cfg.toml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "config/config.toml", "config file (default is cfg.toml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -50,14 +52,6 @@ func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
-
-		viper.AddConfigPath(home)
-		viper.SetConfigType("toml")
-		viper.SetConfigName("cfg")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -65,5 +59,8 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		if err = viper.Unmarshal(&config.GlobalConfig); err != nil {
+			panic(err)
+		}
 	}
 }

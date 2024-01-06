@@ -3,8 +3,9 @@ package middlewares
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 const XForwardAuthHeaderKey = "X-Forward-Auth-Header"

@@ -8,8 +8,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/jaronnie/ragingcd/core/server/middlewares"
-	"github.com/jaronnie/ragingcd/core/server/routers"
 	"os"
 	"os/signal"
 	"syscall"
@@ -17,6 +15,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+
+	"github.com/jaronnie/ragingcd/core/server/initialize"
+	"github.com/jaronnie/ragingcd/core/server/middlewares"
+	"github.com/jaronnie/ragingcd/core/server/routers"
 )
 
 // serverCmd represents the server command
@@ -30,6 +32,7 @@ var serverCmd = &cobra.Command{
 		routers.Router(r)
 		base := fmt.Sprintf("%s:%s", "0.0.0.0", "8081")
 
+		initialize.Initialize()
 		go func() {
 			if err := r.Run(base); err != nil {
 				panic(err)
