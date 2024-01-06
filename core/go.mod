@@ -6,6 +6,7 @@ require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-sql-driver/mysql v1.7.0
+	github.com/google/uuid v1.3.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
 	xorm.io/xorm v1.3.6

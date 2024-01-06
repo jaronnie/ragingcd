@@ -4,7 +4,7 @@
       <el-button type="primary" icon="Plus" @click="addCodeHostingFunc"
         >添加托管</el-button
       >
-      <el-table style="margin: 10px 0" border>
+      <el-table style="margin: 10px 0" border :data="codeHostingListRes">
         <el-table-column prop="uuid" label="uuid" />
         <el-table-column prop="name" label="名称" />
         <el-table-column prop="type" label="类型" />
@@ -21,20 +21,37 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        @current-change="reqCodeHostingListFunc"
+        :page-sizes="[10, 20, 30, 40, 50]"
+        :background="true"
+        layout="prev, pager, next, jumper, ->,  total, sizes"
+        :total="total"
+        prev-text="上一页"
+        next-text="下一页"
+      />
     </el-card>
 
-    <AddCodeHosting
+    <CreateCodeHosting
       v-model:visible="viewState.addCodeHosting.visible"
       @cancelAdd="cancelAddUser"
       @confirmAdd="confirmAddUser"
-    ></AddCodeHosting>
+    ></CreateCodeHosting>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Delete } from "@element-plus/icons-vue";
-import { reactive } from "vue";
-import AddCodeHosting from "./addCodeHosting.vue";
+import { onMounted, reactive, ref } from "vue";
+import CreateCodeHosting from "./createCodeHosting.vue";
+import { PageQuery } from "@/api/type.ts";
+import { reqCodeHostingList } from "@/api/codehosting";
+import {
+  CodeHostingListVoResponseData,
+  CodeHostingVo,
+} from "@/api/codehosting/type.ts";
 
 // 是否弹出 dialog 页面
 const viewState = reactive({
@@ -43,6 +60,28 @@ const viewState = reactive({
     visible: false,
   },
 });
+
+const codeHostingListRes = ref<CodeHostingVo[]>([]);
+const total = ref<number>();
+// 当前第几页
+const currentPage = ref<number>(1);
+
+// 定义每页多少条数据
+const pageSize = ref<number>(10);
+
+const reqCodeHostingListFunc = async (page = 1) => {
+  currentPage.value = page;
+  const query: PageQuery = {
+    pageNum: currentPage.value,
+    pageSize: pageSize.value,
+  };
+  const response: CodeHostingListVoResponseData =
+    await reqCodeHostingList(query);
+  if (response.code == 200) {
+    codeHostingListRes.value = response.data.rows;
+    total.value = response.data.total;
+  }
+};
 
 const addCodeHostingFunc = () => {
   viewState.addCodeHosting.visible = true;
@@ -58,7 +97,12 @@ const cancelAddUser = () => {
 
 const confirmAddUser = () => {
   viewState.addCodeHosting.visible = false;
+  reqCodeHostingListFunc();
 };
+
+onMounted(() => {
+  reqCodeHostingListFunc();
+});
 </script>
 
 <style scoped></style>

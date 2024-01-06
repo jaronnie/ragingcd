@@ -11,37 +11,40 @@
         style="width: 80%"
         ref="ruleFormRef"
         :rules="rules"
-        :model="addCodeHostingForm"
+        :model="createCodeHostingForm"
       >
         <el-form-item label="名称" prop="name" required>
           <el-input
             placeholder="请输入名称"
-            v-model="addCodeHostingForm.name"
+            v-model="createCodeHostingForm.name"
           />
         </el-form-item>
         <el-form-item label="类型" prop="type">
-          <el-radio-group size="large" v-model="addCodeHostingForm.type">
+          <el-radio-group size="large" v-model="createCodeHostingForm.type">
             <el-radio-button v-for="type in types" :key="type" :label="type">
               {{ type }}
             </el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="地址" prop="url" required>
-          <el-input placeholder="请输入地址" v-model="addCodeHostingForm.url" />
+          <el-input
+            placeholder="请输入地址"
+            v-model="createCodeHostingForm.url"
+          />
         </el-form-item>
-        <template v-if="addCodeHostingForm.type !== 'local'">
+        <template v-if="createCodeHostingForm.type !== 'local'">
           <el-form-item label="用户名" prop="username" required>
             <el-input
               placeholder="请输入用户名"
-              v-model="addCodeHostingForm.username"
+              v-model="createCodeHostingForm.username"
             />
           </el-form-item>
         </template>
-        <template v-if="addCodeHostingForm.type !== 'local'">
+        <template v-if="createCodeHostingForm.type !== 'local'">
           <el-form-item label="Token" prop="token" required>
             <el-input
               placeholder="请输入 Token"
-              v-model="addCodeHostingForm.token"
+              v-model="createCodeHostingForm.token"
             />
           </el-form-item>
         </template>
@@ -58,8 +61,9 @@
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { FormInstance, FormRules } from "element-plus";
-import type { AddCodeHostingBo } from "@/api/codehosting/type.ts";
+import { ElMessage, FormInstance, FormRules } from "element-plus";
+import type { CreateCodeHostingBo } from "@/api/codehosting/type.ts";
+import { reqCreateCodeHosting } from "@/api/codehosting";
 
 type HeaderProps = {
   visible: boolean;
@@ -67,7 +71,7 @@ type HeaderProps = {
 defineProps<HeaderProps>();
 
 // 收集托管信息
-let addCodeHostingForm = reactive<AddCodeHostingBo>({
+let createCodeHostingForm = reactive<CreateCodeHostingBo>({
   name: "",
   type: "github",
   url: "",
@@ -85,8 +89,33 @@ const cancel = () => {
   emits("cancelAdd");
 };
 
-const confirm = () => {
-  emits("confirmAdd");
+const confirm = async () => {
+  try {
+    await ruleFormRef.value.validate();
+  } catch (error) {
+    return;
+  }
+
+  // 发送请求
+  let result: any = await reqCreateCodeHosting({
+    name: createCodeHostingForm.name,
+    type: createCodeHostingForm.type,
+    url: createCodeHostingForm.url,
+    username: createCodeHostingForm.username,
+    token: createCodeHostingForm.token,
+  });
+  if (result.code === 200) {
+    ElMessage({
+      type: "success",
+      message: "添加成功",
+    });
+    emits("confirmAdd");
+  } else {
+    ElMessage({
+      type: "error",
+      message: result.message,
+    });
+  }
 };
 
 const beforeClose = () => {
@@ -97,10 +126,10 @@ const types = ["github", "gitlab", "gitea", "local"];
 
 const beforeOpenCallback = () => {
   // 清除表单数据以及校验结果
-  addCodeHostingForm.username = "";
-  addCodeHostingForm.token = "";
-  addCodeHostingForm.name = "";
-  addCodeHostingForm.url = "";
+  createCodeHostingForm.username = "";
+  createCodeHostingForm.token = "";
+  createCodeHostingForm.name = "";
+  createCodeHostingForm.url = "";
   ruleFormRef.value?.clearValidate([
     "username",
     "type",

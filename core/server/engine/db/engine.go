@@ -3,6 +3,8 @@ package db
 import (
 	"fmt"
 
+	"github.com/jaronnie/ragingcd/core/server/domain/po"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jaronnie/ragingcd/core/config"
 	"xorm.io/xorm"
@@ -28,6 +30,10 @@ func InitDB() error {
 		return err
 	}
 	return nil
+}
+
+func SyncTable() error {
+	return Engine.Sync(po.CodeHosting{})
 }
 
 func generateDataSourceName() string {

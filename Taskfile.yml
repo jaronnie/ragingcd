@@ -55,4 +55,4 @@ tasks:
       - build:stdb
       - build:core
     cmds:
-      - docker-compose -f docker-compose-dev.yaml up -d
+      - docker-compose -f docker-compose-dev.yaml up -d --build

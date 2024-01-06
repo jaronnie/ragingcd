@@ -8,6 +8,7 @@ services:
     ports:
       # The Web UI (enabled by --api.insecure=true)
       - "28080:8080"
+      - "81:80"
     labels: 
       - "traefik.http.middlewares.prefix-stripper.stripprefixregex.regex=/apps.*?/"
       - "traefik.http.middlewares.auth-middleware.forwardauth.address=http://stdb:8082/api/v1.0/system/user/auth" # 鉴权中间件调用 stdb 的 auth 接口
@@ -19,8 +20,6 @@ services:
   stdb:
     build:
       context: ./stdb
-    ports:
-      - '8082:8082'
     restart: always
     labels:
       - "traefik.http.routers.stdb.rule=PathPrefix(`/apps.stdb`)"
@@ -35,8 +34,6 @@ services:
   core:
     build:
       context: ./core
-    ports:
-      - '8081:8081'
     restart: always
     labels:
       - "traefik.http.routers.core.rule=PathPrefix(`/apps.core`)"
@@ -48,7 +45,7 @@ services:
       context: ./fronted
     restart: always      
     ports:
-      - '8080:80'
+      - '80:80'
   mysql8:
     image: mysql:8.0.32
     deploy:

@@ -42,10 +42,10 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
           rewrite: (path) => path.replace(/^\/gateway\/stdb/, ""),
         },
         "/gateway/core": {
-          target: "http://127.0.0.1:8081/",
+          target: "http://127.0.0.1:81",
           // 需要代理跨域
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/gateway\/core/, ""),
+          rewrite: (path) => path.replace(/^\/gateway\/core/, "apps.core"),
         },
       },
     },

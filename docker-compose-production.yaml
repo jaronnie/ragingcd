@@ -67,5 +67,3 @@ services:
     restart: always
     volumes:
       - ./deploy/redis/data:/data
-    ports:
-      - '6379:6379'
