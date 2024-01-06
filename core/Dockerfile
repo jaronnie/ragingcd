@@ -11,5 +11,6 @@ RUN apk --no-cache add tzdata ca-certificates libc6-compat libstdc++ curl bash
 EXPOSE 8081
 
 COPY ./core /app/
+COPY ./config/config.toml /app/config/
 
 ENTRYPOINT ["/app/core", "server"]

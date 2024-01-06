@@ -6,7 +6,6 @@ Copyright © 2023 jaronnie <jaron@jaronnie.com>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/jaronnie/ragingcd/core/config"
@@ -57,10 +56,11 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
-		if err = viper.Unmarshal(&config.GlobalConfig); err != nil {
-			panic(err)
-		}
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
+
+	if err := viper.Unmarshal(&config.GlobalConfig); err != nil {
+		panic(err)
 	}
 }
