@@ -16,8 +16,8 @@ func Fail(g *gin.Context, err error, code int) {
 		rCode = code
 	}
 	if err != nil {
-		g.JSON(rCode, gin.H{"code": rCode, "data": nil, "message": err.Error()})
+		g.JSON(http.StatusOK, gin.H{"code": rCode, "data": nil, "message": err.Error()})
 	} else {
-		g.JSON(rCode, gin.H{"code": rCode, "data": nil, "message": http.StatusText(rCode)})
+		g.JSON(http.StatusOK, gin.H{"code": rCode, "data": nil, "message": http.StatusText(rCode)})
 	}
 }
