@@ -1,12 +1,15 @@
 package codehosting
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/jaronnie/ragingcd/core/server/domain/bo"
 	"github.com/jaronnie/ragingcd/core/server/domain/po"
 	"github.com/jaronnie/ragingcd/core/server/domain/vo"
 	"github.com/jaronnie/ragingcd/core/server/engine/db"
+	"github.com/jaronnie/ragingcd/core/server/engine/githosting"
 	"github.com/jaronnie/ragingcd/core/server/engine/helper"
 	"github.com/jaronnie/ragingcd/core/server/engine/response"
 )
@@ -21,6 +24,19 @@ func Create(ctx *gin.Context) {
 
 	authHelper := helper.AuthHelper{Context: ctx}
 
+	gh := githosting.New(githosting.Config{
+		Type:     hosting.Type,
+		Url:      hosting.Url,
+		Username: hosting.Username,
+		Token:    hosting.Token,
+	})
+
+	// 校验 token 是否有效
+	if gh.VerifyToken() != nil {
+		response.Fail(ctx, errors.New("token is invalid"), 500)
+		return
+	}
+
 	insert := &po.CodeHosting{
 		UUID:     "CH-" + uuid.New().String()[:6],
 		Name:     hosting.Name,
@@ -31,7 +47,6 @@ func Create(ctx *gin.Context) {
 		UserID:   authHelper.UserID(),
 	}
 	_, err = db.Engine.Insert(insert)
-
 	if err != nil {
 		response.Fail(ctx, err, 500)
 		return

@@ -60,7 +60,7 @@ func initConfig() {
 		panic(err)
 	}
 
-	if err := viper.Unmarshal(&config.GlobalConfig); err != nil {
+	if err := viper.Unmarshal(&config.Mapping); err != nil {
 		panic(err)
 	}
 }

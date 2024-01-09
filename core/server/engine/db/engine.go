@@ -21,7 +21,7 @@ const (
 
 func InitDB() error {
 	var err error
-	Engine, err = xorm.NewEngine(config.GlobalConfig.DBConfig.Type, generateDataSourceName())
+	Engine, err = xorm.NewEngine(config.Mapping.DB.Type, generateDataSourceName())
 	if err != nil {
 		return err
 	}
@@ -38,15 +38,15 @@ func SyncTable() error {
 
 func generateDataSourceName() string {
 	var dataSource string
-	switch config.GlobalConfig.DBConfig.Type {
+	switch config.Mapping.DB.Type {
 	case SQLite:
 		{
-			dataSource = config.GlobalConfig.DBConfig.Database + "?cache=shared&mode=rwc"
+			dataSource = config.Mapping.DB.Database + "?cache=shared&mode=rwc"
 		}
 	case MySQL:
 		{
 			dataSource = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-				config.GlobalConfig.DBConfig.Username, config.GlobalConfig.DBConfig.Password, config.GlobalConfig.DBConfig.Address, config.GlobalConfig.DBConfig.Database)
+				config.Mapping.DB.Username, config.Mapping.DB.Password, config.Mapping.DB.Address, config.Mapping.DB.Database)
 		}
 
 	}

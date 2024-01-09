@@ -1,9 +1,9 @@
 package config
 
-var GlobalConfig Config
+var Mapping Config
 
 type Config struct {
-	DBConfig DBConfig `mapstructure:"db"`
+	DB DBConfig `mapstructure:"db"`
 }
 
 type DBConfig struct {
