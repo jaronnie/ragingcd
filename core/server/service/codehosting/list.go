@@ -19,6 +19,7 @@ func List(ctx *gin.Context) {
 	}
 
 	session := db.Engine.Limit(q.PageSize, q.PageSize*(q.PageNum-1))
+	session.OrderBy("updated_at DESC")
 
 	authHelper := helper.AuthHelper{Context: ctx}
 	session.Where("user_id = ?", authHelper.UserID())

@@ -38,7 +38,7 @@ type Request struct {
 	body io.Reader
 }
 
-func NewRequest(c *RESTClient) *Request {
+func newRequest(c *RESTClient) *Request {
 
 	r := &Request{
 		c: c,

@@ -1,6 +1,8 @@
 package po
 
 type CodeHosting struct {
+	Base `xorm:"extends"`
+
 	ID       int    `xorm:"pk autoincr COMMENT('id') 'id'"`
 	UUID     string `xorm:"COMMENT('uuid') 'uuid'"`
 	Name     string `xorm:"COMMENT(' 名称') 'name'"`

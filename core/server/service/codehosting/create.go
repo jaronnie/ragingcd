@@ -24,12 +24,16 @@ func Create(ctx *gin.Context) {
 
 	authHelper := helper.AuthHelper{Context: ctx}
 
-	gh := githosting.New(githosting.Config{
+	gh, err := githosting.New(githosting.Config{
 		Type:     hosting.Type,
 		Url:      hosting.Url,
 		Username: hosting.Username,
 		Token:    hosting.Token,
 	})
+	if err != nil {
+		response.Fail(ctx, err, 500)
+		return
+	}
 
 	// 校验 token 是否有效
 	if gh.VerifyToken() != nil {
@@ -37,6 +41,9 @@ func Create(ctx *gin.Context) {
 		return
 	}
 
+	if hosting.Type == githosting.GITHUB {
+		hosting.Url = "https://github.com"
+	}
 	insert := &po.CodeHosting{
 		UUID:     "CH-" + uuid.New().String()[:6],
 		Name:     hosting.Name,

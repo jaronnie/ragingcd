@@ -26,12 +26,14 @@
             </el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="地址" prop="url" required>
-          <el-input
-            placeholder="请输入地址"
-            v-model="createCodeHostingForm.url"
-          />
-        </el-form-item>
+        <template v-if="createCodeHostingForm.type != 'github'">
+          <el-form-item label="地址" prop="url" required>
+            <el-input
+              placeholder="请输入地址"
+              v-model="createCodeHostingForm.url"
+            />
+          </el-form-item>
+        </template>
         <template v-if="createCodeHostingForm.type !== 'local'">
           <el-form-item label="用户名" prop="username" required>
             <el-input

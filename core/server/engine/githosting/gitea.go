@@ -8,12 +8,9 @@ import (
 
 type Gitea struct {
 	Config Config
+	Client restc.Interface
 }
 
 func (g *Gitea) VerifyToken() error {
-	restClient, _ := newClient(g.Config)
-	return restClient.Get().SubPath("/api/v1/user").Params(restc.QueryParam{
-		Name:  "access_token",
-		Value: g.Config.Token,
-	}).Do(context.Background()).Error()
+	return g.Client.Get().SubPath("/api/v1/user").Do(context.Background()).Error()
 }

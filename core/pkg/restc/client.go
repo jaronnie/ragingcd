@@ -9,8 +9,6 @@ type Interface interface {
 	Verb(verb string) *Request
 	Post() *Request
 	Get() *Request
-
-	GetHeader() http.Header
 }
 
 type Opt func(client *RESTClient) error
@@ -30,7 +28,7 @@ type RESTClient struct {
 }
 
 func (r *RESTClient) Verb(verb string) *Request {
-	return NewRequest(r).Verb(verb)
+	return newRequest(r).Verb(verb)
 }
 
 func (r *RESTClient) Post() *Request {
@@ -39,10 +37,6 @@ func (r *RESTClient) Post() *Request {
 
 func (r *RESTClient) Get() *Request {
 	return r.Verb("GET")
-}
-
-func (r *RESTClient) GetHeader() http.Header {
-	return r.headers
 }
 
 func New(ops ...Opt) (*RESTClient, error) {

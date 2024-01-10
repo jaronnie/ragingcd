@@ -1,11 +1,21 @@
 package githosting
 
-import "github.com/jaronnie/ragingcd/core/pkg/restc"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/jaronnie/ragingcd/core/pkg/restc"
+	"github.com/pkg/errors"
+)
 
 const (
 	GITHUB = "github"
 	GITLAB = "gitlab"
 	GITEA  = "gitea"
+)
+
+const (
+	AuthorizationPrefixKey = "Bearer"
 )
 
 type Config struct {
@@ -19,20 +29,25 @@ type Interface interface {
 	VerifyToken() error
 }
 
-func New(config Config) Interface {
+func New(config Config) (Interface, error) {
+	var restClient restc.Interface
+	var err error
+	headers := make(http.Header, 0)
+
 	switch config.Type {
 	case GITHUB:
-		return &Github{config}
+		headers.Set("Authorization", fmt.Sprintf("%s %s", AuthorizationPrefixKey, config.Token))
+		restClient, err = restc.New(restc.WithUrl("https://api.github.com"), restc.WithHeaders(headers))
+		return &Github{Config: config, Client: restClient}, err
 	case GITLAB:
-		return &Gitlab{config}
+		headers.Set("PRIVATE-TOKEN", config.Token)
+		restClient, err = restc.New(restc.WithUrl(config.Url), restc.WithHeaders(headers))
+		return &Gitlab{Config: config, Client: restClient}, err
 	case GITEA:
-		return &Gitea{config}
+		headers.Set("Authorization", fmt.Sprintf("%s %s", AuthorizationPrefixKey, config.Token))
+		restClient, err = restc.New(restc.WithUrl(config.Url), restc.WithHeaders(headers))
+		return &Gitea{Config: config, Client: restClient}, err
 	default:
-		return &Github{config}
+		return nil, errors.Errorf("not support %s type", config.Type)
 	}
-}
-
-func newClient(config Config) (restc.Interface, error) {
-	restClient, _ := restc.New(restc.WithUrl(config.Url))
-	return restClient, nil
 }

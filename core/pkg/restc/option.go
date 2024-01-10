@@ -14,7 +14,7 @@ func WithUrl(u string) Opt {
 			return err
 		}
 		c.protocol = parse.Scheme
-		c.addr = parse.Host
+		c.addr = parse.Hostname()
 		c.port = parse.Port()
 		return nil
 	}
