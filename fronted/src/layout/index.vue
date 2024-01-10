@@ -41,14 +41,14 @@ const menus = [
     path: "/layout/dashboard",
     meta: {
       title: "仪表盘",
-      icon: "Odometer",
+      icon: "dashboard",
     },
   },
   {
     path: "/screen",
     meta: {
       title: "数据大屏",
-      icon: "Monitor",
+      icon: "screen",
     },
   },
   {
@@ -56,7 +56,7 @@ const menus = [
     name: "admin",
     meta: {
       title: "超级管理员",
-      icon: "User",
+      icon: "admin",
     },
     children: [
       {
@@ -64,7 +64,7 @@ const menus = [
         name: "user",
         meta: {
           title: "用户管理",
-          icon: "UserFilled",
+          icon: "user",
         },
       },
     ],
@@ -74,7 +74,31 @@ const menus = [
     name: "code-hosting-manage",
     meta: {
       title: "代码托管平台管理",
-      icon: "SwitchFilled",
+      icon: "codehosting",
+    },
+  },
+  {
+    path: "/layout/repo-manage",
+    name: "project-manage",
+    meta: {
+      title: "仓库管理",
+      icon: "repo",
+    },
+  },
+  {
+    path: "/layout/project-manage",
+    name: "project-manage",
+    meta: {
+      title: "项目管理",
+      icon: "project",
+    },
+  },
+  {
+    path: "/layout/ssh-manage",
+    name: "ssh-manage",
+    meta: {
+      title: "SSH 管理",
+      icon: "ssh",
     },
   },
   {
@@ -82,7 +106,7 @@ const menus = [
     name: "gitlog",
     meta: {
       title: "更新记录",
-      icon: "Flag",
+      icon: "gitlog",
     },
   },
 ];

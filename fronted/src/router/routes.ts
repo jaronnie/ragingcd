@@ -58,11 +58,44 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
         },
       },
       {
+        path: "/layout/repo-manage",
+        component: () => import("@/views/layout/feature-developing/index.vue"),
+        name: "repo-manage",
+        meta: {
+          title: "仓库管理",
+        },
+      },
+      {
+        path: "/layout/project-manage",
+        component: () => import("@/views/layout/feature-developing/index.vue"),
+        name: "project-manage",
+        meta: {
+          title: "项目管理",
+        },
+      },
+      {
+        path: "/layout/ssh-manage",
+        component: () => import("@/views/layout/feature-developing/index.vue"),
+        name: "ssh-manage",
+        meta: {
+          title: "SSH 管理",
+        },
+      },
+      {
         path: "/layout/gitlog",
         component: () => import("@/views/layout/gitlog/index.vue"),
         name: "gitlog",
         meta: {
           title: "更新记录",
+        },
+      },
+      {
+        path: "/layout/404",
+        component: () => import("@/views/layout/404/index.vue"),
+        name: "404",
+        meta: {
+          title: "404",
+          hidden: true,
         },
       },
     ],
@@ -76,17 +109,8 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
     },
   },
   {
-    path: "/404",
-    component: () => import("@/views/404/index.vue"),
-    name: "404",
-    meta: {
-      title: "404",
-      hidden: true,
-    },
-  },
-  {
     path: "/:pathMatch(.*)*",
-    redirect: "/404",
+    redirect: "/layout/404",
     name: "Any",
     meta: {
       title: "任意",
