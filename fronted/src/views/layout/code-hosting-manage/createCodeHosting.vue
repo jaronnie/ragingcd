@@ -1,23 +1,9 @@
 <template>
   <div>
-    <el-dialog
-      :model-value="visible"
-      title="添加托管"
-      @open="beforeOpenCallback"
-      :before-close="beforeClose"
-    >
-      <el-form
-        label-width="80px"
-        style="width: 80%"
-        ref="ruleFormRef"
-        :rules="rules"
-        :model="createCodeHostingForm"
-      >
+    <el-dialog :model-value="visible" title="添加托管" @open="beforeOpenCallback" :before-close="beforeClose">
+      <el-form label-width="80px" style="width: 80%" ref="ruleFormRef" :rules="rules" :model="createCodeHostingForm">
         <el-form-item label="名称" prop="name" required>
-          <el-input
-            placeholder="请输入名称"
-            v-model="createCodeHostingForm.name"
-          />
+          <el-input placeholder="请输入名称" v-model="createCodeHostingForm.name" />
         </el-form-item>
         <el-form-item label="类型" prop="type">
           <el-radio-group size="large" v-model="createCodeHostingForm.type">
@@ -28,33 +14,24 @@
         </el-form-item>
         <template v-if="createCodeHostingForm.type != 'github'">
           <el-form-item label="地址" prop="url" required>
-            <el-input
-              placeholder="请输入地址"
-              v-model="createCodeHostingForm.url"
-            />
+            <el-input placeholder="请输入地址" v-model="createCodeHostingForm.url" />
           </el-form-item>
         </template>
         <template v-if="createCodeHostingForm.type !== 'local'">
           <el-form-item label="用户名" prop="username" required>
-            <el-input
-              placeholder="请输入用户名"
-              v-model="createCodeHostingForm.username"
-            />
+            <el-input placeholder="请输入用户名" v-model="createCodeHostingForm.username" />
           </el-form-item>
         </template>
         <template v-if="createCodeHostingForm.type !== 'local'">
           <el-form-item label="Token" prop="token" required>
-            <el-input
-              placeholder="请输入 Token"
-              v-model="createCodeHostingForm.token"
-            />
+            <el-input placeholder="请输入 Token" v-model="createCodeHostingForm.token" />
           </el-form-item>
         </template>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="cancel">取消</el-button>
-          <el-button @click="confirm">确定</el-button>
+          <el-button @click="confirm" :loading="loading">确定</el-button>
         </span>
       </template>
     </el-dialog>
