@@ -81,6 +81,9 @@ let createCodeHostingForm = reactive<CreateCodeHostingBo>({
   token: "",
 });
 
+// 控制按钮 loading 变量, 加载效果
+let loading = ref(false);
+
 // 表单校验
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({});
@@ -97,6 +100,8 @@ const confirm = async () => {
   } catch (error) {
     return;
   }
+
+  loading.value = true;
 
   // 发送请求
   let result: any = await reqCreateCodeHosting({
@@ -118,6 +123,8 @@ const confirm = async () => {
       message: result.message,
     });
   }
+
+  loading.value = false;
 };
 
 const beforeClose = () => {
