@@ -22,6 +22,7 @@
               :prefix-icon="Lock"
               showPassword
               v-model="loginInput.password"
+              @keydown.enter="login"
             ></el-input>
           </el-form-item>
           <el-form-item>

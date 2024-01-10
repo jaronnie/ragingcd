@@ -52,6 +52,7 @@
               v-model="registerInput.password"
               placeholder="请输入密码"
               autocomplete="new-password"
+              @keydown.enter="register"
             ></el-input>
           </el-form-item>
           <el-form-item>
