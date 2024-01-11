@@ -5,6 +5,11 @@ import (
 	"github.com/jaronnie/ragingcd/core/server/middlewares"
 )
 
+func init() {
+	sshApi := RouterGroup.Group("/ssh")
+	BuildSSHRouter(sshApi)
+}
+
 func BuildSSHRouter(rg *gin.RouterGroup) {
 	rg.POST("/create", middlewares.Auth())
 	rg.GET("/list", middlewares.Auth())

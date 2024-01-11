@@ -13,7 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/jaronnie/ragingcd/core/server/engine"
+
 	"github.com/spf13/cobra"
 
 	"github.com/jaronnie/ragingcd/core/server/initialize"
@@ -27,14 +28,13 @@ var serverCmd = &cobra.Command{
 	Short: "core server",
 	Long:  `core server`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		r := gin.New()
-		middlewares.Cors(r)
-		routers.Router(r)
+		middlewares.Cors(engine.ServerEngine)
+		routers.Router(engine.ServerEngine)
 		base := fmt.Sprintf("%s:%s", "0.0.0.0", "8081")
 
 		initialize.Initialize()
 		go func() {
-			if err := r.Run(base); err != nil {
+			if err := engine.ServerEngine.Run(base); err != nil {
 				panic(err)
 			}
 

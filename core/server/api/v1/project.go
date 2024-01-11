@@ -5,6 +5,11 @@ import (
 	"github.com/jaronnie/ragingcd/core/server/middlewares"
 )
 
+func init() {
+	projectApi := RouterGroup.Group("/project")
+	BuildProjectRouter(projectApi)
+}
+
 func BuildProjectRouter(rg *gin.RouterGroup) {
 	rg.POST("/create", middlewares.Auth())
 	rg.GET("/list", middlewares.Auth())

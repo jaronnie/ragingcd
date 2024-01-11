@@ -6,6 +6,11 @@ import (
 	"github.com/jaronnie/ragingcd/core/server/service/codehosting"
 )
 
+func init() {
+	codeHostingApi := RouterGroup.Group("/codehosting")
+	BuildCodeHostingRouter(codeHostingApi)
+}
+
 func BuildCodeHostingRouter(rg *gin.RouterGroup) {
 	rg.POST("/create", middlewares.Auth(), codehosting.Create)
 	rg.GET("/list", middlewares.Auth(), codehosting.List)
