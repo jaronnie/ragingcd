@@ -13,4 +13,13 @@ func ApiRouter(rg *gin.RouterGroup) {
 
 	codeHostingApi := rg.Group("/codehosting")
 	BuildCodeHostingRouter(codeHostingApi)
+
+	repoApi := rg.Group("/repo")
+	BuildRepoRouter(repoApi)
+
+	projectApi := rg.Group("/project")
+	BuildProjectRouter(projectApi)
+
+	sshApi := rg.Group("/ssh")
+	BuildSSHRouter(sshApi)
 }
