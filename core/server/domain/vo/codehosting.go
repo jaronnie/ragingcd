@@ -8,8 +8,3 @@ type CodeHostingVo struct {
 	Url      string `json:"url"`
 	Username string `json:"username"`
 }
-
-type CodeHostingTableData struct {
-	Total int              `json:"total"`
-	Rows  []*CodeHostingVo `json:"rows"`
-}

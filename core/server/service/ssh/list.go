@@ -1,4 +1,4 @@
-package codehosting
+package ssh
 
 import (
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ import (
 )
 
 func List(ctx *gin.Context) {
-	var q query.CodeHostingListQuery
+	var q query.SshListQuery
 	err := ctx.BindQuery(&q)
 	if err != nil {
 		response.Fail(ctx, err, 500)
@@ -24,28 +24,29 @@ func List(ctx *gin.Context) {
 	authHelper := helper.AuthHelper{Context: ctx}
 	session.Where("user_id = ?", authHelper.UserID())
 
-	var codehostingPos []*po.CodeHosting
-	count, err := session.FindAndCount(&codehostingPos)
+	var sshPos []*po.Ssh
+	count, err := session.FindAndCount(&sshPos)
 	if err != nil {
 		response.Fail(ctx, err, 500)
 	}
 
-	var codehostingVos []*vo.CodeHostingVo
+	var sshVos []*vo.SshVo
 
-	for _, v := range codehostingPos {
-		codehostingVos = append(codehostingVos, &vo.CodeHostingVo{
+	for _, v := range sshPos {
+		sshVos = append(sshVos, &vo.SshVo{
 			ID:       v.ID,
 			UUID:     v.UUID,
 			Name:     v.Name,
 			Type:     v.Type,
-			Url:      v.Url,
+			IP:       v.IP,
+			Port:     v.Port,
 			Username: v.Username,
 		})
 	}
 
 	table := vo.PageData{
 		Total: int(count),
-		Rows:  codehostingVos,
+		Rows:  sshVos,
 	}
 
 	response.OK(ctx, table)

@@ -33,7 +33,7 @@ func InitDB() error {
 }
 
 func SyncTable() error {
-	return Engine.Sync(po.CodeHosting{})
+	return Engine.Sync(po.Beans...)
 }
 
 func generateDataSourceName() string {

@@ -1,9 +1,16 @@
 package engine
 
-import "github.com/gin-gonic/gin"
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+)
 
 var ServerEngine *gin.Engine
 
 func init() {
-	ServerEngine = gin.Default()
+	if os.Args[1] != "server" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+	ServerEngine = gin.New()
 }

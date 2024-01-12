@@ -3,8 +3,9 @@ package codehosting
 import (
 	"errors"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+
+	"github.com/gin-gonic/gin"
 	"github.com/jaronnie/ragingcd/core/server/domain/bo"
 	"github.com/jaronnie/ragingcd/core/server/domain/po"
 	"github.com/jaronnie/ragingcd/core/server/domain/vo"
@@ -45,13 +46,16 @@ func Create(ctx *gin.Context) {
 		hosting.Url = "https://github.com"
 	}
 	insert := &po.CodeHosting{
-		UUID:     "CH-" + uuid.New().String()[:6],
+
 		Name:     hosting.Name,
 		Type:     hosting.Type,
 		Url:      hosting.Url,
 		Username: hosting.Username,
 		Token:    hosting.Token,
-		UserID:   authHelper.UserID(),
+		Base: po.Base{
+			UserID: authHelper.UserID(),
+			UUID:   "CH-" + uuid.New().String()[:6],
+		},
 	}
 	_, err = db.Engine.Insert(insert)
 	if err != nil {
