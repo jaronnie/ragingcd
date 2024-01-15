@@ -5,10 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Cors(r *gin.Engine) {
+func Cors() gin.HandlerFunc {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowHeaders = []string{"*"}
 	config.AllowMethods = []string{"*"}
-	r.Use(cors.New(config))
+	return cors.New(config)
 }

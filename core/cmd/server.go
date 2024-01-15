@@ -13,12 +13,13 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jaronnie/ragingcd/core/server/middlewares"
+
 	"github.com/jaronnie/ragingcd/core/server/engine"
 
 	"github.com/spf13/cobra"
 
 	"github.com/jaronnie/ragingcd/core/server/initialize"
-	"github.com/jaronnie/ragingcd/core/server/middlewares"
 	"github.com/jaronnie/ragingcd/core/server/routers"
 )
 
@@ -28,7 +29,7 @@ var serverCmd = &cobra.Command{
 	Short: "core server",
 	Long:  `core server`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		middlewares.Cors(engine.ServerEngine)
+		middlewares.Use(engine.ServerEngine)
 		routers.Router(engine.ServerEngine)
 		base := fmt.Sprintf("%s:%s", "0.0.0.0", "8081")
 
