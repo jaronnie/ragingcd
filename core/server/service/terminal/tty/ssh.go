@@ -29,16 +29,19 @@ func init() {
 	Register(ShellTypeRemoteSsh, NewRemoteSsh)
 }
 
-type RemoteSshShell struct {
-	target   *target.Target
-	handler  handler.Handler
-	errChan  chan error
-	doneChan chan struct{}
-	client   *ssh.Client
+type RemoteSsh struct {
+	target     *target.Target
+	handler    handler.Handler
+	errChan    chan error
+	doneChan   chan struct{}
+	client     *ssh.Client
+	session    *ssh.Session   //ssh会话
+	stdinPipe  io.WriteCloser //标准输入管道
+	stdoutPipe io.Reader      //标准输入管道
 }
 
-func NewRemoteSsh(target *target.Target, ptyHandler handler.Handler) (Server, error) {
-	return &RemoteSshShell{
+func NewRemoteSsh(target *target.Target, ptyHandler handler.Handler) (TTY, error) {
+	return &RemoteSsh{
 		target:   target,
 		handler:  ptyHandler,
 		errChan:  make(chan error),
@@ -46,7 +49,7 @@ func NewRemoteSsh(target *target.Target, ptyHandler handler.Handler) (Server, er
 	}, nil
 }
 
-func (r RemoteSshShell) Connect(stdout io.Writer, stdin io.Reader) error {
+func (r RemoteSsh) Connect(stdout io.Writer, stdin io.Reader) error {
 	var err error
 	sshPo := po.Ssh{
 		Base: po.Base{ID: cast.ToInt(r.target.ResourceID)},
@@ -75,34 +78,50 @@ func (r RemoteSshShell) Connect(stdout io.Writer, stdin io.Reader) error {
 		r.client.Close()
 		return err
 	}
-	defer session.Close()
+	r.session = session
+
+	// Set up terminal modes
+	modes := ssh.TerminalModes{
+		ssh.ECHO:          1, // Enable echoing
+		ssh.TTY_OP_ISPEED: 14400,
+		ssh.TTY_OP_OSPEED: 14400,
+	}
+
+	r.stdinPipe, _ = session.StdinPipe()
+	r.stdoutPipe, _ = session.StdoutPipe()
+
+	// Request pseudo-terminal
+	if err := session.RequestPty("xterm", 80, 60, modes); err != nil {
+		return err
+	}
+
+	// Shell starts a login shell on the remote host
+	if err := session.Shell(); err != nil {
+		return err
+	}
+
 	errChan := make(chan error)
 	defer close(errChan)
-	err = session.Shell()
+
+	go func() {
+		// Copy data from stdin to the session's stdin
+		_, err = io.Copy(stdout, r.stdoutPipe)
+		errChan <- err
+	}()
 
 	go func() {
 		// Obtain the reader for the session's stdout
 		// Copy data from stdoutReader to stdout
-		_, err = io.Copy(stdout, session.Stdin)
-		if err != nil {
-			r.errChan <- err
-			return
-		}
-
-	}()
-
-	go func() {
-		// Copy data from stdin to the session's stdin
-		_, err = io.Copy(session.Stdout, stdin)
-		r.errChan <- err
+		_, err = io.Copy(r.stdinPipe, stdin)
+		errChan <- err
 	}()
 	return <-errChan
 }
 
-func (r RemoteSshShell) Resize(rows, cols uint) error {
+func (r RemoteSsh) Resize(rows, cols uint) error {
 	return nil
 }
 
-func (r RemoteSshShell) Close() error {
+func (r RemoteSsh) Close() error {
 	return r.client.Close()
 }

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"io"
 
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/target"
@@ -98,7 +97,6 @@ func (t *WsHandler) handleMsg(terminalStdin []byte, msg *message.TerminalMessage
 }
 
 func (t *WsHandler) Write(p []byte) (int, error) {
-	fmt.Printf("websocket write. [%s]", p)
 	if err := t.conn.WriteMsg(message.Stdout(string(p))); err != nil {
 		t.err = err
 		return 0, err

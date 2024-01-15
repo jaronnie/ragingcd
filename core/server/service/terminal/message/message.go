@@ -2,7 +2,6 @@ package message
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 const (
@@ -40,7 +39,6 @@ func Stdin(frameData []byte) (*TerminalMessage, error) {
 	if err := json.Unmarshal(frameData, result); err != nil {
 		return nil, err
 	}
-	fmt.Printf("read msg from stdin: [%s]", result.Data)
 	return result, nil
 }
 

@@ -16,7 +16,7 @@ func init() {
 	Register("local", NewLocal)
 }
 
-type LocalShell struct {
+type Local struct {
 	target   *target.Target
 	handler  handler.Handler
 	errChan  chan error
@@ -25,8 +25,8 @@ type LocalShell struct {
 	cmd      *exec.Cmd
 }
 
-func NewLocal(target *target.Target, ptyHandler handler.Handler) (Server, error) {
-	return &LocalShell{
+func NewLocal(target *target.Target, ptyHandler handler.Handler) (TTY, error) {
+	return &Local{
 		target:   target,
 		handler:  ptyHandler,
 		errChan:  make(chan error),
@@ -34,7 +34,7 @@ func NewLocal(target *target.Target, ptyHandler handler.Handler) (Server, error)
 	}, nil
 }
 
-func (s *LocalShell) Connect(stdout io.Writer, stdin io.Reader) error {
+func (s *Local) Connect(stdout io.Writer, stdin io.Reader) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -72,7 +72,7 @@ func (s *LocalShell) Connect(stdout io.Writer, stdin io.Reader) error {
 	return <-errChan
 }
 
-func (s *LocalShell) createShell(cmd *exec.Cmd) (*os.File, error) {
+func (s *Local) createShell(cmd *exec.Cmd) (*os.File, error) {
 	result, err := pty.StartWithSize(cmd, &pty.Winsize{Rows: s.target.Rows, Cols: s.target.Cols})
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (s *LocalShell) createShell(cmd *exec.Cmd) (*os.File, error) {
 	return result, nil
 }
 
-func (s *LocalShell) Close() error {
+func (s *Local) Close() error {
 	s.cmd.Wait()
 
 	s.shell.Write([]byte(handler.EndOfTransmission))
@@ -91,14 +91,14 @@ func (s *LocalShell) Close() error {
 	return nil
 }
 
-func (s *LocalShell) Write(p []byte) (int, error) {
+func (s *Local) Write(p []byte) (int, error) {
 	return s.shell.Write(p)
 }
 
-func (s *LocalShell) Read(p []byte) (int, error) {
+func (s *Local) Read(p []byte) (int, error) {
 	return s.shell.Read(p)
 }
 
-func (s *LocalShell) Resize(rows, cols uint) error {
+func (s *Local) Resize(rows, cols uint) error {
 	return pty.Setsize(s.shell, &pty.Winsize{Rows: uint16(rows), Cols: uint16(cols)})
 }

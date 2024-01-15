@@ -1,7 +1,6 @@
 package terminal
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/jaronnie/ragingcd/core/server/domain/bo"
@@ -57,7 +56,6 @@ func terminal(ctx *gin.Context) error {
 					break
 				}
 				err = terminal.Resize(uint(winSize.Height), uint(winSize.Width))
-				fmt.Printf("resize error. Err: [%v]", err)
 				if err != nil {
 					break
 				}
