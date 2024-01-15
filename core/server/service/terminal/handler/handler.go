@@ -3,9 +3,9 @@ package handler
 import (
 	"io"
 
+	"github.com/jaronnie/ragingcd/core/pkg/websocat"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/target"
 
-	"github.com/jaronnie/ragingcd/core/server/service/terminal/conn"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
 
 	"github.com/pkg/errors"
@@ -30,7 +30,7 @@ type Handler interface {
 }
 
 type WsHandler struct {
-	conn     conn.Connection
+	conn     websocat.Connection
 	target   *target.Target
 	sizeChan chan cmd.TerminalSize
 	doneChan chan struct{}
@@ -38,7 +38,7 @@ type WsHandler struct {
 	err      error
 }
 
-func New(conn conn.Connection, target *target.Target) *WsHandler {
+func New(conn websocat.Connection, target *target.Target) *WsHandler {
 	session := &WsHandler{
 		conn:     conn,
 		tty:      true,

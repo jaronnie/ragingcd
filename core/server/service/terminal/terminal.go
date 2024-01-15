@@ -3,11 +3,11 @@ package terminal
 import (
 	"strings"
 
+	"github.com/jaronnie/ragingcd/core/pkg/websocat"
 	"github.com/jaronnie/ragingcd/core/server/domain/bo"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jaronnie/ragingcd/core/server/engine/response"
-	"github.com/jaronnie/ragingcd/core/server/service/terminal/conn"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/handler"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/target"
@@ -28,7 +28,7 @@ func terminal(ctx *gin.Context) error {
 	}
 
 	// create websocket connection
-	connection, err := conn.NewConn(ctx.Writer, ctx.Request)
+	connection, err := websocat.NewConn(ctx.Writer, ctx.Request)
 	if err != nil {
 		return err
 	}

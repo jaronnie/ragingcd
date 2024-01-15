@@ -1,4 +1,4 @@
-package conn
+package websocat
 
 import (
 	"fmt"
@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	writeWait      = 30 * time.Second
+	writeWait      = 3000 * time.Second
 	maxMessageSize = 8192
-	pongWait       = 60 * time.Second
+	pongWait       = 6000 * time.Second
 )
 
 type Connection interface {
