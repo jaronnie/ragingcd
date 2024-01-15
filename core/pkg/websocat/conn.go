@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
-
 	"github.com/gorilla/websocket"
 )
 
@@ -17,8 +15,8 @@ const (
 )
 
 type Connection interface {
-	ReadMsg() (*message.TerminalMessage, error)
-	WriteMsg(msg *message.TerminalMessage) error
+	ReadMsg() ([]byte, error)
+	WriteMsg(msg []byte) error
 	Close() error
 	CloseGracingWithinTime(gracingDuration time.Duration) error
 }
@@ -44,7 +42,7 @@ func NewConn(w http.ResponseWriter, r *http.Request) (Connection, error) {
 	return &WsConn{conn: conn}, nil
 }
 
-func (c *WsConn) ReadMsg() (*message.TerminalMessage, error) {
+func (c *WsConn) ReadMsg() ([]byte, error) {
 	err := c.conn.SetReadDeadline(time.Now().Add(pongWait))
 	if err != nil {
 		return nil, err
@@ -58,20 +56,20 @@ func (c *WsConn) ReadMsg() (*message.TerminalMessage, error) {
 		return nil, err
 	}
 	if frameType == websocket.TextMessage {
-		return message.Stdin(frameData)
+		return frameData, nil
 	}
 	return nil, fmt.Errorf("fail to support frame type %d", frameType)
 }
 
-func (c *WsConn) WriteMsg(msg *message.TerminalMessage) error {
+func (c *WsConn) WriteMsg(msg []byte) error {
 	err := c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 	if err != nil {
 		return err
 	}
-	if msg.Data == "\u0000" || msg.Data == "?" {
+	if string(msg) == "\u0000" || string(msg) == "?" {
 		return nil
 	}
-	err = c.conn.WriteMessage(websocket.TextMessage, msg.Bytes())
+	err = c.conn.WriteMessage(websocket.TextMessage, msg)
 	if err != nil {
 		if !isExpectedError(err) && err != websocket.ErrCloseSent {
 			fmt.Printf("Fail to write msg to websocket connection. Err: [%v]", err)
@@ -91,7 +89,7 @@ func isExpectedError(err error) bool {
 }
 
 func (c *WsConn) Close() error {
-	return c.CloseGracingWithinTime(time.Second * 10)
+	return c.conn.Close()
 }
 
 func (c *WsConn) CloseGracingWithinTime(gracingDuration time.Duration) error {
@@ -101,10 +99,6 @@ func (c *WsConn) CloseGracingWithinTime(gracingDuration time.Duration) error {
 
 		// 等待客户端主动关闭连接，超时服务端主动关闭
 		err := c.conn.SetWriteDeadline(time.Now().Add(gracingDuration))
-		if err != nil {
-			return err
-		}
-		err = c.conn.WriteMessage(websocket.TextMessage, message.Close("").Bytes())
 		if err != nil {
 			return err
 		}

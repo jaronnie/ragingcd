@@ -3,6 +3,8 @@ package tty
 import (
 	"io"
 
+	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
+
 	"github.com/pkg/errors"
 
 	"github.com/jaronnie/ragingcd/core/server/domain/po"
@@ -31,7 +33,8 @@ func init() {
 
 type RemoteSsh struct {
 	target     *target.Target
-	handler    handler.Handler
+	ptyHandler handler.Handler
+	wsHandler  handler.WsHandler
 	errChan    chan error
 	doneChan   chan struct{}
 	client     *ssh.Client
@@ -40,16 +43,17 @@ type RemoteSsh struct {
 	stdoutPipe io.Reader      //标准输入管道
 }
 
-func NewRemoteSsh(target *target.Target, ptyHandler handler.Handler) (TTY, error) {
+func NewRemoteSsh(target *target.Target, wsHandler handler.WsHandler, ptyHandler handler.Handler) (TTY, error) {
 	return &RemoteSsh{
-		target:   target,
-		handler:  ptyHandler,
-		errChan:  make(chan error),
-		doneChan: make(chan struct{}),
+		target:     target,
+		ptyHandler: ptyHandler,
+		wsHandler:  wsHandler,
+		errChan:    make(chan error),
+		doneChan:   make(chan struct{}),
 	}, nil
 }
 
-func (r RemoteSsh) Connect(stdout io.Writer, stdin io.Reader) error {
+func (r *RemoteSsh) Connect(ws *handler.WsHandler) error {
 	var err error
 	sshPo := po.Ssh{
 		Base: po.Base{ID: cast.ToInt(r.target.ResourceID)},
@@ -105,23 +109,26 @@ func (r RemoteSsh) Connect(stdout io.Writer, stdin io.Reader) error {
 
 	go func() {
 		// Copy data from stdin to the session's stdin
-		_, err = io.Copy(stdout, r.stdoutPipe)
-		errChan <- err
+		if _, err = io.Copy(ws.Stdout(), r.stdoutPipe); err != nil {
+			errChan <- err
+		}
 	}()
 
 	go func() {
 		// Obtain the reader for the session's stdout
 		// Copy data from stdoutReader to stdout
-		_, err = io.Copy(r.stdinPipe, stdin)
-		errChan <- err
+		if _, err = io.Copy(r.stdinPipe, ws.Stdin()); err != nil {
+			errChan <- err
+		}
 	}()
 	return <-errChan
 }
 
-func (r RemoteSsh) Resize(rows, cols uint) error {
+func (r *RemoteSsh) Resize(rows, cols uint) error {
 	return nil
 }
 
-func (r RemoteSsh) Close() error {
+func (r *RemoteSsh) Close() error {
+	r.wsHandler.Write(message.Close("").Bytes())
 	return r.client.Close()
 }

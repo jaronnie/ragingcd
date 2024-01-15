@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
+
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/handler"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/target"
 
@@ -17,30 +19,32 @@ func init() {
 }
 
 type Local struct {
-	target   *target.Target
-	handler  handler.Handler
-	errChan  chan error
-	doneChan chan struct{}
-	shell    *os.File
-	cmd      *exec.Cmd
+	target     *target.Target
+	ptyHandler handler.Handler
+	wsHandler  handler.WsHandler
+	errChan    chan error
+	doneChan   chan struct{}
+	shell      *os.File
+	cmd        *exec.Cmd
 }
 
-func NewLocal(target *target.Target, ptyHandler handler.Handler) (TTY, error) {
+func NewLocal(target *target.Target, wsHandler handler.WsHandler, ptyHandler handler.Handler) (TTY, error) {
 	return &Local{
-		target:   target,
-		handler:  ptyHandler,
-		errChan:  make(chan error),
-		doneChan: make(chan struct{}),
+		target:     target,
+		ptyHandler: ptyHandler,
+		wsHandler:  wsHandler,
+		errChan:    make(chan error),
+		doneChan:   make(chan struct{}),
 	}, nil
 }
 
-func (s *Local) Connect(stdout io.Writer, stdin io.Reader) error {
+func (s *Local) Connect(ws *handler.WsHandler) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	s.cmd = exec.CommandContext(ctx, "bash")
 	var err error
-	s.shell, err = s.createShell(s.cmd)
+	s.shell, err = s.create(s.cmd)
 	if err != nil {
 		return err
 	}
@@ -54,7 +58,7 @@ func (s *Local) Connect(stdout io.Writer, stdin io.Reader) error {
 			}
 		}()
 
-		if _, err := io.Copy(stdout, s.shell); err != nil {
+		if _, err := io.Copy(ws.Stdout(), s.shell); err != nil {
 			errChan <- err
 		}
 	}()
@@ -65,14 +69,14 @@ func (s *Local) Connect(stdout io.Writer, stdin io.Reader) error {
 			}
 		}()
 
-		if _, err := io.Copy(s.shell, stdin); err != nil {
+		if _, err := io.Copy(s.shell, ws.Stdin()); err != nil {
 			errChan <- err
 		}
 	}()
 	return <-errChan
 }
 
-func (s *Local) createShell(cmd *exec.Cmd) (*os.File, error) {
+func (s *Local) create(cmd *exec.Cmd) (*os.File, error) {
 	result, err := pty.StartWithSize(cmd, &pty.Winsize{Rows: s.target.Rows, Cols: s.target.Cols})
 	if err != nil {
 		return nil, err
@@ -83,8 +87,8 @@ func (s *Local) createShell(cmd *exec.Cmd) (*os.File, error) {
 
 func (s *Local) Close() error {
 	s.cmd.Wait()
-
 	s.shell.Write([]byte(handler.EndOfTransmission))
+	s.wsHandler.Write(message.Close("").Bytes())
 	if err := s.shell.Close(); err != nil {
 		return err
 	}

@@ -1,6 +1,7 @@
 package terminal
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/jaronnie/ragingcd/core/pkg/websocat"
@@ -40,14 +41,12 @@ func terminal(ctx *gin.Context) error {
 			return message.Close(err.Error())
 		}
 
-		// 连接终端
-		terminal, err := tty.New(findTarget, nil)
+		connHandler := handler.New(connection, findTarget)
+
+		terminal, err := tty.New(findTarget, *connHandler, nil)
 		if err != nil {
 			return message.Close(err.Error())
 		}
-
-		// 创建连接处理器
-		connHandler := handler.New(connection, findTarget)
 
 		go func() {
 			for {
@@ -62,7 +61,7 @@ func terminal(ctx *gin.Context) error {
 			}
 		}()
 
-		if err := terminal.Connect(connHandler.Stdout(), connHandler.Stdin()); err != nil {
+		if err := terminal.Connect(connHandler); err != nil {
 			return message.Close(err.Error())
 		}
 		defer terminal.Close()
@@ -71,7 +70,8 @@ func terminal(ctx *gin.Context) error {
 	}()
 
 	if doneMsg != nil {
-		err := connection.WriteMsg(doneMsg)
+		msg, _ := json.Marshal(doneMsg)
+		err := connection.WriteMsg(msg)
 		if err != nil {
 			return err
 		}

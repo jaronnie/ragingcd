@@ -4,6 +4,8 @@ import (
 	"context"
 	"io"
 
+	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
+
 	"github.com/jaronnie/ragingcd/core/server/domain/po"
 	"github.com/jaronnie/ragingcd/core/server/engine/db"
 	"github.com/spf13/cast"
@@ -22,31 +24,22 @@ func init() {
 type Docker struct {
 	target      *target.Target
 	ContainerID string
-	handler     handler.Handler
+	ptyHandler  handler.Handler
+	wsHandler   handler.WsHandler
 	client      *client.Client
 	conn        *types.HijackedResponse
 }
 
-func NewDocker(target *target.Target, ptyHandler handler.Handler) (TTY, error) {
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.40"))
-	if err != nil {
-		panic(err)
-	}
-	return NewDockerShellWithClient(target, ptyHandler, cli)
+func NewDocker(target *target.Target, wsHandler handler.WsHandler, ptyHandler handler.Handler) (TTY, error) {
+	return &Docker{
+		target:     target,
+		ptyHandler: ptyHandler,
+		wsHandler:  wsHandler,
+	}, nil
 }
 
-func NewDockerShellWithClient(target *target.Target, ptyHandler handler.Handler, client *client.Client) (TTY, error) {
-	shell := &Docker{
-		target:  target,
-		handler: ptyHandler,
-		client:  client,
-	}
-
-	return shell, nil
-}
-
-func (s *Docker) Connect(stdout io.Writer, stdin io.Reader) error {
-	shell, err := s.createShell()
+func (s *Docker) Connect(ws *handler.WsHandler) error {
+	shell, err := s.create()
 	if err != nil {
 		return err
 	}
@@ -58,7 +51,7 @@ func (s *Docker) Connect(stdout io.Writer, stdin io.Reader) error {
 			if err := recover(); err != nil {
 			}
 		}()
-		if _, err := io.Copy(stdout, shell.Conn); err != nil {
+		if _, err := io.Copy(ws.Stdout(), shell.Conn); err != nil {
 			errChan <- err
 		}
 	}()
@@ -68,7 +61,7 @@ func (s *Docker) Connect(stdout io.Writer, stdin io.Reader) error {
 			}
 		}()
 
-		if _, err := io.Copy(shell.Conn, stdin); err != nil {
+		if _, err := io.Copy(shell.Conn, ws.Stdin()); err != nil {
 			errChan <- err
 		}
 	}()
@@ -76,7 +69,7 @@ func (s *Docker) Connect(stdout io.Writer, stdin io.Reader) error {
 	return <-errChan
 }
 
-func (s *Docker) createShell() (*types.HijackedResponse, error) {
+func (s *Docker) create() (*types.HijackedResponse, error) {
 	var err error
 	dockerPo := po.Docker{
 		Base: po.Base{ID: cast.ToInt(s.target.ResourceID)},
@@ -88,6 +81,12 @@ func (s *Docker) createShell() (*types.HijackedResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	s.client, err = client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.40"))
+	if err != nil {
+		return nil, err
+	}
+
 	s.ContainerID = dockerPo.ContainerID
 	if s.target.WorkingDir == "" {
 		c, err := s.client.ContainerInspect(context.Background(), s.ContainerID)
@@ -113,6 +112,7 @@ func (s *Docker) createShell() (*types.HijackedResponse, error) {
 }
 
 func (s *Docker) Close() error {
+	s.wsHandler.Write(message.Close("").Bytes())
 	return s.conn.Conn.Close()
 }
 
@@ -121,5 +121,6 @@ func (s *Docker) Resize(rows, cols uint) error {
 		types.ResizeOptions{
 			Height: rows,
 			Width:  cols,
-		})
+		},
+	)
 }

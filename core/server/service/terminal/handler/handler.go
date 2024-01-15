@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"io"
 
 	"github.com/jaronnie/ragingcd/core/pkg/websocat"
@@ -84,7 +85,9 @@ func (t *WsHandler) Read(p []byte) (int, error) {
 	if msg == nil {
 		return 0, nil
 	}
-	count, err := t.handleMsg(p, msg)
+	var msgStruct message.TerminalMessage
+	err = json.Unmarshal(msg, &msgStruct)
+	count, err := t.handleMsg(p, &msgStruct)
 	if err != nil {
 		t.err = err
 		return count, errors.Wrap(err, "Fail to handle msg")
@@ -97,7 +100,8 @@ func (t *WsHandler) handleMsg(terminalStdin []byte, msg *message.TerminalMessage
 }
 
 func (t *WsHandler) Write(p []byte) (int, error) {
-	if err := t.conn.WriteMsg(message.Stdout(string(p))); err != nil {
+	marshalMsg, _ := json.Marshal(message.Stdout(string(p)))
+	if err := t.conn.WriteMsg(marshalMsg); err != nil {
 		t.err = err
 		return 0, err
 	}
