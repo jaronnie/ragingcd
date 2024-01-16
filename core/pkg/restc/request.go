@@ -140,7 +140,14 @@ func (r *Request) wsUrl() (string, error) {
 		return "", errors.New("invalid url, please check")
 	}
 
+	if r.c.protocol == "http" {
+		r.c.protocol = "ws"
+	} else if r.c.protocol == "https" {
+		r.c.protocol = "wss"
+	}
+
 	// upgrade http to websocket proto
+
 	if r.c.protocol == "wss" && r.c.port == "" {
 		r.c.port = "443"
 	} else if r.c.protocol == "ws" && r.c.port == "" {
@@ -177,6 +184,7 @@ func (r *Request) Body(obj interface{}) *Request {
 
 // Result contains the result of calling Request.Do().
 type Result struct {
+	header     http.Header
 	body       []byte
 	err        error
 	statusCode int
@@ -240,6 +248,7 @@ func (r *Request) Do(ctx context.Context) Result {
 		return Result{err: err, statusCode: rawResp.StatusCode, status: rawResp.Status}
 	}
 	return Result{
+		header:     rawResp.Header,
 		body:       data,
 		err:        nil,
 		statusCode: rawResp.StatusCode,
@@ -483,6 +492,10 @@ func (r Result) TransformResponse() ([]byte, error) {
 		return nil, err
 	}
 	return marshalJSON, nil
+}
+
+func (r Result) Header() (http.Header, error) {
+	return r.header, r.err
 }
 
 func (r Result) RawResponse() ([]byte, error) {

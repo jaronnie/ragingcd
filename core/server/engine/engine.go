@@ -12,5 +12,5 @@ func init() {
 	if os.Args[1] != "server" {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	ServerEngine = gin.New()
+	ServerEngine = gin.Default()
 }

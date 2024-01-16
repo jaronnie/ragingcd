@@ -61,9 +61,10 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
-	logx.Logger()
 
 	if err := viper.Unmarshal(&config.Mapping); err != nil {
 		panic(err)
 	}
+
+	logx.Logger()
 }

@@ -1,9 +1,14 @@
-[db]
+[server]
+mode = "dev"
+[server.db]
 type = "mysql"
 address = "127.0.0.1:3306"
 username = "root"
 password = "123456"
 database = "core"
+
+[server.dev]
+auth_url = "http://localhost:8082"
 
 [log]
 level = "debug"

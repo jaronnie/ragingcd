@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"syscall"
 	"time"
@@ -74,7 +75,9 @@ func execOperations(cmd *cobra.Command, args []string) error {
 	var err error
 
 	var client restc.Interface
-	client, err = restc.New(restc.WithUrl("http://localhost:8081"))
+	headers := make(http.Header, 0)
+	headers.Set("Authorization", "Bearer kZBdVc4ZLliTeVOggkbE2Mkvo0TjbAR3AjEg3PnNqj3g6M53udbwfqtDjtq5IAakvsT05MjawCKXt9dQbGOSZ7un5acUERQFszzoPrCgRlj1Qkx4lkDAbiu2fnGJj4eP")
+	client, err = restc.New(restc.WithUrl("ws://localhost:8081"), restc.WithHeaders(headers))
 	TerminalWSClient, _, err = client.Get().SubPath("/api/v1/terminal/exec").Params(restc.QueryParam{
 		Name:  "resource_type",
 		Value: resourceType,
