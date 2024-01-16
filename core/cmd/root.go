@@ -8,6 +8,8 @@ package cmd
 import (
 	"os"
 
+	"github.com/jaronnie/ragingcd/core/pkg/logx"
+
 	"github.com/jaronnie/ragingcd/core/config"
 
 	"github.com/spf13/cobra"
@@ -59,6 +61,7 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
+	logx.Logger()
 
 	if err := viper.Unmarshal(&config.Mapping); err != nil {
 		panic(err)

@@ -3,7 +3,7 @@ package tty
 import (
 	"io"
 
-	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
+	"github.com/jaronnie/ragingcd/core/pkg/logx"
 
 	"github.com/pkg/errors"
 
@@ -35,8 +35,6 @@ type RemoteSsh struct {
 	target     *target.Target
 	ptyHandler handler.Handler
 	wsHandler  handler.WsHandler
-	errChan    chan error
-	doneChan   chan struct{}
 	client     *ssh.Client
 	session    *ssh.Session   //ssh会话
 	stdinPipe  io.WriteCloser //标准输入管道
@@ -48,8 +46,6 @@ func NewRemoteSsh(target *target.Target, wsHandler handler.WsHandler, ptyHandler
 		target:     target,
 		ptyHandler: ptyHandler,
 		wsHandler:  wsHandler,
-		errChan:    make(chan error),
-		doneChan:   make(chan struct{}),
 	}, nil
 }
 
@@ -129,6 +125,7 @@ func (r *RemoteSsh) Resize(rows, cols uint) error {
 }
 
 func (r *RemoteSsh) Close() error {
-	r.wsHandler.Write(message.Close("").Bytes())
+	logx.Debugf("close remote ssh terminal")
+	r.wsHandler.WriteClose([]byte("exit"))
 	return r.client.Close()
 }

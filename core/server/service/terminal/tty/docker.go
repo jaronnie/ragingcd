@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
+	"github.com/jaronnie/ragingcd/core/pkg/logx"
 
 	"github.com/jaronnie/ragingcd/core/server/domain/po"
 	"github.com/jaronnie/ragingcd/core/server/engine/db"
@@ -52,6 +52,15 @@ func (s *Docker) Connect(ws *handler.WsHandler) error {
 			}
 		}()
 		if _, err := io.Copy(ws.Stdout(), shell.Conn); err != nil {
+			errChan <- err
+		}
+	}()
+	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+			}
+		}()
+		if _, err := io.Copy(ws.Stderr(), shell.Conn); err != nil {
 			errChan <- err
 		}
 	}()
@@ -112,7 +121,9 @@ func (s *Docker) create() (*types.HijackedResponse, error) {
 }
 
 func (s *Docker) Close() error {
-	s.wsHandler.Write(message.Close("").Bytes())
+	logx.Debugf("close docker terminal")
+	s.wsHandler.WriteClose([]byte("exit"))
+	s.conn.CloseWrite()
 	return s.conn.Conn.Close()
 }
 

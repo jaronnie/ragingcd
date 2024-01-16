@@ -108,6 +108,15 @@ func (t *WsHandler) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
+func (t *WsHandler) WriteClose(p []byte) (int, error) {
+	marshalMsg, _ := json.Marshal(message.Close(string(p)))
+	if err := t.conn.WriteMsg(marshalMsg); err != nil {
+		t.err = err
+		return 0, err
+	}
+	return len(p), nil
+}
+
 func (t *WsHandler) Tty() bool {
 	return t.tty
 }

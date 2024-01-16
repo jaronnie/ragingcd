@@ -47,6 +47,7 @@ func terminal(ctx *gin.Context) error {
 		if err != nil {
 			return message.Close(err.Error())
 		}
+		defer terminal.Close()
 
 		go func() {
 			for {
@@ -64,7 +65,6 @@ func terminal(ctx *gin.Context) error {
 		if err := terminal.Connect(connHandler); err != nil {
 			return message.Close(err.Error())
 		}
-		defer terminal.Close()
 
 		return convertErrToMsg(connHandler.Error(), err)
 	}()

@@ -3,8 +3,6 @@ package engine
 import (
 	"os"
 
-	"github.com/jaronnie/ragingcd/core/pkg/logx"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,5 +13,4 @@ func init() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	ServerEngine = gin.New()
-	logx.Logger()
 }

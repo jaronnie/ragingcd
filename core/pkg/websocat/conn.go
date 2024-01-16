@@ -5,13 +5,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jaronnie/ragingcd/core/pkg/logx"
+
 	"github.com/gorilla/websocket"
 )
 
 const (
-	writeWait      = 3000 * time.Second
+	writeWait      = 30 * time.Second
 	maxMessageSize = 8192
-	pongWait       = 6000 * time.Second
+	pongWait       = 60 * time.Second
 )
 
 type Connection interface {
@@ -51,10 +53,11 @@ func (c *WsConn) ReadMsg() ([]byte, error) {
 	frameType, frameData, err := c.conn.ReadMessage()
 	if err != nil {
 		if !isExpectedError(err) {
-			fmt.Printf("Fail to read message. Err: [%v]", err)
+			logx.Errorf("Fail to read message. Err: [%v]", err)
 		}
 		return nil, err
 	}
+	logx.Debugf("receive terminal message: [%s]", frameData)
 	if frameType == websocket.TextMessage {
 		return frameData, nil
 	}
@@ -66,15 +69,13 @@ func (c *WsConn) WriteMsg(msg []byte) error {
 	if err != nil {
 		return err
 	}
-	if string(msg) == "\u0000" || string(msg) == "?" {
-		return nil
-	}
 	err = c.conn.WriteMessage(websocket.TextMessage, msg)
 	if err != nil {
 		if !isExpectedError(err) && err != websocket.ErrCloseSent {
-			fmt.Printf("Fail to write msg to websocket connection. Err: [%v]", err)
+			logx.Errorf("Fail to write msg to websocket connection. Err: [%v]", err)
 		}
 	}
+	logx.Debugf("send terminal message: [%s]", msg)
 	return err
 }
 
@@ -89,14 +90,12 @@ func isExpectedError(err error) bool {
 }
 
 func (c *WsConn) Close() error {
-	return c.conn.Close()
+	return c.CloseGracingWithinTime(time.Duration(3) * time.Second)
 }
 
 func (c *WsConn) CloseGracingWithinTime(gracingDuration time.Duration) error {
+	logx.Debugf("close websocket connection with gracingDuration")
 	if c.conn != nil {
-		defer func() {
-		}()
-
 		// 等待客户端主动关闭连接，超时服务端主动关闭
 		err := c.conn.SetWriteDeadline(time.Now().Add(gracingDuration))
 		if err != nil {

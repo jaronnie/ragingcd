@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/jaronnie/ragingcd/core/server/service/terminal/message"
+	"github.com/jaronnie/ragingcd/core/pkg/logx"
 
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/handler"
 	"github.com/jaronnie/ragingcd/core/server/service/terminal/target"
@@ -22,8 +22,6 @@ type Local struct {
 	target     *target.Target
 	ptyHandler handler.Handler
 	wsHandler  handler.WsHandler
-	errChan    chan error
-	doneChan   chan struct{}
 	shell      *os.File
 	cmd        *exec.Cmd
 }
@@ -33,8 +31,6 @@ func NewLocal(target *target.Target, wsHandler handler.WsHandler, ptyHandler han
 		target:     target,
 		ptyHandler: ptyHandler,
 		wsHandler:  wsHandler,
-		errChan:    make(chan error),
-		doneChan:   make(chan struct{}),
 	}, nil
 }
 
@@ -86,9 +82,10 @@ func (s *Local) create(cmd *exec.Cmd) (*os.File, error) {
 }
 
 func (s *Local) Close() error {
+	logx.Debugf("close local terminal")
 	s.cmd.Wait()
 	s.shell.Write([]byte(handler.EndOfTransmission))
-	s.wsHandler.Write(message.Close("").Bytes())
+	s.wsHandler.WriteClose([]byte("exit"))
 	if err := s.shell.Close(); err != nil {
 		return err
 	}

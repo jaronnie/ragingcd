@@ -161,7 +161,7 @@ func pullTerminalMsgToConsole() (close bool, err error) {
 		case Stdout:
 			fmt.Print(resp.Data)
 		case Close:
-			fmt.Print(resp.Data)
+			// TODO: server 端修复 docker 关闭的问题
 			return true, nil
 		}
 	}
