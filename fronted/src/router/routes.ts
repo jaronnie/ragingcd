@@ -75,7 +75,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
       },
       {
         path: "/layout/ssh-manage",
-        component: () => import("@/views/layout/feature-developing/index.vue"),
+        component: () => import("@/views/layout/ssh-manage/index.vue"),
         name: "ssh-manage",
         meta: {
           title: "SSH 管理",

@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       :model-value="visible"
-      title="添加托管"
+      title="添加 ssh"
       @open="beforeOpenCallback"
       :before-close="beforeClose"
     >
@@ -11,42 +11,43 @@
         style="width: 80%"
         ref="ruleFormRef"
         :rules="rules"
-        :model="createCodeHostingForm"
+        :model="createSshForm"
       >
         <el-form-item label="名称" prop="name" required>
+          <el-input placeholder="请输入名称" v-model="createSshForm.name" />
+        </el-form-item>
+        <el-form-item label="地址" prop="ip" required>
+          <el-input placeholder="请输入地址" v-model="createSshForm.ip" />
+        </el-form-item>
+        <el-form-item label="端口" prop="port" required>
+          <el-input placeholder="请输入端口" v-model="createSshForm.port" />
+        </el-form-item>
+        <el-form-item label="用户名" prop="username" required>
           <el-input
-            placeholder="请输入名称"
-            v-model="createCodeHostingForm.name"
+            placeholder="请输入用户名"
+            v-model="createSshForm.username"
           />
         </el-form-item>
-        <el-form-item label="类型" prop="type">
-          <el-radio-group size="large" v-model="createCodeHostingForm.type">
+        <el-form-item label="登录方式" prop="type">
+          <el-radio-group size="large" v-model="createSshForm.type">
             <el-radio-button v-for="type in types" :key="type" :label="type">
               {{ type }}
             </el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <template v-if="createCodeHostingForm.type != 'github'">
-          <el-form-item label="地址" prop="url" required>
+        <template v-if="createSshForm.type == 'password'">
+          <el-form-item label="密码" prop="password" required>
             <el-input
-              placeholder="请输入地址"
-              v-model="createCodeHostingForm.url"
+              placeholder="请输入密码"
+              v-model="createSshForm.password"
             />
           </el-form-item>
         </template>
-        <template v-if="createCodeHostingForm.type !== 'local'">
-          <el-form-item label="用户名" prop="username" required>
+        <template v-if="createSshForm.type == 'private_key'">
+          <el-form-item label=" 私钥" prop="private_key" required>
             <el-input
-              placeholder="请输入用户名"
-              v-model="createCodeHostingForm.username"
-            />
-          </el-form-item>
-        </template>
-        <template v-if="createCodeHostingForm.type !== 'local'">
-          <el-form-item label="Token" prop="token" required>
-            <el-input
-              placeholder="请输入 Token"
-              v-model="createCodeHostingForm.token"
+              placeholder="请输入私钥"
+              v-model="createSshForm.private_key"
             />
           </el-form-item>
         </template>
@@ -64,8 +65,8 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { ElMessage, FormInstance, FormRules } from "element-plus";
-import type { CreateCodeHostingBo } from "@/api/codehosting/type.ts";
-import { reqCreateCodeHosting } from "@/api/codehosting";
+import { reqCreateSsh } from "@/api/ssh";
+import { CreateSshBo } from "@/api/ssh/type.ts";
 
 type HeaderProps = {
   visible: boolean;
@@ -73,12 +74,14 @@ type HeaderProps = {
 defineProps<HeaderProps>();
 
 // 收集托管信息
-let createCodeHostingForm = reactive<CreateCodeHostingBo>({
+let createSshForm = reactive<CreateSshBo>({
+  ip: "",
+  type: "password",
+  port: 22,
   name: "",
-  type: "github",
-  url: "",
   username: "",
-  token: "",
+  password: "",
+  private_key: "",
 });
 
 // 控制按钮 loading 变量, 加载效果
@@ -104,12 +107,14 @@ const confirm = async () => {
   loading.value = true;
 
   // 发送请求
-  let result: any = await reqCreateCodeHosting({
-    name: createCodeHostingForm.name,
-    type: createCodeHostingForm.type,
-    url: createCodeHostingForm.url,
-    username: createCodeHostingForm.username,
-    token: createCodeHostingForm.token,
+  let result: any = await reqCreateSsh({
+    ip: createSshForm.ip,
+    port: createSshForm.port,
+    name: createSshForm.name,
+    type: createSshForm.type,
+    username: createSshForm.username,
+    password: createSshForm.password,
+    private_key: createSshForm.private_key,
   });
   if (result.code === 200) {
     ElMessage({
@@ -131,21 +136,14 @@ const beforeClose = () => {
   emits("cancelAdd");
 };
 
-const types = ["github", "gitlab", "gitea", "local"];
+const types = ["password", "private_key"];
 
 const beforeOpenCallback = () => {
-  // 清除表单数据以及校验结果
-  createCodeHostingForm.username = "";
-  createCodeHostingForm.token = "";
-  createCodeHostingForm.name = "";
-  createCodeHostingForm.url = "";
-  ruleFormRef.value?.clearValidate([
-    "username",
-    "type",
-    "token",
-    "name",
-    "url",
-  ]);
+  createSshForm.username = "";
+  createSshForm.name = "";
+  createSshForm.ip = "";
+  createSshForm.port = 22;
+  ruleFormRef.value?.clearValidate(["username", "type", "name"]);
 };
 </script>
 

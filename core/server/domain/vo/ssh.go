@@ -3,11 +3,11 @@ package vo
 type SshVo struct {
 	ID       int    `json:"id"`
 	UUID     string `json:"uuid"`
-	Name     string
-	Type     string // 登录方式 Password or SecretKey
+	Name     string `json:"name"`
+	Type     string `json:"type"` // 登录方式 password or private_key
 	IP       string `json:"ip"`
-	Port     int
-	Username string
+	Port     int    `json:"port"`
+	Username string `json:"username"`
 }
 
 type SshTableData struct {
