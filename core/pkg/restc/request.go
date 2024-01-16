@@ -134,17 +134,17 @@ func (r *Request) defaultUrl() (string, error) {
 	return fmt.Sprintf("%s://%s:%s", r.c.protocol, r.c.addr, r.c.port+r.subPath+r.params), nil
 }
 
-// WSUrl get WS url for request
+// WsUrl get ws url for request
 func (r *Request) wsUrl() (string, error) {
-	if r.c.protocol == "" || r.c.addr == "" || r.c.port == "" {
-		return "", errors.New("invalid url, you may not login")
+	if r.c.protocol == "" || r.c.addr == "" {
+		return "", errors.New("invalid url, please check")
 	}
 
 	// upgrade http to websocket proto
-	if r.c.protocol == "https" {
-		r.c.protocol = "wss"
-	} else {
-		r.c.protocol = "ws"
+	if r.c.protocol == "wss" && r.c.port == "" {
+		r.c.port = "443"
+	} else if r.c.protocol == "ws" && r.c.port == "" {
+		r.c.port = "80"
 	}
 
 	return fmt.Sprintf("%s://%s:%s", r.c.protocol, r.c.addr, r.c.port+r.subPath+r.params), nil
