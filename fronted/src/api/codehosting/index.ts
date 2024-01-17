@@ -2,13 +2,14 @@ import request from "@/utils/request.ts";
 import {
   CodeHostingListVoResponseData,
   CodeHostingVoResponseData,
-  CreateCodeHostingBo
+  CreateCodeHostingBo,
 } from "@/api/codehosting/type.ts";
-import { PageQuery } from "@/api/type.ts";
+import { BooleanResponseData, PageQuery } from "@/api/type.ts";
 
 enum API {
   CREATE_URL = "/gateway/core/api/v1/codehosting/create",
   CODEHOSTING_LIST_URL = "/gateway/core/api/v1/codehosting/list",
+  CODEHOSTING_DELETE_URL = "/gateway/core/api/v1/codehosting/delete",
 }
 
 export const reqCreateCodeHosting = (data: CreateCodeHostingBo) =>
@@ -20,3 +21,6 @@ export const reqCodeHostingList = (pageQuery: PageQuery) =>
       ...pageQuery,
     },
   });
+
+export const reqCodeHostingDelete = (id: number) =>
+  request.get<any, BooleanResponseData>(`${API.CODEHOSTING_DELETE_URL}/${id}`);

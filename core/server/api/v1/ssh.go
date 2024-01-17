@@ -14,4 +14,5 @@ func init() {
 func BuildSshRouter(rg *gin.RouterGroup) {
 	rg.POST("/create", middlewares.Auth(), ssh.Create)
 	rg.GET("/list", middlewares.Auth(), ssh.List)
+	rg.GET("/delete/:id", middlewares.Auth(), ssh.Delete)
 }

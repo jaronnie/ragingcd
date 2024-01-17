@@ -12,13 +12,13 @@
         <el-table-column prop="port" label="端口" />
         <el-table-column prop="username" label="用户名" />
         <el-table-column label="操作">
-          <template>
+          <template #default="{ row }">
             <el-button
               size="small"
               :icon="Delete"
               circle
               type="danger"
-              @click="deleteSshFunc()"
+              @click="deleteSshFunc(row)"
             ></el-button>
           </template>
         </el-table-column>
@@ -38,9 +38,16 @@
 
     <CreateSsh
       v-model:visible="viewState.addSsh.visible"
-      @cancelAdd="cancelAddUser"
-      @confirmAdd="confirmAddUser"
+      @cancelAdd="cancelAddSsh"
+      @confirmAdd="confirmAddSsh"
     ></CreateSsh>
+
+    <DeleteSsh
+      v-model:visible="viewState.deleteSsh.visible"
+      :sshVo="viewState.deleteSsh.sshVo"
+      @cancelDelete="cancelDelete"
+      @confirmDelete="confirmDelete"
+    ></DeleteSsh>
   </div>
 </template>
 
@@ -48,6 +55,7 @@
 import { Delete } from "@element-plus/icons-vue";
 import { onMounted, reactive, ref } from "vue";
 import CreateSsh from "./createSsh.vue";
+import DeleteSsh from "./deleteSsh.vue";
 import { PageQuery } from "@/api/type.ts";
 import { SshListVoResponseData, SshVo } from "@/api/ssh/type.ts";
 import { reqSshList } from "@/api/ssh";
@@ -57,6 +65,7 @@ const viewState = reactive({
   addSsh: { visible: false },
   deleteSsh: {
     visible: false,
+    sshVo: {} as SshVo,
   },
 });
 
@@ -85,16 +94,26 @@ const addSshFunc = () => {
   viewState.addSsh.visible = true;
 };
 
-const deleteSshFunc = () => {
+const deleteSshFunc = (sshVo: SshVo) => {
   viewState.deleteSsh.visible = true;
+  viewState.deleteSsh.sshVo = sshVo;
 };
 
-const cancelAddUser = () => {
+const cancelAddSsh = () => {
   viewState.addSsh.visible = false;
 };
 
-const confirmAddUser = () => {
+const confirmAddSsh = () => {
   viewState.addSsh.visible = false;
+  reqSshListFunc();
+};
+
+const cancelDelete = () => {
+  viewState.deleteSsh.visible = false;
+};
+
+const confirmDelete = () => {
+  viewState.deleteSsh.visible = false;
   reqSshListFunc();
 };
 

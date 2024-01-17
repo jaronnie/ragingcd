@@ -14,4 +14,5 @@ func init() {
 func BuildCodeHostingRouter(rg *gin.RouterGroup) {
 	rg.POST("/create", middlewares.Auth(), codehosting.Create)
 	rg.GET("/list", middlewares.Auth(), codehosting.List)
+	rg.GET("/delete/:id", middlewares.Auth(), codehosting.Delete)
 }

@@ -143,7 +143,14 @@ const beforeOpenCallback = () => {
   createSshForm.name = "";
   createSshForm.ip = "";
   createSshForm.port = 22;
-  ruleFormRef.value?.clearValidate(["username", "type", "name"]);
+  ruleFormRef.value?.clearValidate([
+    "username",
+    "type",
+    "name",
+    "password",
+    "private_key",
+    "ip",
+  ]);
 };
 </script>
 

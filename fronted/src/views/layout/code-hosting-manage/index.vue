@@ -10,13 +10,13 @@
         <el-table-column prop="type" label="类型" />
         <el-table-column prop="url" label="地址" />
         <el-table-column label="操作">
-          <template>
+          <template #default="{ row }">
             <el-button
               size="small"
               :icon="Delete"
               circle
               type="danger"
-              @click="deleteCodeHostingFunc()"
+              @click="deleteCodeHostingFunc(row)"
             ></el-button>
           </template>
         </el-table-column>
@@ -39,6 +39,13 @@
       @cancelAdd="cancelAddCodeHosting"
       @confirmAdd="confirmAddCodeHosting"
     ></CreateCodeHosting>
+
+    <DeleteCodeHosting
+      v-model:visible="viewState.deleteCodeHosting.visible"
+      :codeHostingVo="viewState.deleteCodeHosting.codeHostingVo"
+      @cancelDelete="cancelDelete"
+      @confirmDelete="confirmDelete"
+    ></DeleteCodeHosting>
   </div>
 </template>
 
@@ -53,10 +60,13 @@ import {
   CodeHostingVo,
 } from "@/api/codehosting/type.ts";
 
+import DeleteCodeHosting from "./deleteCodeHosting.vue";
+
 // 是否弹出 dialog 页面
 const viewState = reactive({
   addCodeHosting: { visible: false },
   deleteCodeHosting: {
+    codeHostingVo: {} as CodeHostingVo,
     visible: false,
   },
 });
@@ -87,8 +97,9 @@ const addCodeHostingFunc = () => {
   viewState.addCodeHosting.visible = true;
 };
 
-const deleteCodeHostingFunc = () => {
+const deleteCodeHostingFunc = (codeHostingVo: CodeHostingVo) => {
   viewState.deleteCodeHosting.visible = true;
+  viewState.deleteCodeHosting.codeHostingVo = codeHostingVo;
 };
 
 const cancelAddCodeHosting = () => {
@@ -97,6 +108,15 @@ const cancelAddCodeHosting = () => {
 
 const confirmAddCodeHosting = () => {
   viewState.addCodeHosting.visible = false;
+  reqCodeHostingListFunc();
+};
+
+const cancelDelete = () => {
+  viewState.deleteCodeHosting.visible = false;
+};
+
+const confirmDelete = () => {
+  viewState.deleteCodeHosting.visible = false;
   reqCodeHostingListFunc();
 };
 
