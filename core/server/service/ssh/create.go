@@ -3,6 +3,7 @@ package ssh
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/jaronnie/ragingcd/core/pkg/sshx"
 	"github.com/jaronnie/ragingcd/core/server/domain/bo"
 	"github.com/jaronnie/ragingcd/core/server/domain/po"
 	"github.com/jaronnie/ragingcd/core/server/domain/vo"
@@ -20,6 +21,20 @@ func Create(ctx *gin.Context) {
 	}
 
 	authHelper := helper.AuthHelper{Context: ctx}
+
+	// 校验是否能登录
+	if _, err = sshx.NewSshClient(&sshx.Config{
+		IP:         sshBo.IP,
+		Port:       sshBo.Port,
+		Username:   sshBo.Username,
+		Type:       sshBo.Type,
+		Password:   sshBo.Password,
+		PrivateKey: sshBo.PrivateKey,
+		Timeout:    10,
+	}); err != nil {
+		response.Fail(ctx, err, 500)
+		return
+	}
 
 	sshPo := &po.Ssh{
 		Name:       sshBo.Name,

@@ -27,7 +27,7 @@ func NewSshClient(config *Config) (*ssh.Client, error) {
 	sshConfig := &ssh.ClientConfig{
 		User:            config.Username,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-		Timeout:         time.Duration(10) * time.Second,
+		Timeout:         time.Duration(config.Timeout) * time.Second,
 	}
 	if config.Type == PrivateKey {
 		privateKey, err := ssh.ParsePrivateKey([]byte(config.PrivateKey))

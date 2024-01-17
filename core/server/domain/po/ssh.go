@@ -13,5 +13,5 @@ type Ssh struct {
 	Type       string `xorm:"COMMENT('类型 password private_key') 'type'"`
 	Username   string `xorm:"COMMENT('用户名') 'username'"`
 	Password   string `xorm:"COMMENT('密码') 'password'"`
-	PrivateKey string `xorm:"COMMENT('私钥') 'private_key'"`
+	PrivateKey string `xorm:"text COMMENT('私钥') 'private_key'"`
 }

@@ -46,6 +46,8 @@
         <template v-if="createSshForm.type == 'private_key'">
           <el-form-item label=" 私钥" prop="private_key" required>
             <el-input
+              type="textarea"
+              :rows="6"
               placeholder="请输入私钥"
               v-model="createSshForm.private_key"
             />
@@ -143,6 +145,9 @@ const beforeOpenCallback = () => {
   createSshForm.name = "";
   createSshForm.ip = "";
   createSshForm.port = 22;
+  createSshForm.password = "";
+  createSshForm.private_key = "";
+  createSshForm.type = "password";
   ruleFormRef.value?.clearValidate([
     "username",
     "type",
