@@ -13,6 +13,9 @@
         <el-table-column prop="username" label="用户名" />
         <el-table-column label="操作">
           <template #default="{ row }">
+            <el-button circle size="small" @click="openTerminalFunc">
+              <Svg-Icon name="terminal"></Svg-Icon>
+            </el-button>
             <el-button
               size="small"
               :icon="Delete"
@@ -48,6 +51,11 @@
       @cancelDelete="cancelDelete"
       @confirmDelete="confirmDelete"
     ></DeleteSsh>
+
+    <Terminal
+      v-model:visible="viewState.openTerminal.visible"
+      @closeTerminal="closeTerminal"
+    ></Terminal>
   </div>
 </template>
 
@@ -56,6 +64,7 @@ import { Delete } from "@element-plus/icons-vue";
 import { onMounted, reactive, ref } from "vue";
 import CreateSsh from "./createSsh.vue";
 import DeleteSsh from "./deleteSsh.vue";
+import Terminal from "./terminal.vue";
 import { PageQuery } from "@/api/type.ts";
 import { SshListVoResponseData, SshVo } from "@/api/ssh/type.ts";
 import { reqSshList } from "@/api/ssh";
@@ -67,6 +76,7 @@ const viewState = reactive({
     visible: false,
     sshVo: {} as SshVo,
   },
+  openTerminal: { visible: false },
 });
 
 const sshListRes = ref<SshVo[]>([]);
@@ -115,6 +125,14 @@ const cancelDelete = () => {
 const confirmDelete = () => {
   viewState.deleteSsh.visible = false;
   reqSshListFunc();
+};
+
+const openTerminalFunc = () => {
+  viewState.openTerminal.visible = true;
+};
+
+const closeTerminal = () => {
+  viewState.openTerminal.visible = false;
 };
 
 onMounted(() => {
