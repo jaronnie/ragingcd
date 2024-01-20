@@ -39,6 +39,7 @@ type WsConn struct {
 func NewConn(w http.ResponseWriter, r *http.Request) (Connection, error) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
+		logx.Errorf("upgrade to websocket meet error. Err: [%v]", err)
 		return nil, err
 	}
 	return &WsConn{conn: conn}, nil

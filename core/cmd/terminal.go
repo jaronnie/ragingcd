@@ -76,9 +76,9 @@ func execOperations(cmd *cobra.Command, args []string) error {
 
 	var client restc.Interface
 	headers := make(http.Header, 0)
-	headers.Set("Authorization", "Bearer BYti0YIO5vAPsQp33iApyzEhjngVFtmdchWV29MOwb7iKcJ85mEiYCzByPhLp0gapZU9KXYcXZhdVqqz6IxWBRc5sQy1fTW4UsE7eZUjPg9RlZbLckkfVnoMIL5Bhrr6")
-	client, err = restc.New(restc.WithUrl("wss://ragingcd.cloud.jaronnie.com"), restc.WithHeaders(headers))
-	TerminalWSClient, _, err = client.Get().SubPath("/gateway/core/api/v1/terminal/exec").Params(restc.QueryParam{
+	headers.Set("Authorization", "Bearer kZBdVc4ZLliTeVOggkbE2Mkvo0TjbAR3AjEg3PnNqj3g6M53udbwfqtDjtq5IAakvsT05MjawCKXt9dQbGOSZ7un5acUERQFszzoPrCgRlj1Qkx4lkDAbiu2fnGJj4eP")
+	client, err = restc.New(restc.WithUrl("ws://localhost"), restc.WithHeaders(headers))
+	TerminalWSClient, _, err = client.Get().SubPath("/terminal").Params(restc.QueryParam{
 		Name:  "resource_type",
 		Value: resourceType,
 	}, restc.QueryParam{
