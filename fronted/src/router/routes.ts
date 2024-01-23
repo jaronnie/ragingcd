@@ -59,7 +59,7 @@ const constantRoute: (RouteRecordRaw | RouteRecordRedirect)[] = [
       },
       {
         path: "/layout/repo-manage",
-        component: () => import("@/views/layout/feature-developing/index.vue"),
+        component: () => import("@/views/layout/repo-manage/index.vue"),
         name: "repo-manage",
         meta: {
           title: "仓库管理",
