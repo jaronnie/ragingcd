@@ -1,5 +1,5 @@
 <template>
-  <el-icon style="margin-right: 10px" @click="expandOrFold">
+  <el-icon style="margin-right: 10px" @click="layoutStore.ExpandOrFold">
     <component :is="layoutStore.fold ? 'Expand' : 'Fold'"></component>
   </el-icon>
   <el-breadcrumb separator-icon="ArrowRight">
@@ -22,11 +22,6 @@ import { useRoute } from "vue-router";
 let $router = useRoute();
 
 let layoutStore = useLayoutStore();
-
-// 控制菜单的折叠或者展开
-const expandOrFold = () => {
-  layoutStore.fold = !layoutStore.fold;
-};
 </script>
 
 <style scoped lang="scss"></style>

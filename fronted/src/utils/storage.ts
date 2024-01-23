@@ -10,3 +10,18 @@ export const GET_TOKEN = (): string => {
 export const REMOVE_TOKEN = () => {
   localStorage.removeItem("TOKEN");
 };
+
+export const SET_FOLD = () => {
+  let fold: string = "";
+  if (GET_FOLD()) {
+    fold = "false";
+  } else {
+    fold = "true";
+  }
+  localStorage.setItem("FOLD", fold);
+};
+
+export const GET_FOLD = (): boolean => {
+  const fold = localStorage.getItem("FOLD");
+  return fold == "true";
+};

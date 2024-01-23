@@ -1,6 +1,6 @@
 // 二次封装 axios
 import axios, { AxiosError } from "axios";
-import { GET_TOKEN } from "./token";
+import { GET_TOKEN } from "./storage.ts";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,

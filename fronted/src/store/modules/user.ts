@@ -11,7 +11,7 @@ import type {
   UserVoResponseData,
 } from "@/api/user/type";
 import type { UserState } from "./types/type";
-import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
+import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/storage.ts";
 import { reqUserInfo } from "@/api/user";
 
 // 引入路由

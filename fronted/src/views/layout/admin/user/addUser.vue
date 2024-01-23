@@ -62,8 +62,6 @@ import type { FormInstance, UploadProps } from "element-plus";
 import { ElMessage, FormRules } from "element-plus";
 import type { AddUserBo } from "@/api/user/type.ts";
 import { reqPublicKey, reqUserAdd } from "@/api/user";
-import { GET_TOKEN } from "@/utils/token.ts";
-import { tokenPrefix } from "@/utils/request.ts";
 import { encrypt } from "@/utils/crypto.ts";
 import { PublicKeyVoResponseData } from "@/api/user/type.ts";
 
